@@ -1,0 +1,29 @@
+[project]
+name = "snakemake-report-plugin-metadata4ing"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+dependencies = ["snakemake-interface-common (>=1.17.4,<2.0.0)", "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)"]
+repository = "https://github.com/your/plugin"
+documentation = "https://snakemake.github.io/snakemake-plugin-catalog/plugins/report/metadata4ing.html"
+[[project.authors]]
+name = "M-Jafarkhani"
+email = "mahdi.jafarkhani@gmail.com"
+
+[build-system]
+requires = [ "poetry-core>=2.0.0,<3.0.0",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+[[tool.poetry.packages]]
+include = "snakemake_report_plugin_metadata4ing"
+from = "src"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.11.8"
+coverage = "^7.8.0"
+pytest = "^8.3.5"
+snakemake = "^9.3.3"
+
