@@ -1,12 +1,12 @@
 [project]
-name = "snakemake-report-plugin-metadata4ing"
+name = "snakemake-report-plugin-metadat4ing"
 version = "0.1.0"
 description = ""
 readme = "README.md"
 requires-python = ">=3.11,<4.0"
-dependencies = ["snakemake-interface-common (>=1.17.4,<2.0.0)", "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)"]
+dependencies = ["snakemake-interface-common (>=1.17.4,<2.0.0)", "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)", "rdflib", "requests"]
 repository = "https://github.com/your/plugin"
-documentation = "https://snakemake.github.io/snakemake-plugin-catalog/plugins/report/metadata4ing.html"
+documentation = "https://snakemake.github.io/snakemake-plugin-catalog/plugins/report/metadat4ing.html"
 [[project.authors]]
 name = "M-Jafarkhani"
 email = "mahdi.jafarkhani@gmail.com"
@@ -17,7 +17,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 [[tool.poetry.packages]]
-include = "snakemake_report_plugin_metadata4ing"
+include = "snakemake_report_plugin_metadat4ing"
 from = "src"
 
 

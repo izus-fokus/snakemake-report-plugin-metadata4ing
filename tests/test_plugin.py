@@ -9,8 +9,8 @@ class TestWorkflowsBase(snakemake.common.tests.TestReportBase):
     __test__ = True
 
     def get_reporter(self) -> str:
-        return "metadata4ing"
+        return "metadat4ing"
 
     def get_report_settings(self) -> Optional[ReportSettingsBase]:
         # instantiate ReportSettings of this plugin as appropriate
-        pass
+        ...
