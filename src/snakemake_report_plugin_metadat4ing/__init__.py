@@ -24,14 +24,9 @@ class Reporter(ReporterBase):
         }
         jsonld['@context']['local'] = "https://local-domain.org/"
        
-        x = self.dag.dependencies
+        sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         
-        for key, value in x.items():
-            print(f"Key: {key}")
-            for item in value:
-                print(f"Item: {item}")
-                
-        for index, job in enumerate(self.jobs):
+        for index, job in enumerate(sorted_jobs):
             item = {
                 "@id": f"local:processing_step_{index}",
                 "@type": "processing step",
@@ -40,7 +35,6 @@ class Reporter(ReporterBase):
                 "end time": f"{datetime.fromtimestamp(job.endtime)}"
             }
             rules_dict[job.rule] = item
-            
         
         for target_job, dependent_jobs in self.dag.dependencies.items():
             for dependent_job in dependent_jobs:
