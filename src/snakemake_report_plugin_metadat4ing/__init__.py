@@ -16,6 +16,7 @@ class Reporter(ReporterBase):
     
     def render(self):
         self.get_context()
+        rules_dict = {}
         
         jsonld = {
             "@context": self.context_data['@context'],
@@ -23,6 +24,13 @@ class Reporter(ReporterBase):
         }
         jsonld['@context']['local'] = "https://local-domain.org/"
        
+        x = self.dag.dependencies
+        
+        for key, value in x.items():
+            print(f"Key: {key}")
+            for item in value:
+                print(f"Item: {item}")
+                
         for index, job in enumerate(self.jobs):
             item = {
                 "@id": f"local:processing_step_{index}",
@@ -31,6 +39,16 @@ class Reporter(ReporterBase):
                 "start time": f"{datetime.fromtimestamp(job.starttime)}",
                 "end time": f"{datetime.fromtimestamp(job.endtime)}"
             }
+            rules_dict[job.rule] = item
+            
+        
+        for target_job, dependent_jobs in self.dag.dependencies.items():
+            for dependent_job in dependent_jobs:
+                if dependent_job is not None:
+                    if dependent_job.rule.name in rules_dict and target_job.rule.name in rules_dict:
+                        rules_dict[target_job.rule.name]["precedes"] = rules_dict[dependent_job.rule.name]["@id"]
+        
+        for _, item in rules_dict.items():
             jsonld["@graph"].append(item)
         
         with open("report.jsonld", "w", encoding='utf8') as file:

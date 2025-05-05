@@ -2,3 +2,9 @@
 .snakemake
 dist
 poetry.lock
+cleanup.log
+goodbye.log
+hello.log
+prepare.log
+report.ttl
+report.jsonld
