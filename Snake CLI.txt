@@ -1,0 +1,20 @@
+conda create --name poetry python=3.12
+conda activate poetry
+pip install poetry
+
+poetry self add poetry-snakemake-plugin
+poetry new snakemake-report-plugin-metadat4ing
+cd snakemake-report-plugin-metadat4ing
+
+poetry scaffold-snakemake-report-plugin
+
+============================================================
+
+CODE
+
+============================================================
+
+poetry build
+pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3-none-any.whl
+snakemake --snakefile Snakefile --reporter metadat4ing --cores 1
+snakemake --snakefile Snakefile --cores 1 --force
