@@ -16,5 +16,7 @@ CODE
 
 poetry build
 pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3-none-any.whl
-snakemake --snakefile Snakefile --reporter metadat4ing --cores 1
-snakemake --snakefile Snakefile --cores 1 --force
+snakemake --reporter metadat4ing --cores 1 --force
+snakemake --cores 1 --force
+snakemake --dag | dot -Tpdf > workflow.pdf
+

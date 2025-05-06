@@ -6,6 +6,9 @@ from rdflib import Graph
 import requests
 import json
 
+import os
+from subprocess import run, CalledProcessError
+
 @dataclass
 class ReportSettings(ReportSettingsBase):
     pass
@@ -16,40 +19,75 @@ class Reporter(ReporterBase):
     
     def render(self):
         self.get_context()
-        rules_dict = {}
+        jobs_dict = {}
         
         jsonld = {
             "@context": self.context_data['@context'],
             "@graph": []
         }
         jsonld['@context']['local'] = "https://local-domain.org/"
-       
+              
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         
         for index, job in enumerate(sorted_jobs):
+            job_label = f"{job.rule}_{job.job.jobid}"
             item = {
-                "@id": f"local:processing_step_{index}",
+                "@id": f"local:processing_step_{job.job.jobid}",
                 "@type": "processing step",
-                "label": f"{job.rule}",
+                "label": job_label,
                 "start time": f"{datetime.fromtimestamp(job.starttime)}",
                 "end time": f"{datetime.fromtimestamp(job.endtime)}"
             }
-            rules_dict[job.rule] = item
+            jobs_dict[job_label] = item
         
-        for target_job, dependent_jobs in self.dag.dependencies.items():
-            for dependent_job in dependent_jobs:
-                if dependent_job is not None:
-                    if dependent_job.rule.name in rules_dict and target_job.rule.name in rules_dict:
-                        rules_dict[target_job.rule.name]["precedes"] = rules_dict[dependent_job.rule.name]["@id"]
+        # for target_job, dependent_jobs in self.dag.dependencies.items():
+        #     for dependent_job in dependent_jobs:
+        #         if dependent_job is not None:
+        #             if dependent_job.rule.name in rules_dict and target_job.rule.name in rules_dict:
+        #                 rules_dict[target_job.rule.name]["precedes"] = rules_dict[dependent_job.rule.name]["@id"]
         
-        for _, item in rules_dict.items():
+        for _, item in jobs_dict.items():
             jsonld["@graph"].append(item)
         
         with open("report.jsonld", "w", encoding='utf8') as file:
             json.dump(jsonld, file, indent=4, ensure_ascii=False)
         
         self.create_ttl_from_jsonld(jsonld)
-        
+    
+    def create_rulegraph(self):
+        # images/rulegraph.svg should be something we can auto-generate. self.dag has methods dot()
+        # and rule_dot() which can make the graph for us, but it still needs converting to SVG.
+        # TODO: Replace hardcoded file paths with path provided to function
+        #       (this will need to match the path given to the RO-Crate generator too)
+
+        if os.path.exists("image/rulegraph.svg"):
+           return True
+
+        else:
+            print("Auto generating 'image/rulegraph.svg'")
+            try:
+                with open("image/rulegraph.dot", "x") as dotfh:
+                    print(self.dag.rule_dot(), file=dotfh)
+            except FileExistsError:
+                # Never mind, use the one we have. Maybe the user edited it.
+                print("Using existing 'image/rulegraph.dot'")
+
+            # For converting .dot to .svg I don't see a better way than calling the graphviz
+            # program directly.
+            try:
+                run(['dot', '-Tsvg', 'image/rulegraph.dot', '-o', 'image/rulegraph.svg'],
+                     check = True,
+                     capture_output = True,
+                     text = True)
+            except CalledProcessError as e:
+                print(str(e.stderr).rstrip())
+                print("The 'dot' program returned the above error attempting to convert the rulegraph.")
+                return False
+            except FileNotFoundError as e:
+                return False
+            else:
+                return True
+                
     def get_context(self):
         context_url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
         response = requests.get(context_url)

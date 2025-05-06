@@ -1,0 +1,7 @@
+{
+    "name": "1",
+    "parameters": "parameters_1.json",
+    "input": "data/input_1.json",
+    "mesh": "data/mesh_1.msh",
+    "output": "data/output_1.vtk"
+}
