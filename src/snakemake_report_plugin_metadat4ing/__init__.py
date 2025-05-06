@@ -20,6 +20,8 @@ class Reporter(ReporterBase):
     def render(self):
         self.get_context()
         jobs_dict = {}
+        output_files_dict = {}
+        file_counter = 0
         
         jsonld = {
             "@context": self.context_data['@context'],
@@ -29,15 +31,29 @@ class Reporter(ReporterBase):
               
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         
-        for index, job in enumerate(sorted_jobs):
+        for i,j in self.rules.items():
+            print(f"Rule: {i}")
+            print(f"Output: {j.output}")
+        
+        for _, job in enumerate(sorted_jobs):
             job_label = f"{job.rule}_{job.job.jobid}"
             item = {
                 "@id": f"local:processing_step_{job.job.jobid}",
                 "@type": "processing step",
                 "label": job_label,
                 "start time": f"{datetime.fromtimestamp(job.starttime)}",
-                "end time": f"{datetime.fromtimestamp(job.endtime)}"
+                "end time": f"{datetime.fromtimestamp(job.endtime)}",
+                "has output": []
             }
+            for file in job.output:
+                if file not in output_files_dict:
+                    output_files_dict[file] = {
+                        "@id": f"local:output_file_{file_counter}",
+                        "@type": "cr:FileObject",
+                        "label": file
+                    }
+                    file_counter += 1
+                item["has output"].append({"@id": output_files_dict[file]["@id"]})
             jobs_dict[job_label] = item
         
         # for target_job, dependent_jobs in self.dag.dependencies.items():
@@ -47,6 +63,9 @@ class Reporter(ReporterBase):
         #                 rules_dict[target_job.rule.name]["precedes"] = rules_dict[dependent_job.rule.name]["@id"]
         
         for _, item in jobs_dict.items():
+            jsonld["@graph"].append(item)
+        
+        for _, item in output_files_dict.items():
             jsonld["@graph"].append(item)
         
         with open("report.jsonld", "w", encoding='utf8') as file:
