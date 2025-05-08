@@ -1,3 +1,20 @@
+============================================================
+
+RUN SIMULATION
+
+============================================================
+conda create -n fenicsx-env -c conda-forge fenics-dolfinx mpich
+conda activate fenicsx-env
+pip install pint
+pip install gmsh
+snakemake --cores 1 --force
+
+============================================================
+
+CREATE REPORTER
+
+============================================================
+
 conda create --name poetry python=3.12
 conda activate poetry
 pip install poetry
@@ -16,8 +33,5 @@ CODE
 
 poetry build
 pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3-none-any.whl
-
 snakemake --reporter metadat4ing --cores 1
-snakemake --cores 1 --force
-snakemake --dag | dot -Tpdf > workflow.pdf
 

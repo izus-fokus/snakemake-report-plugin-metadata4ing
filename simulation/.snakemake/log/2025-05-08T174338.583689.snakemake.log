@@ -1,0 +1,408 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mahdis-MacBook-Air.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                     count
+--------------------  -------
+all                         1
+generate_input_files        9
+run_simulation              9
+summary                     9
+total                      28
+
+Select jobs to execute...
+Execute 1 jobs...
+[Thu May  8 17:43:38 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_003125.json
+    output: data/input_003125.json, data/mesh_003125.msh
+    jobid: 24
+    reason: Missing output files: data/input_003125.json, data/mesh_003125.msh
+    wildcards: name=003125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:43:42 2025]
+Finished jobid: 24 (Rule: generate_input_files)
+1 of 28 steps (4%) done
+Execute 1 jobs...
+[Thu May  8 17:43:42 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_geo2fun2fine.json
+    output: data/input_geo2fun2fine.json, data/mesh_geo2fun2fine.msh
+    jobid: 21
+    reason: Missing output files: data/mesh_geo2fun2fine.msh, data/input_geo2fun2fine.json
+    wildcards: name=geo2fun2fine
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+[Thu May  8 17:43:42 2025]
+Finished jobid: 21 (Rule: generate_input_files)
+2 of 28 steps (7%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Thu May  8 17:43:42 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_geo1fun2.json
+    output: data/input_geo1fun2.json, data/mesh_geo1fun2.msh
+    jobid: 18
+    reason: Missing output files: data/mesh_geo1fun2.msh, data/input_geo1fun2.json
+    wildcards: name=geo1fun2
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:43:42 2025]
+Finished jobid: 18 (Rule: generate_input_files)
+3 of 28 steps (11%) done
+Execute 1 jobs...
+[Thu May  8 17:43:42 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_00625.json
+    output: data/input_00625.json, data/mesh_00625.msh
+    jobid: 15
+    reason: Missing output files: data/input_00625.json, data/mesh_00625.msh
+    wildcards: name=00625
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+[Thu May  8 17:43:43 2025]
+Finished jobid: 15 (Rule: generate_input_files)
+4 of 28 steps (14%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Thu May  8 17:43:43 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_025.json
+    output: data/input_025.json, data/mesh_025.msh
+    jobid: 12
+    reason: Missing output files: data/mesh_025.msh, data/input_025.json
+    wildcards: name=025
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:43:43 2025]
+Finished jobid: 12 (Rule: generate_input_files)
+5 of 28 steps (18%) done
+Execute 1 jobs...
+[Thu May  8 17:43:43 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_05.json
+    output: data/input_05.json, data/mesh_05.msh
+    jobid: 9
+    reason: Missing output files: data/mesh_05.msh, data/input_05.json
+    wildcards: name=05
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:43:43 2025]
+Finished jobid: 9 (Rule: generate_input_files)
+6 of 28 steps (21%) done
+Execute 1 jobs...
+[Thu May  8 17:43:43 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_0125.json
+    output: data/input_0125.json, data/mesh_0125.msh
+    jobid: 6
+    reason: Missing output files: data/input_0125.json, data/mesh_0125.msh
+    wildcards: name=0125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:43:44 2025]
+Finished jobid: 6 (Rule: generate_input_files)
+7 of 28 steps (25%) done
+Execute 1 jobs...
+[Thu May  8 17:43:44 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_geo2fun2.json
+    output: data/input_geo2fun2.json, data/mesh_geo2fun2.msh
+    jobid: 3
+    reason: Missing output files: data/mesh_geo2fun2.msh, data/input_geo2fun2.json
+    wildcards: name=geo2fun2
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+[Thu May  8 17:43:44 2025]
+Finished jobid: 3 (Rule: generate_input_files)
+8 of 28 steps (29%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Thu May  8 17:43:44 2025]
+localrule run_simulation:
+    input: data/input_003125.json, data/mesh_003125.msh
+    output: data/output_003125.vtk
+    jobid: 23
+    reason: Missing output files: data/output_003125.vtk; Input files updated by another job: data/input_003125.json, data/mesh_003125.msh
+    wildcards: name=003125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:43:59 2025]
+Finished jobid: 23 (Rule: run_simulation)
+9 of 28 steps (32%) done
+Execute 1 jobs...
+[Thu May  8 17:43:59 2025]
+localrule summary:
+    input: data/output_003125.vtk, data/input_003125.json, data/mesh_003125.msh, parameters_003125.json
+    output: summary_003125.json
+    jobid: 22
+    reason: Missing output files: summary_003125.json; Input files updated by another job: data/input_003125.json, data/mesh_003125.msh, data/output_003125.vtk
+    wildcards: name=003125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:01 2025]
+Finished jobid: 22 (Rule: summary)
+10 of 28 steps (36%) done
+Execute 1 jobs...
+[Thu May  8 17:44:01 2025]
+localrule run_simulation:
+    input: data/input_geo2fun2fine.json, data/mesh_geo2fun2fine.msh
+    output: data/output_geo2fun2fine.vtk
+    jobid: 20
+    reason: Missing output files: data/output_geo2fun2fine.vtk; Input files updated by another job: data/mesh_geo2fun2fine.msh, data/input_geo2fun2fine.json
+    wildcards: name=geo2fun2fine
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:01 2025]
+Finished jobid: 20 (Rule: run_simulation)
+11 of 28 steps (39%) done
+Execute 1 jobs...
+[Thu May  8 17:44:01 2025]
+localrule summary:
+    input: data/output_geo2fun2fine.vtk, data/input_geo2fun2fine.json, data/mesh_geo2fun2fine.msh, parameters_geo2fun2fine.json
+    output: summary_geo2fun2fine.json
+    jobid: 19
+    reason: Missing output files: summary_geo2fun2fine.json; Input files updated by another job: data/output_geo2fun2fine.vtk, data/input_geo2fun2fine.json, data/mesh_geo2fun2fine.msh
+    wildcards: name=geo2fun2fine
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:02 2025]
+Finished jobid: 19 (Rule: summary)
+12 of 28 steps (43%) done
+Execute 1 jobs...
+[Thu May  8 17:44:02 2025]
+localrule run_simulation:
+    input: data/input_geo1fun2.json, data/mesh_geo1fun2.msh
+    output: data/output_geo1fun2.vtk
+    jobid: 17
+    reason: Missing output files: data/output_geo1fun2.vtk; Input files updated by another job: data/mesh_geo1fun2.msh, data/input_geo1fun2.json
+    wildcards: name=geo1fun2
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:03 2025]
+Finished jobid: 17 (Rule: run_simulation)
+13 of 28 steps (46%) done
+Execute 1 jobs...
+[Thu May  8 17:44:03 2025]
+localrule summary:
+    input: data/output_geo1fun2.vtk, data/input_geo1fun2.json, data/mesh_geo1fun2.msh, parameters_geo1fun2.json
+    output: summary_geo1fun2.json
+    jobid: 16
+    reason: Missing output files: summary_geo1fun2.json; Input files updated by another job: data/output_geo1fun2.vtk, data/mesh_geo1fun2.msh, data/input_geo1fun2.json
+    wildcards: name=geo1fun2
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:04 2025]
+Finished jobid: 16 (Rule: summary)
+14 of 28 steps (50%) done
+Execute 1 jobs...
+[Thu May  8 17:44:04 2025]
+localrule run_simulation:
+    input: data/input_00625.json, data/mesh_00625.msh
+    output: data/output_00625.vtk
+    jobid: 14
+    reason: Missing output files: data/output_00625.vtk; Input files updated by another job: data/input_00625.json, data/mesh_00625.msh
+    wildcards: name=00625
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:05 2025]
+Finished jobid: 14 (Rule: run_simulation)
+15 of 28 steps (54%) done
+Execute 1 jobs...
+[Thu May  8 17:44:05 2025]
+localrule summary:
+    input: data/output_00625.vtk, data/input_00625.json, data/mesh_00625.msh, parameters_00625.json
+    output: summary_00625.json
+    jobid: 13
+    reason: Missing output files: summary_00625.json; Input files updated by another job: data/input_00625.json, data/output_00625.vtk, data/mesh_00625.msh
+    wildcards: name=00625
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:06 2025]
+Finished jobid: 13 (Rule: summary)
+16 of 28 steps (57%) done
+Execute 1 jobs...
+[Thu May  8 17:44:06 2025]
+localrule run_simulation:
+    input: data/input_025.json, data/mesh_025.msh
+    output: data/output_025.vtk
+    jobid: 11
+    reason: Missing output files: data/output_025.vtk; Input files updated by another job: data/mesh_025.msh, data/input_025.json
+    wildcards: name=025
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:07 2025]
+Finished jobid: 11 (Rule: run_simulation)
+17 of 28 steps (61%) done
+Execute 1 jobs...
+[Thu May  8 17:44:07 2025]
+localrule summary:
+    input: data/output_025.vtk, data/input_025.json, data/mesh_025.msh, parameters_025.json
+    output: summary_025.json
+    jobid: 10
+    reason: Missing output files: summary_025.json; Input files updated by another job: data/output_025.vtk, data/mesh_025.msh, data/input_025.json
+    wildcards: name=025
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:08 2025]
+Finished jobid: 10 (Rule: summary)
+18 of 28 steps (64%) done
+Execute 1 jobs...
+[Thu May  8 17:44:08 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_1.json
+    output: data/input_1.json, data/mesh_1.msh
+    jobid: 27
+    reason: Missing output files: data/mesh_1.msh, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:08 2025]
+Finished jobid: 27 (Rule: generate_input_files)
+19 of 28 steps (68%) done
+Execute 1 jobs...
+[Thu May  8 17:44:08 2025]
+localrule run_simulation:
+    input: data/input_1.json, data/mesh_1.msh
+    output: data/output_1.vtk
+    jobid: 26
+    reason: Missing output files: data/output_1.vtk; Input files updated by another job: data/mesh_1.msh, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:08 2025]
+Finished jobid: 26 (Rule: run_simulation)
+20 of 28 steps (71%) done
+Execute 1 jobs...
+[Thu May  8 17:44:08 2025]
+localrule summary:
+    input: data/output_1.vtk, data/input_1.json, data/mesh_1.msh, parameters_1.json
+    output: summary_1.json
+    jobid: 25
+    reason: Missing output files: summary_1.json; Input files updated by another job: data/output_1.vtk, data/mesh_1.msh, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:10 2025]
+Finished jobid: 25 (Rule: summary)
+21 of 28 steps (75%) done
+Execute 1 jobs...
+[Thu May  8 17:44:10 2025]
+localrule run_simulation:
+    input: data/input_05.json, data/mesh_05.msh
+    output: data/output_05.vtk
+    jobid: 8
+    reason: Missing output files: data/output_05.vtk; Input files updated by another job: data/mesh_05.msh, data/input_05.json
+    wildcards: name=05
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:10 2025]
+Finished jobid: 8 (Rule: run_simulation)
+22 of 28 steps (79%) done
+Execute 1 jobs...
+[Thu May  8 17:44:10 2025]
+localrule summary:
+    input: data/output_05.vtk, data/input_05.json, data/mesh_05.msh, parameters_05.json
+    output: summary_05.json
+    jobid: 7
+    reason: Missing output files: summary_05.json; Input files updated by another job: data/mesh_05.msh, data/output_05.vtk, data/input_05.json
+    wildcards: name=05
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:11 2025]
+Finished jobid: 7 (Rule: summary)
+23 of 28 steps (82%) done
+Execute 1 jobs...
+[Thu May  8 17:44:11 2025]
+localrule run_simulation:
+    input: data/input_geo2fun2.json, data/mesh_geo2fun2.msh
+    output: data/output_geo2fun2.vtk
+    jobid: 2
+    reason: Missing output files: data/output_geo2fun2.vtk; Input files updated by another job: data/mesh_geo2fun2.msh, data/input_geo2fun2.json
+    wildcards: name=geo2fun2
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:12 2025]
+Finished jobid: 2 (Rule: run_simulation)
+24 of 28 steps (86%) done
+Execute 1 jobs...
+[Thu May  8 17:44:12 2025]
+localrule run_simulation:
+    input: data/input_0125.json, data/mesh_0125.msh
+    output: data/output_0125.vtk
+    jobid: 5
+    reason: Missing output files: data/output_0125.vtk; Input files updated by another job: data/input_0125.json, data/mesh_0125.msh
+    wildcards: name=0125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:12 2025]
+Finished jobid: 5 (Rule: run_simulation)
+25 of 28 steps (89%) done
+Execute 1 jobs...
+[Thu May  8 17:44:12 2025]
+localrule summary:
+    input: data/output_0125.vtk, data/input_0125.json, data/mesh_0125.msh, parameters_0125.json
+    output: summary_0125.json
+    jobid: 4
+    reason: Missing output files: summary_0125.json; Input files updated by another job: data/input_0125.json, data/output_0125.vtk, data/mesh_0125.msh
+    wildcards: name=0125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+Select jobs to execute...
+[Thu May  8 17:44:13 2025]
+Finished jobid: 4 (Rule: summary)
+26 of 28 steps (93%) done
+Execute 1 jobs...
+[Thu May  8 17:44:13 2025]
+localrule summary:
+    input: data/output_geo2fun2.vtk, data/input_geo2fun2.json, data/mesh_geo2fun2.msh, parameters_geo2fun2.json
+    output: summary_geo2fun2.json
+    jobid: 1
+    reason: Missing output files: summary_geo2fun2.json; Input files updated by another job: data/mesh_geo2fun2.msh, data/output_geo2fun2.vtk, data/input_geo2fun2.json
+    wildcards: name=geo2fun2
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+[Thu May  8 17:44:14 2025]
+Finished jobid: 1 (Rule: summary)
+27 of 28 steps (96%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Thu May  8 17:44:14 2025]
+localrule all:
+    input: summary_geo2fun2.json, summary_0125.json, summary_05.json, summary_025.json, summary_00625.json, summary_geo1fun2.json, summary_geo2fun2fine.json, summary_003125.json, summary_1.json
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+
+[Thu May  8 17:44:14 2025]
+Finished jobid: 0 (Rule: all)
+28 of 28 steps (100%) done
+Complete log(s): /Users/mahdi/Documents/HiWi/snakemake-report-plugin-metadata4ing/simulation/.snakemake/log/2025-05-08T174338.583689.snakemake.log
