@@ -1,0 +1,42 @@
+Building DAG of jobs...
+Creating report...
+Traceback (most recent call last):
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake/cli.py", line 2126, in args_to_api
+    dag_api.create_report(
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake/api.py", line 613, in _handle_no_exec
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake/api.py", line 653, in create_report
+    self.workflow_api._workflow.create_report(
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake/workflow.py", line 1058, in create_report
+    async_run(auto_report(self.dag, report_plugin, report_settings))
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake/common/__init__.py", line 99, in async_run
+    return asyncio.run(coroutine)
+           ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake/report/__init__.py", line 747, in auto_report
+    reporter.render()
+
+  File "/Users/mahdi/Library/Caches/pypoetry/virtualenvs/snakemake-report-plugin-wrroc-ht9i8JJ--py3.12/lib/python3.12/site-packages/snakemake_report_plugin_metadat4ing/__init__.py", line 33, in render
+    print(job.input)
+          ^^^^^^^^^
+
+AttributeError: 'JobRecord' object has no attribute 'input'
+
