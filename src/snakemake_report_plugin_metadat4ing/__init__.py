@@ -14,173 +14,167 @@ class ReportSettings(ReportSettingsBase):
 class Reporter(ReporterBase):
     def __post_init__(self):
         self.context_data = {}
-    
+
     def render(self):
         self.get_context()
-        jobs_dict = {}
-        files_dict = {}
-        file_counter = 0
-        main_processing_steps_dict = {}
-        fields_dict = {}
-        params_dict = {}
-        param_counter = 0
-        
+
         jsonld = {
-            "@context": self.context_data['@context'],
+            "@context": self.context_data.get('@context', {}),
             "@graph": []
         }
         jsonld['@context']['local'] = "https://local-domain.org/"
-           
+
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
-        main_processing_steps = {processing_steps.rule for processing_steps in self.jobs}
-        
-        for i, processing_step in enumerate(main_processing_steps):
-            item = {
+        main_steps = {job.rule for job in self.jobs}
+        job_nodes, step_nodes, file_nodes, field_nodes, param_nodes = {}, {}, {}, {}, {}
+        file_counter, param_counter = 0, 0
+
+        # Build main steps
+        for i, step in enumerate(main_steps):
+            step_nodes[step] = {
                 "@id": f"local:main_processing_step_{i}",
                 "@type": "processing step",
-                "label": processing_step
+                "label": step
             }
-            main_processing_steps_dict[processing_step] = item
-            
-        for i, job in enumerate(sorted_jobs):
+
+        # Process jobs
+        for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            item = {
-                "@id": f"local:processing_step_{job.job.jobid}",
-                "@type": "processing step",
-                "label": job_label,
-                "part of": {"@id": main_processing_steps_dict[job.rule]["@id"]},
-                "start time": f"{datetime.fromtimestamp(job.starttime)}",
-                "end time": f"{datetime.fromtimestamp(job.endtime)}",
-                "has input": [],
-                "has output": [],
-                "has parameter": []
-            }
-            
-            for _job in self.dag.jobs:
-                if _job.jobid == job.job.jobid:
-                    for file in _job.input:
-                        if file not in files_dict:
-                            files_dict[file] = {
-                                "@id": f"local:file_{file_counter}",
-                                "@type": "cr:FileObject",
-                                "label": file
-                            }
-                            file_counter += 1
-                            params = self.extract_params(job.rule, file)
-                            if params != {}:
-                                for param_name, param_data in params.items():
-                                    param_name = param_name.replace("-", "_")
-                                    if param_data['data-type'] != None and param_data['data-type'] == "schema:Text":
-                                        params_dict[f"{param_name}_{param_counter}"] = {
-                                            "@id": f"local:variable_{param_name}_{param_counter}",
-                                            "@type": "text variable",
-                                            "label": param_name,
-                                            "has string value": param_data['value'],
-                                        }
-                                    else:
-                                        params_dict[f"{param_name}_{param_counter}"] = {
-                                            "@id": f"local:variable_{param_name}_{param_counter}",
-                                            "@type": "numerical variable",
-                                            "label": param_name,
-                                            "has numerical value": param_data['value']
-                                        }
-                                    if param_data['unit'] is not None:
-                                        params_dict[f"{param_name}_{param_counter}"]["has unit"] = {"@id": param_data['unit']}
-                                    fields_dict[f"{param_name}_{param_counter}"] = {
-                                        "@id": f"local:field_{param_name}_{param_counter}",
-                                        "@type": "cr:Field",
-                                        "represents": {"@id": f"local:variable_{param_name}_{param_counter}"},
-                                        "source": {
-                                            "fileObject": {"@id": f"local:file_{file_counter}"},
-                                            "extract": {
-                                                "jsonPath": param_data['json-path']
-                                            }
-                                        }
-                                    }
-                                    if param_data['data-type'] is not None:
-                                       fields_dict[f"{param_name}_{param_counter}"]["dataType"] = param_data['data-type']
-                                    item["has parameter"].append({"@id": params_dict[f"{param_name}_{param_counter}"]["@id"]})
-                                    param_counter += 1
-                    item["has input"].append({"@id": files_dict[file]["@id"]})
-            
-            for file in job.output:
-                if file not in files_dict:
-                    files_dict[file] = {
-                        "@id": f"local:file_{file_counter}",
-                        "@type": "cr:FileObject",
-                        "label": file
-                    }
-                    file_counter += 1
-                item["has output"].append({"@id": files_dict[file]["@id"]})
-            jobs_dict[job_label] = item
-        
-        for node in (main_processing_steps_dict, jobs_dict, files_dict, params_dict, fields_dict):
-            jsonld["@graph"].extend(node.values())
-        
-        with open("report.jsonld", "w", encoding='utf8') as file:
-            json.dump(jsonld, file, indent=4, ensure_ascii=False)
-        
+            step_node = self._create_job_node(job, step_nodes, file_nodes, field_nodes, param_nodes, file_counter, param_counter)
+            job_nodes[job_label] = step_node
+            file_counter = len(file_nodes)
+            param_counter = len(param_nodes)
+
+        # Combine all RDF graph nodes
+        for d in (step_nodes, job_nodes, file_nodes, param_nodes, field_nodes):
+            jsonld["@graph"].extend(d.values())
+
+        with open("report.jsonld", "w", encoding='utf8') as f:
+            json.dump(jsonld, f, indent=4, ensure_ascii=False)
+
         self.create_ttl_from_jsonld(jsonld)
-             
+
+    def _create_job_node(self, job, main_steps_dict, files_dict, fields_dict, params_dict, file_counter, param_counter):
+        node = {
+            "@id": f"local:processing_step_{job.job.jobid}",
+            "@type": "processing step",
+            "label": f"{job.rule}_{job.job.jobid}",
+            "part of": {"@id": main_steps_dict[job.rule]["@id"]},
+            "start time": f"{datetime.fromtimestamp(job.starttime)}",
+            "end time": f"{datetime.fromtimestamp(job.endtime)}",
+            "has input": [],
+            "has output": [],
+            "has parameter": []
+        }
+        
+        input_files = [f for j in self.dag.jobs if j.jobid == job.job.jobid for f in j.input]
+        
+        for file in input_files:
+            file_node, file_counter = self._add_file(file, files_dict, file_counter)
+            node["has input"].append({"@id": file_node["@id"]})
+            param_nodes, field_nodes, param_counter = self._extract_parameters(job.rule, file, file_node, param_counter)
+            params_dict.update(param_nodes)
+            fields_dict.update(field_nodes)
+            node["has parameter"].extend({"@id": p["@id"]} for p in param_nodes.values())
+
+        for file in job.output:
+            file_node, file_counter = self._add_file(file, files_dict, file_counter)
+            node["has output"].append({"@id": file_node["@id"]})
+
+        return node
+
+    def _add_file(self, file_path, file_dict, counter):
+        if file_path not in file_dict:
+            file_dict[file_path] = {
+                "@id": f"local:file_{counter}",
+                "@type": "cr:FileObject",
+                "label": file_path
+            }
+            counter += 1
+        return file_dict[file_path], counter
+
+    def _extract_parameters(self, rule, file, file_node, counter):
+        param_dict, field_dict = {}, {}
+        for name, data in self.extract_params(rule, file).items():
+            name = name.replace("-", "_")
+            var_id = f"local:variable_{name}_{counter}"
+            param = {
+                "@id": var_id,
+                "@type": "text variable" if data['data-type'] == "schema:Text" else "numerical variable",
+                "label": name,
+            }
+            if data['data-type'] == "schema:Text":
+                param["has string value"] = data['value']
+            else:
+                param["has numerical value"] = data['value']
+                if data['unit']:
+                    param["has unit"] = {"@id": data['unit']}
+            param_dict[f"{name}_{counter}"] = param
+
+            field_dict[f"{name}_{counter}"] = {
+                "@id": f"local:field_{name}_{counter}",
+                "@type": "cr:Field",
+                "represents": {"@id": var_id},
+                "source": {
+                    "fileObject": {"@id": file_node["@id"]},
+                    "extract": {"jsonPath": data['json-path']}
+                },
+                **({"dataType": data['data-type']} if data['data-type'] else {})
+            }
+            counter += 1
+        return param_dict, field_dict, counter
+
     def get_context(self):
-        context_url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
-        response = requests.get(context_url)
-        if response.status_code == 200:
-            self.context_data = json.loads(response.text)
+        url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
+        response = requests.get(url)
+        if response.ok:
+            self.context_data = response.json()
         else:
             print(f"Failed to fetch context data. Status code: {response.status_code}")
-    
-    def extract_params(self, rule_name:str, file_path:str):
-        result = {}
-        json_data = {}
+
+    def extract_params(self, rule_name: str, file_path: str):
+        results = {}
         file_name = os.path.basename(file_path)
         if file_name.startswith("parameters_") and rule_name == "generate_input_files":
             with open(file_path) as f:
-                json_data = json.load(f)
-            for key, item in json_data.items():
-                if isinstance(item, dict):
-                    result[key] = {
-                        'value': item['value'],
+                data = json.load(f)
+            for key, val in data.items():
+                if isinstance(val, dict):
+                    results[key] = {
+                        'value': val['value'],
                         'unit': self.get_unit(key),
                         'json-path': f"/{key}/value",
-                        'data-type':self.get_type(item['value'])
+                        'data-type': self.get_type(val['value'])
                     }
                 else:
-                    result[key] = {
-                        'value': item,
+                    results[key] = {
+                        'value': val,
                         'unit': None,
                         'json-path': f"/{key}",
-                        'data-type':self.get_type(item)
+                        'data-type': self.get_type(val)
                     }
-        return result
-            
-    def add_dependencies(self):
-        # for target_job, dependent_jobs in self.dag.dependencies.items():
-        #     for dependent_job in dependent_jobs:
-        #         if dependent_job is not None:
-        #             if dependent_job.rule.name in rules_dict and target_job.rule.name in rules_dict:
-        #                 rules_dict[target_job.rule.name]["precedes"] = rules_dict[dependent_job.rule.name]["@id"]
-        pass 
-          
-    def create_ttl_from_jsonld(self, jsonld_data: dict):
-        graph = Graph()
-        graph.parse(data=jsonld_data, format="json-ld")
-        graph.serialize("report.ttl", format="ttl")
-    
-    def get_unit(self, param_name: str):
-        if param_name == "young-modulus":
-            return "units:PA"
-        elif param_name == "load":
-            return "unit:MegaPA"
-        elif param_name == "length" or param_name == "radius" or param_name == "element-size":
-            return "unit:m"
-        return None
-    
-    def get_type(self, param_value: any):
-        if isinstance(param_value,float):
+        return results
+
+    def get_unit(self, name: str):
+        return {
+            "young-modulus": "units:PA",
+            "load": "unit:MegaPA",
+            "length": "unit:m",
+            "radius": "unit:m",
+            "element-size": "unit:m"
+        }.get(name)
+
+    def get_type(self, val):
+        if isinstance(val, float):
             return "schema:Float"
-        elif isinstance(param_value,float):
+        elif isinstance(val, int):
             return "schema:Integer"
-        elif isinstance(param_value,str):
+        elif isinstance(val, str):
             return "schema:Text"
         return None
+
+    def create_ttl_from_jsonld(self, data: dict):
+        Graph().parse(data=data, format="json-ld").serialize("report.ttl", format="ttl")
+
+    def add_dependencies(self):
+        pass
