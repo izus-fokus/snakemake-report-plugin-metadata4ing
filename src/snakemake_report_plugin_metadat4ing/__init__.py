@@ -17,7 +17,10 @@ class Reporter(ReporterBase):
 
     def render(self):
         self.get_context()
-
+        self.param_counter = 0
+        self.field_counter = 0
+        self.param_dict = {}
+        
         jsonld = {
             "@context": self.context_data.get('@context', {}),
             "@graph": []
@@ -26,10 +29,9 @@ class Reporter(ReporterBase):
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         main_steps = {job.rule for job in self.jobs}
-        job_nodes, step_nodes, file_nodes, field_nodes, param_nodes = {}, {}, {}, {}, {}
-        file_counter, param_counter = 0, 0
+        job_nodes, step_nodes, file_nodes, field_nodes = {}, {}, {}, {}
+        file_counter = 0
 
-        # Build main steps
         for i, step in enumerate(main_steps):
             step_nodes[step] = {
                 "@id": f"local:main_processing_step_{i}",
@@ -37,24 +39,24 @@ class Reporter(ReporterBase):
                 "label": step
             }
 
-        # Process jobs
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node = self._create_job_node(job, step_nodes, file_nodes, field_nodes, param_nodes, file_counter, param_counter)
+            step_node = self._create_job_node(job, step_nodes, file_nodes, field_nodes, file_counter)
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
-            param_counter = len(param_nodes)
 
-        # Combine all RDF graph nodes
-        for d in (step_nodes, job_nodes, file_nodes, param_nodes, field_nodes):
+        for key, value in self.param_dict.items():
+            value["@id"] = key
+        
+        for d in (step_nodes, job_nodes, file_nodes, self.param_dict, field_nodes):
             jsonld["@graph"].extend(d.values())
-
+        
         with open("report.jsonld", "w", encoding='utf8') as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
 
         self.create_ttl_from_jsonld(jsonld)
 
-    def _create_job_node(self, job, main_steps_dict, files_dict, fields_dict, params_dict, file_counter, param_counter):
+    def _create_job_node(self, job, main_steps_dict, files_dict, fields_dict, file_counter):
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -72,10 +74,10 @@ class Reporter(ReporterBase):
         for file in input_files:
             file_node, file_counter = self._add_file(file, files_dict, file_counter)
             node["has input"].append({"@id": file_node["@id"]})
-            param_nodes, field_nodes, param_counter = self._extract_parameters(job.rule, file, file_node, param_counter)
-            params_dict.update(param_nodes)
+            param_id_list, field_nodes = self._extract_parameters(job.rule, file, file_node)
             fields_dict.update(field_nodes)
-            node["has parameter"].extend({"@id": p["@id"]} for p in param_nodes.values())
+            for param in param_id_list:
+                node["has parameter"].append({"@id": param})
 
         for file in job.output:
             file_node, file_counter = self._add_file(file, files_dict, file_counter)
@@ -93,13 +95,13 @@ class Reporter(ReporterBase):
             counter += 1
         return file_dict[file_path], counter
 
-    def _extract_parameters(self, rule, file, file_node, counter):
-        param_dict, field_dict = {}, {}
+    def _extract_parameters(self, rule, file, file_node):
+        param_id_list = []
+        field_dict = {}
         for name, data in self.extract_params(rule, file).items():
             name = name.replace("-", "_")
-            var_id = f"local:variable_{name}_{counter}"
+            param_id = ""
             param = {
-                "@id": var_id,
                 "@type": "text variable" if data['data-type'] == "schema:Text" else "numerical variable",
                 "label": name,
             }
@@ -109,20 +111,27 @@ class Reporter(ReporterBase):
                 param["has numerical value"] = data['value']
                 if data['unit']:
                     param["has unit"] = {"@id": data['unit']}
-            param_dict[f"{name}_{counter}"] = param
+            
+            if param in self.param_dict.values():
+                param_id = next((k for k, v in self.param_dict.items() if v == param), None)
+                param_id_list.append(param_id)
+            else:
+                param_id = f"local:variable_{name}_{self.param_counter}"
+                self.param_dict[param_id] = param
+                self.param_counter += 1
 
-            field_dict[f"{name}_{counter}"] = {
-                "@id": f"local:field_{name}_{counter}",
+            field_dict[f"{name}_{self.field_counter}"] = {
+                "@id": f"local:field_{name}_{self.field_counter}",
                 "@type": "cr:Field",
-                "represents": {"@id": var_id},
+                "represents": {"@id": param_id},
                 "source": {
                     "fileObject": {"@id": file_node["@id"]},
                     "extract": {"jsonPath": data['json-path']}
                 },
                 **({"dataType": data['data-type']} if data['data-type'] else {})
             }
-            counter += 1
-        return param_dict, field_dict, counter
+            self.field_counter += 1
+        return param_id_list, field_dict
 
     def get_context(self):
         url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"

@@ -10,25 +10,25 @@
 local:field_element_degree_15 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_element_degree_15 ;
+    sio:SIO_000210 local:variable_element_degree_12 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_25 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_element_degree_25 ;
+    sio:SIO_000210 local:variable_element_degree_12 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_35 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_element_degree_35 ;
+    sio:SIO_000210 local:variable_element_degree_5 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_45 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_element_degree_45 ;
+    sio:SIO_000210 local:variable_element_degree_5 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_5 a cr:Field ;
@@ -40,43 +40,43 @@ local:field_element_degree_5 a cr:Field ;
 local:field_element_degree_55 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_element_degree_55 ;
+    sio:SIO_000210 local:variable_element_degree_5 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_65 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_element_degree_65 ;
+    sio:SIO_000210 local:variable_element_degree_5 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_75 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_element_degree_75 ;
+    sio:SIO_000210 local:variable_element_degree_12 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_degree_85 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_element_degree_85 ;
+    sio:SIO_000210 local:variable_element_degree_5 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_14 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_element_order_14 ;
+    sio:SIO_000210 local:variable_element_order_11 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_24 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_element_order_24 ;
+    sio:SIO_000210 local:variable_element_order_4 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_34 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_element_order_34 ;
+    sio:SIO_000210 local:variable_element_order_4 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_4 a cr:Field ;
@@ -88,43 +88,43 @@ local:field_element_order_4 a cr:Field ;
 local:field_element_order_44 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_element_order_44 ;
+    sio:SIO_000210 local:variable_element_order_4 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_54 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_element_order_54 ;
+    sio:SIO_000210 local:variable_element_order_4 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_64 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_element_order_64 ;
+    sio:SIO_000210 local:variable_element_order_4 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_74 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_element_order_74 ;
+    sio:SIO_000210 local:variable_element_order_11 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_order_84 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_element_order_84 ;
+    sio:SIO_000210 local:variable_element_order_4 ;
     m4i:dataType "schema:Integer" .
 
 local:field_element_size_13 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_element_size_13 ;
+    sio:SIO_000210 local:variable_element_size_10 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_23 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_element_size_23 ;
+    sio:SIO_000210 local:variable_element_size_10 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_3 a cr:Field ;
@@ -136,37 +136,37 @@ local:field_element_size_3 a cr:Field ;
 local:field_element_size_33 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_element_size_33 ;
+    sio:SIO_000210 local:variable_element_size_14 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_43 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_element_size_43 ;
+    sio:SIO_000210 local:variable_element_size_15 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_53 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_element_size_53 ;
+    sio:SIO_000210 local:variable_element_size_16 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_63 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_element_size_63 ;
+    sio:SIO_000210 local:variable_element_size_17 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_73 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_element_size_73 ;
+    sio:SIO_000210 local:variable_element_size_18 ;
     m4i:dataType "schema:Float" .
 
 local:field_element_size_83 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_element_size_83 ;
+    sio:SIO_000210 local:variable_element_size_10 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_1 a cr:Field ;
@@ -178,55 +178,55 @@ local:field_length_1 a cr:Field ;
 local:field_length_11 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_length_11 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_21 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_length_21 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_31 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_length_31 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_41 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_length_41 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_51 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_length_51 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_61 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_length_61 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_71 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_length_71 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_length_81 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_length_81 ;
+    sio:SIO_000210 local:variable_length_1 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_12 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_load_12 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_2 a cr:Field ;
@@ -238,91 +238,91 @@ local:field_load_2 a cr:Field ;
 local:field_load_22 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_load_22 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_32 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_load_32 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_42 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_load_42 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_52 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_load_52 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_62 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_load_62 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_72 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_load_72 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_load_82 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_load_82 ;
+    sio:SIO_000210 local:variable_load_2 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_19 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_19 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_29 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_29 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_39 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_39 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_49 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_49 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_59 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_59 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_69 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_69 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_79 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_79 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_89 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_89 ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 ;
     m4i:dataType "schema:Float" .
 
 local:field_poisson_ratio_9 a cr:Field ;
@@ -334,37 +334,37 @@ local:field_poisson_ratio_9 a cr:Field ;
 local:field_quadrature_degree_17 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_17 ;
+    sio:SIO_000210 local:variable_quadrature_degree_13 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_27 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_27 ;
+    sio:SIO_000210 local:variable_quadrature_degree_13 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_37 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_37 ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_47 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_47 ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_57 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_57 ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_67 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_67 ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_7 a cr:Field ;
@@ -376,43 +376,43 @@ local:field_quadrature_degree_7 a cr:Field ;
 local:field_quadrature_degree_77 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_77 ;
+    sio:SIO_000210 local:variable_quadrature_degree_13 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_degree_87 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_87 ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 ;
     m4i:dataType "schema:Integer" .
 
 local:field_quadrature_rule_16 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_16 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_26 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_26 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_36 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_36 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_46 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_46 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_56 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_56 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_6 a cr:Field ;
@@ -424,19 +424,19 @@ local:field_quadrature_rule_6 a cr:Field ;
 local:field_quadrature_rule_66 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_66 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_76 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_76 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_quadrature_rule_86 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_86 ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 ;
     m4i:dataType "schema:Text" .
 
 local:field_radius_0 a cr:Field ;
@@ -448,91 +448,91 @@ local:field_radius_0 a cr:Field ;
 local:field_radius_10 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_radius_10 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_20 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_radius_20 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_30 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_radius_30 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_40 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_radius_40 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_50 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_radius_50 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_60 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_radius_60 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_70 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_radius_70 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_radius_80 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_radius_80 ;
+    sio:SIO_000210 local:variable_radius_0 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_18 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_young_modulus_18 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_28 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_young_modulus_28 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_38 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_young_modulus_38 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_48 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_young_modulus_48 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_58 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_young_modulus_58 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_68 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_young_modulus_68 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_78 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_young_modulus_78 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:field_young_modulus_8 a cr:Field ;
@@ -544,7 +544,7 @@ local:field_young_modulus_8 a cr:Field ;
 local:field_young_modulus_88 a cr:Field ;
     cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
             m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_young_modulus_88 ;
+    sio:SIO_000210 local:variable_young_modulus_8 ;
     m4i:dataType "schema:Float" .
 
 local:processing_step_1 a m4i:ProcessingStep ;
@@ -585,16 +585,15 @@ local:processing_step_12 a m4i:ProcessingStep ;
         local:file_13 ;
     obo:RO_0002234 local:file_14,
         local:file_15 ;
-    m4i:hasParameter local:variable_element_degree_45,
-        local:variable_element_order_44,
-        local:variable_element_size_43,
-        local:variable_length_41,
-        local:variable_load_42,
-        local:variable_poisson_ratio_49,
-        local:variable_quadrature_degree_47,
-        local:variable_quadrature_rule_46,
-        local:variable_radius_40,
-        local:variable_young_modulus_48 ;
+    m4i:hasParameter local:variable_element_degree_5,
+        local:variable_element_order_4,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_7,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:43.584401"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:43.383551"^^schema:DateTime .
 
@@ -625,16 +624,15 @@ local:processing_step_15 a m4i:ProcessingStep ;
         local:file_10 ;
     obo:RO_0002234 local:file_11,
         local:file_12 ;
-    m4i:hasParameter local:variable_element_degree_35,
-        local:variable_element_order_34,
-        local:variable_element_size_33,
-        local:variable_length_31,
-        local:variable_load_32,
-        local:variable_poisson_ratio_39,
-        local:variable_quadrature_degree_37,
-        local:variable_quadrature_rule_36,
-        local:variable_radius_30,
-        local:variable_young_modulus_38 ;
+    m4i:hasParameter local:variable_element_degree_5,
+        local:variable_element_order_4,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_7,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:43.372435"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:42.814972"^^schema:DateTime .
 
@@ -665,16 +663,16 @@ local:processing_step_18 a m4i:ProcessingStep ;
         local:file_7 ;
     obo:RO_0002234 local:file_8,
         local:file_9 ;
-    m4i:hasParameter local:variable_element_degree_25,
-        local:variable_element_order_24,
-        local:variable_element_size_23,
-        local:variable_length_21,
-        local:variable_load_22,
-        local:variable_poisson_ratio_29,
-        local:variable_quadrature_degree_27,
-        local:variable_quadrature_rule_26,
-        local:variable_radius_20,
-        local:variable_young_modulus_28 ;
+    m4i:hasParameter local:variable_element_degree_12,
+        local:variable_element_order_4,
+        local:variable_element_size_10,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_13,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:42.804100"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:42.624086"^^schema:DateTime .
 
@@ -714,16 +712,12 @@ local:processing_step_21 a m4i:ProcessingStep ;
         local:file_4 ;
     obo:RO_0002234 local:file_5,
         local:file_6 ;
-    m4i:hasParameter local:variable_element_degree_15,
-        local:variable_element_order_14,
-        local:variable_element_size_13,
-        local:variable_length_11,
-        local:variable_load_12,
-        local:variable_poisson_ratio_19,
-        local:variable_quadrature_degree_17,
-        local:variable_quadrature_rule_16,
-        local:variable_radius_10,
-        local:variable_young_modulus_18 ;
+    m4i:hasParameter local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:42.613523"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:42.432643"^^schema:DateTime .
 
@@ -754,16 +748,6 @@ local:processing_step_24 a m4i:ProcessingStep ;
         local:file_1 ;
     obo:RO_0002234 local:file_2,
         local:file_3 ;
-    m4i:hasParameter local:variable_element_degree_5,
-        local:variable_element_order_4,
-        local:variable_element_size_3,
-        local:variable_length_1,
-        local:variable_load_2,
-        local:variable_poisson_ratio_9,
-        local:variable_quadrature_degree_7,
-        local:variable_quadrature_rule_6,
-        local:variable_radius_0,
-        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:42.420089"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:38.691962"^^schema:DateTime .
 
@@ -794,16 +778,16 @@ local:processing_step_27 a m4i:ProcessingStep ;
         local:file_35 ;
     obo:RO_0002234 local:file_36,
         local:file_37 ;
-    m4i:hasParameter local:variable_element_degree_85,
-        local:variable_element_order_84,
-        local:variable_element_size_83,
-        local:variable_length_81,
-        local:variable_load_82,
-        local:variable_poisson_ratio_89,
-        local:variable_quadrature_degree_87,
-        local:variable_quadrature_rule_86,
-        local:variable_radius_80,
-        local:variable_young_modulus_88 ;
+    m4i:hasParameter local:variable_element_degree_5,
+        local:variable_element_order_4,
+        local:variable_element_size_10,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_7,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:44:08.535009"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:08.346576"^^schema:DateTime .
 
@@ -814,16 +798,15 @@ local:processing_step_3 a m4i:ProcessingStep ;
         local:file_22 ;
     obo:RO_0002234 local:file_23,
         local:file_24 ;
-    m4i:hasParameter local:variable_element_degree_75,
-        local:variable_element_order_74,
-        local:variable_element_size_73,
-        local:variable_length_71,
-        local:variable_load_72,
-        local:variable_poisson_ratio_79,
-        local:variable_quadrature_degree_77,
-        local:variable_quadrature_rule_76,
-        local:variable_radius_70,
-        local:variable_young_modulus_78 ;
+    m4i:hasParameter local:variable_element_degree_12,
+        local:variable_element_order_11,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_13,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:44.254022"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:44.074716"^^schema:DateTime .
 
@@ -854,16 +837,15 @@ local:processing_step_6 a m4i:ProcessingStep ;
         local:file_19 ;
     obo:RO_0002234 local:file_20,
         local:file_21 ;
-    m4i:hasParameter local:variable_element_degree_65,
-        local:variable_element_order_64,
-        local:variable_element_size_63,
-        local:variable_length_61,
-        local:variable_load_62,
-        local:variable_poisson_ratio_69,
-        local:variable_quadrature_degree_67,
-        local:variable_quadrature_rule_66,
-        local:variable_radius_60,
-        local:variable_young_modulus_68 ;
+    m4i:hasParameter local:variable_element_degree_5,
+        local:variable_element_order_4,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_7,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:44.063168"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:43.791865"^^schema:DateTime .
 
@@ -894,16 +876,15 @@ local:processing_step_9 a m4i:ProcessingStep ;
         local:file_16 ;
     obo:RO_0002234 local:file_17,
         local:file_18 ;
-    m4i:hasParameter local:variable_element_degree_55,
-        local:variable_element_order_54,
-        local:variable_element_size_53,
-        local:variable_length_51,
-        local:variable_load_52,
-        local:variable_poisson_ratio_59,
-        local:variable_quadrature_degree_57,
-        local:variable_quadrature_rule_56,
-        local:variable_radius_50,
-        local:variable_young_modulus_58 ;
+    m4i:hasParameter local:variable_element_degree_5,
+        local:variable_element_order_4,
+        local:variable_length_1,
+        local:variable_load_2,
+        local:variable_poisson_ratio_9,
+        local:variable_quadrature_degree_7,
+        local:variable_quadrature_rule_6,
+        local:variable_radius_0,
+        local:variable_young_modulus_8 ;
     schema:endTime "2025-05-08 17:43:43.781201"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:43.595218"^^schema:DateTime .
 
@@ -934,6 +915,36 @@ local:file_44 a cr:FileObject ;
 local:file_45 a cr:FileObject ;
     rdfs:label "summary_geo2fun2.json" .
 
+local:variable_element_size_14 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 6.25e-03 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_element_size_15 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 2.5e-02 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_element_size_16 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 5e-02 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_element_size_17 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 1.25e-02 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_element_size_18 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 5e-01 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_element_size_3 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 3.125e-03 ;
+    m4i:hasUnit <unit:m> .
+
 local:file_25 a cr:FileObject ;
     rdfs:label "data/output_003125.vtk" .
 
@@ -960,411 +971,6 @@ local:file_42 a cr:FileObject ;
 
 local:file_43 a cr:FileObject ;
     rdfs:label "data/output_0125.vtk" .
-
-local:variable_element_degree_15 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_element_degree_25 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_element_degree_35 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_degree_45 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_degree_5 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_degree_55 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_degree_65 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_degree_75 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_element_degree_85 a m4i:NumericalVariable ;
-    rdfs:label "element_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_14 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_element_order_24 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_34 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_4 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_44 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_54 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_64 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_order_74 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_element_order_84 a m4i:NumericalVariable ;
-    rdfs:label "element_order" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_element_size_13 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 1e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_23 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 1e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_3 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 3.125e-03 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_33 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 6.25e-03 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_43 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 2.5e-02 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_53 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 5e-02 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_63 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 1.25e-02 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_73 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 5e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_element_size_83 a m4i:NumericalVariable ;
-    rdfs:label "element_size" ;
-    m4i:hasNumericalValue 1e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_1 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_11 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_21 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_31 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_41 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_51 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_61 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_71 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_length_81 a m4i:NumericalVariable ;
-    rdfs:label "length" ;
-    m4i:hasNumericalValue 1e+00 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_load_12 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_2 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_22 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_32 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_42 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_52 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_62 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_72 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_load_82 a m4i:NumericalVariable ;
-    rdfs:label "load" ;
-    m4i:hasNumericalValue 1e+02 ;
-    m4i:hasUnit <unit:MegaPA> .
-
-local:variable_poisson_ratio_19 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_29 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_39 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_49 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_59 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_69 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_79 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_89 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_poisson_ratio_9 a m4i:NumericalVariable ;
-    rdfs:label "poisson_ratio" ;
-    m4i:hasNumericalValue 3e-01 .
-
-local:variable_quadrature_degree_17 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_quadrature_degree_27 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_quadrature_degree_37 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_quadrature_degree_47 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_quadrature_degree_57 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_quadrature_degree_67 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_quadrature_degree_7 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_quadrature_degree_77 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 2 .
-
-local:variable_quadrature_degree_87 a m4i:NumericalVariable ;
-    rdfs:label "quadrature_degree" ;
-    m4i:hasNumericalValue 1 .
-
-local:variable_quadrature_rule_16 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_26 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_36 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_46 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_56 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_6 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_66 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_76 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_quadrature_rule_86 a m4i:TextVariable ;
-    rdfs:label "quadrature_rule" ;
-    m4i:hasStringValue "gauss"^^xsd:string .
-
-local:variable_radius_0 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_10 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_20 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_30 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_40 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_50 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_60 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_70 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_radius_80 a m4i:NumericalVariable ;
-    rdfs:label "radius" ;
-    m4i:hasNumericalValue 3.3e-01 ;
-    m4i:hasUnit <unit:m> .
-
-local:variable_young_modulus_18 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_28 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_38 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_48 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_58 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_68 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_78 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_8 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
-
-local:variable_young_modulus_88 a m4i:NumericalVariable ;
-    rdfs:label "young_modulus" ;
-    m4i:hasNumericalValue 2.1e+11 ;
-    m4i:hasUnit <units:PA> .
 
 local:file_11 a cr:FileObject ;
     rdfs:label "data/input_00625.json" .
@@ -1420,6 +1026,23 @@ local:file_8 a cr:FileObject ;
 local:file_9 a cr:FileObject ;
     rdfs:label "data/mesh_geo1fun2.msh" .
 
+local:variable_element_order_11 a m4i:NumericalVariable ;
+    rdfs:label "element_order" ;
+    m4i:hasNumericalValue 2 .
+
+local:variable_element_degree_12 a m4i:NumericalVariable ;
+    rdfs:label "element_degree" ;
+    m4i:hasNumericalValue 2 .
+
+local:variable_element_size_10 a m4i:NumericalVariable ;
+    rdfs:label "element_size" ;
+    m4i:hasNumericalValue 1e-01 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_quadrature_degree_13 a m4i:NumericalVariable ;
+    rdfs:label "quadrature_degree" ;
+    m4i:hasNumericalValue 2 .
+
 local:file_0 a cr:FileObject ;
     rdfs:label "experiment.json" .
 
@@ -1431,6 +1054,14 @@ local:main_processing_step_1 a m4i:ProcessingStep ;
 
 local:main_processing_step_2 a m4i:ProcessingStep ;
     rdfs:label "summary" .
+
+local:variable_element_degree_5 a m4i:NumericalVariable ;
+    rdfs:label "element_degree" ;
+    m4i:hasNumericalValue 1 .
+
+local:variable_quadrature_degree_7 a m4i:NumericalVariable ;
+    rdfs:label "quadrature_degree" ;
+    m4i:hasNumericalValue 1 .
 
 local:file_1 a cr:FileObject ;
     rdfs:label "parameters_003125.json" .
@@ -1458,4 +1089,36 @@ local:file_4 a cr:FileObject ;
 
 local:file_7 a cr:FileObject ;
     rdfs:label "parameters_geo1fun2.json" .
+
+local:variable_element_order_4 a m4i:NumericalVariable ;
+    rdfs:label "element_order" ;
+    m4i:hasNumericalValue 1 .
+
+local:variable_length_1 a m4i:NumericalVariable ;
+    rdfs:label "length" ;
+    m4i:hasNumericalValue 1e+00 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_load_2 a m4i:NumericalVariable ;
+    rdfs:label "load" ;
+    m4i:hasNumericalValue 1e+02 ;
+    m4i:hasUnit <unit:MegaPA> .
+
+local:variable_poisson_ratio_9 a m4i:NumericalVariable ;
+    rdfs:label "poisson_ratio" ;
+    m4i:hasNumericalValue 3e-01 .
+
+local:variable_quadrature_rule_6 a m4i:TextVariable ;
+    rdfs:label "quadrature_rule" ;
+    m4i:hasStringValue "gauss"^^xsd:string .
+
+local:variable_radius_0 a m4i:NumericalVariable ;
+    rdfs:label "radius" ;
+    m4i:hasNumericalValue 3.3e-01 ;
+    m4i:hasUnit <unit:m> .
+
+local:variable_young_modulus_8 a m4i:NumericalVariable ;
+    rdfs:label "young_modulus" ;
+    m4i:hasNumericalValue 2.1e+11 ;
+    m4i:hasUnit <units:PA> .
 
