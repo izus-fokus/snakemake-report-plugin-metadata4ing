@@ -1144,24 +1144,24 @@
         {
             "@id": "local:main_processing_step_0",
             "@type": "processing step",
-            "label": "run_simulation"
+            "label": "generate_input_files"
         },
         {
             "@id": "local:main_processing_step_1",
             "@type": "processing step",
-            "label": "summary"
+            "label": "run_simulation"
         },
         {
             "@id": "local:main_processing_step_2",
             "@type": "processing step",
-            "label": "generate_input_files"
+            "label": "summary"
         },
         {
             "@id": "local:processing_step_24",
             "@type": "processing step",
             "label": "generate_input_files_24",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:38.691962",
             "end time": "2025-05-08 17:43:42.420089",
@@ -1177,6 +1177,38 @@
                 {
                     "@id": "local:file_3"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_size_3"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_5"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_7"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
             ]
         },
         {
@@ -1184,7 +1216,7 @@
             "@type": "processing step",
             "label": "generate_input_files_21",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:42.432643",
             "end time": "2025-05-08 17:43:42.613523",
@@ -1200,6 +1232,38 @@
                 {
                     "@id": "local:file_6"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_10"
+                },
+                {
+                    "@id": "local:variable_length_11"
+                },
+                {
+                    "@id": "local:variable_load_12"
+                },
+                {
+                    "@id": "local:variable_element_size_13"
+                },
+                {
+                    "@id": "local:variable_element_order_14"
+                },
+                {
+                    "@id": "local:variable_element_degree_15"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_16"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_17"
+                },
+                {
+                    "@id": "local:variable_young_modulus_18"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_19"
+                }
             ]
         },
         {
@@ -1207,7 +1271,7 @@
             "@type": "processing step",
             "label": "generate_input_files_18",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:42.624086",
             "end time": "2025-05-08 17:43:42.804100",
@@ -1223,6 +1287,38 @@
                 {
                     "@id": "local:file_9"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_20"
+                },
+                {
+                    "@id": "local:variable_length_21"
+                },
+                {
+                    "@id": "local:variable_load_22"
+                },
+                {
+                    "@id": "local:variable_element_size_23"
+                },
+                {
+                    "@id": "local:variable_element_order_24"
+                },
+                {
+                    "@id": "local:variable_element_degree_25"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_26"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_27"
+                },
+                {
+                    "@id": "local:variable_young_modulus_28"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_29"
+                }
             ]
         },
         {
@@ -1230,7 +1326,7 @@
             "@type": "processing step",
             "label": "generate_input_files_15",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:42.814972",
             "end time": "2025-05-08 17:43:43.372435",
@@ -1246,6 +1342,38 @@
                 {
                     "@id": "local:file_12"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_30"
+                },
+                {
+                    "@id": "local:variable_length_31"
+                },
+                {
+                    "@id": "local:variable_load_32"
+                },
+                {
+                    "@id": "local:variable_element_size_33"
+                },
+                {
+                    "@id": "local:variable_element_order_34"
+                },
+                {
+                    "@id": "local:variable_element_degree_35"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_36"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_37"
+                },
+                {
+                    "@id": "local:variable_young_modulus_38"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_39"
+                }
             ]
         },
         {
@@ -1253,7 +1381,7 @@
             "@type": "processing step",
             "label": "generate_input_files_12",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:43.383551",
             "end time": "2025-05-08 17:43:43.584401",
@@ -1269,6 +1397,38 @@
                 {
                     "@id": "local:file_15"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_40"
+                },
+                {
+                    "@id": "local:variable_length_41"
+                },
+                {
+                    "@id": "local:variable_load_42"
+                },
+                {
+                    "@id": "local:variable_element_size_43"
+                },
+                {
+                    "@id": "local:variable_element_order_44"
+                },
+                {
+                    "@id": "local:variable_element_degree_45"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_46"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_47"
+                },
+                {
+                    "@id": "local:variable_young_modulus_48"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_49"
+                }
             ]
         },
         {
@@ -1276,7 +1436,7 @@
             "@type": "processing step",
             "label": "generate_input_files_9",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:43.595218",
             "end time": "2025-05-08 17:43:43.781201",
@@ -1292,6 +1452,38 @@
                 {
                     "@id": "local:file_18"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_50"
+                },
+                {
+                    "@id": "local:variable_length_51"
+                },
+                {
+                    "@id": "local:variable_load_52"
+                },
+                {
+                    "@id": "local:variable_element_size_53"
+                },
+                {
+                    "@id": "local:variable_element_order_54"
+                },
+                {
+                    "@id": "local:variable_element_degree_55"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_56"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_57"
+                },
+                {
+                    "@id": "local:variable_young_modulus_58"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_59"
+                }
             ]
         },
         {
@@ -1299,7 +1491,7 @@
             "@type": "processing step",
             "label": "generate_input_files_6",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:43.791865",
             "end time": "2025-05-08 17:43:44.063168",
@@ -1315,6 +1507,38 @@
                 {
                     "@id": "local:file_21"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_60"
+                },
+                {
+                    "@id": "local:variable_length_61"
+                },
+                {
+                    "@id": "local:variable_load_62"
+                },
+                {
+                    "@id": "local:variable_element_size_63"
+                },
+                {
+                    "@id": "local:variable_element_order_64"
+                },
+                {
+                    "@id": "local:variable_element_degree_65"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_66"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_67"
+                },
+                {
+                    "@id": "local:variable_young_modulus_68"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_69"
+                }
             ]
         },
         {
@@ -1322,7 +1546,7 @@
             "@type": "processing step",
             "label": "generate_input_files_3",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:43:44.074716",
             "end time": "2025-05-08 17:43:44.254022",
@@ -1338,6 +1562,38 @@
                 {
                     "@id": "local:file_24"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_70"
+                },
+                {
+                    "@id": "local:variable_length_71"
+                },
+                {
+                    "@id": "local:variable_load_72"
+                },
+                {
+                    "@id": "local:variable_element_size_73"
+                },
+                {
+                    "@id": "local:variable_element_order_74"
+                },
+                {
+                    "@id": "local:variable_element_degree_75"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_76"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_77"
+                },
+                {
+                    "@id": "local:variable_young_modulus_78"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_79"
+                }
             ]
         },
         {
@@ -1345,7 +1601,7 @@
             "@type": "processing step",
             "label": "run_simulation_23",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:44.265480",
             "end time": "2025-05-08 17:43:59.758811",
@@ -1358,14 +1614,15 @@
                 {
                     "@id": "local:file_25"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_22",
             "@type": "processing step",
             "label": "summary_22",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:00.019030",
             "end time": "2025-05-08 17:44:01.092781",
@@ -1378,14 +1635,15 @@
                 {
                     "@id": "local:file_26"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_20",
             "@type": "processing step",
             "label": "run_simulation_20",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:01.106382",
             "end time": "2025-05-08 17:44:01.486223",
@@ -1398,14 +1656,15 @@
                 {
                     "@id": "local:file_27"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_19",
             "@type": "processing step",
             "label": "summary_19",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:01.667889",
             "end time": "2025-05-08 17:44:02.726419",
@@ -1418,14 +1677,15 @@
                 {
                     "@id": "local:file_28"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_17",
             "@type": "processing step",
             "label": "run_simulation_17",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:02.739668",
             "end time": "2025-05-08 17:44:03.083429",
@@ -1438,14 +1698,15 @@
                 {
                     "@id": "local:file_29"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_16",
             "@type": "processing step",
             "label": "summary_16",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:03.263660",
             "end time": "2025-05-08 17:44:04.312575",
@@ -1458,14 +1719,15 @@
                 {
                     "@id": "local:file_30"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_14",
             "@type": "processing step",
             "label": "run_simulation_14",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:04.325367",
             "end time": "2025-05-08 17:44:05.523016",
@@ -1478,14 +1740,15 @@
                 {
                     "@id": "local:file_31"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_13",
             "@type": "processing step",
             "label": "summary_13",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:05.705026",
             "end time": "2025-05-08 17:44:06.750276",
@@ -1498,14 +1761,15 @@
                 {
                     "@id": "local:file_32"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_11",
             "@type": "processing step",
             "label": "run_simulation_11",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:06.762165",
             "end time": "2025-05-08 17:44:07.105087",
@@ -1518,14 +1782,15 @@
                 {
                     "@id": "local:file_33"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_10",
             "@type": "processing step",
             "label": "summary_10",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:07.285741",
             "end time": "2025-05-08 17:44:08.333978",
@@ -1538,14 +1803,15 @@
                 {
                     "@id": "local:file_34"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_27",
             "@type": "processing step",
             "label": "generate_input_files_27",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:08.346576",
             "end time": "2025-05-08 17:44:08.535009",
@@ -1561,6 +1827,38 @@
                 {
                     "@id": "local:file_37"
                 }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_80"
+                },
+                {
+                    "@id": "local:variable_length_81"
+                },
+                {
+                    "@id": "local:variable_load_82"
+                },
+                {
+                    "@id": "local:variable_element_size_83"
+                },
+                {
+                    "@id": "local:variable_element_order_84"
+                },
+                {
+                    "@id": "local:variable_element_degree_85"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_86"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_87"
+                },
+                {
+                    "@id": "local:variable_young_modulus_88"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_89"
+                }
             ]
         },
         {
@@ -1568,7 +1866,7 @@
             "@type": "processing step",
             "label": "run_simulation_26",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:08.546540",
             "end time": "2025-05-08 17:44:08.881063",
@@ -1581,14 +1879,15 @@
                 {
                     "@id": "local:file_38"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_25",
             "@type": "processing step",
             "label": "summary_25",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:09.062034",
             "end time": "2025-05-08 17:44:10.121734",
@@ -1601,14 +1900,15 @@
                 {
                     "@id": "local:file_39"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_8",
             "@type": "processing step",
             "label": "run_simulation_8",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:10.134780",
             "end time": "2025-05-08 17:44:10.457065",
@@ -1621,14 +1921,15 @@
                 {
                     "@id": "local:file_40"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_7",
             "@type": "processing step",
             "label": "summary_7",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:10.639225",
             "end time": "2025-05-08 17:44:11.702906",
@@ -1641,14 +1942,15 @@
                 {
                     "@id": "local:file_41"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_2",
             "@type": "processing step",
             "label": "run_simulation_2",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:11.716279",
             "end time": "2025-05-08 17:44:12.032759",
@@ -1661,14 +1963,15 @@
                 {
                     "@id": "local:file_42"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_5",
             "@type": "processing step",
             "label": "run_simulation_5",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:12.043457",
             "end time": "2025-05-08 17:44:12.508217",
@@ -1681,14 +1984,15 @@
                 {
                     "@id": "local:file_43"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_4",
             "@type": "processing step",
             "label": "summary_4",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:12.692080",
             "end time": "2025-05-08 17:44:13.748170",
@@ -1701,14 +2005,15 @@
                 {
                     "@id": "local:file_44"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:processing_step_1",
             "@type": "processing step",
             "label": "summary_1",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:13.920081",
             "end time": "2025-05-08 17:44:14.963284",
@@ -1721,7 +2026,8 @@
                 {
                     "@id": "local:file_45"
                 }
-            ]
+            ],
+            "has parameter": []
         },
         {
             "@id": "local:file_0",
@@ -1952,6 +2258,2094 @@
             "@id": "local:file_45",
             "@type": "cr:FileObject",
             "label": "summary_geo2fun2.json"
+        },
+        {
+            "@id": "local:variable_radius_0",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_1",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_2",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_3",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.003125,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_4",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_5",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_quadrature_rule_6",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_7",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_young_modulus_8",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_9",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_10",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_11",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_12",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_13",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.1,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_14",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_element_degree_15",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_quadrature_rule_16",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_17",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_young_modulus_18",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_19",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_20",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_21",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_22",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_23",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.1,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_24",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_25",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_quadrature_rule_26",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_27",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_young_modulus_28",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_29",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_30",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_31",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_32",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_33",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.00625,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_34",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_35",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_quadrature_rule_36",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_37",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_young_modulus_38",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_39",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_40",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_41",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_42",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_43",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.025,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_44",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_45",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_quadrature_rule_46",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_47",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_young_modulus_48",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_49",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_50",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_51",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_52",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_53",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.05,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_54",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_55",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_quadrature_rule_56",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_57",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_young_modulus_58",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_59",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_60",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_61",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_62",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_63",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.0125,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_64",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_65",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_quadrature_rule_66",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_67",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_young_modulus_68",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_69",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_70",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_71",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_72",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_73",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.5,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_74",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_element_degree_75",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_quadrature_rule_76",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_77",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 2
+        },
+        {
+            "@id": "local:variable_young_modulus_78",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_79",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:variable_radius_80",
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_length_81",
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_load_82",
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "unit:MegaPA"
+            }
+        },
+        {
+            "@id": "local:variable_element_size_83",
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.1,
+            "has unit": {
+                "@id": "unit:m"
+            }
+        },
+        {
+            "@id": "local:variable_element_order_84",
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_element_degree_85",
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_quadrature_rule_86",
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss"
+        },
+        {
+            "@id": "local:variable_quadrature_degree_87",
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1
+        },
+        {
+            "@id": "local:variable_young_modulus_88",
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            }
+        },
+        {
+            "@id": "local:variable_poisson_ratio_89",
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3
+        },
+        {
+            "@id": "local:field_radius_0",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_1",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_2",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_3",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_3"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_4",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_5",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_6",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_7",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_8",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_9",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_2"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_10",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_10"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_11",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_11"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_12",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_12"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_13",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_13"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_14",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_14"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_15",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_15"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_16",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_16"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_17",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_17"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_18",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_18"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_19",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_19"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_5"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_20",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_20"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_21",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_21"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_22",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_22"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_23",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_23"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_24",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_24"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_25",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_25"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_26",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_26"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_27",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_27"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_28",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_28"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_29",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_29"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_8"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_30",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_30"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_31",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_31"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_32",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_32"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_33",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_33"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_34",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_34"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_35",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_35"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_36",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_36"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_37",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_37"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_38",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_38"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_39",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_39"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_11"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_40",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_40"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_41",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_41"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_42",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_42"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_43",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_43"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_44",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_44"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_45",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_45"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_46",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_46"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_47",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_47"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_48",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_48"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_49",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_49"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_14"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_50",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_50"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_51",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_51"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_52",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_52"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_53",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_53"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_54",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_54"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_55",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_55"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_56",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_56"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_57",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_57"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_58",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_58"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_59",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_59"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_17"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_60",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_60"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_61",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_61"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_62",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_62"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_63",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_63"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_64",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_64"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_65",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_65"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_66",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_66"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_67",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_67"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_68",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_68"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_69",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_69"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_20"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_70",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_70"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_71",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_71"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_72",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_72"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_73",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_73"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_74",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_74"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_75",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_75"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_76",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_76"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_77",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_77"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_78",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_78"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_79",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_79"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_23"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_80",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_radius_80"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/radius/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_81",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_length_81"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/length/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_82",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_load_82"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/load/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_83",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_size_83"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/element-size/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_84",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_order_84"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/element-order"
+                }
+            }
+        },
+        {
+            "@id": "local:field_element_degree_85",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_element_degree_85"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/element-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_quadrature_rule_86",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_86"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-rule"
+                }
+            },
+            "dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_87",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_87"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/quadrature-degree"
+                }
+            }
+        },
+        {
+            "@id": "local:field_young_modulus_88",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_88"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/young-modulus/value"
+                }
+            },
+            "dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_89",
+            "@type": "cr:Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_89"
+            },
+            "source": {
+                "fileObject": {
+                    "@id": "local:file_36"
+                },
+                "extract": {
+                    "jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "dataType": "schema:Float"
         }
     ]
 }

@@ -19,8 +19,11 @@ class Reporter(ReporterBase):
         self.get_context()
         jobs_dict = {}
         files_dict = {}
-        main_processing_steps_dict = {}
         file_counter = 0
+        main_processing_steps_dict = {}
+        fields_dict = {}
+        params_dict = {}
+        param_counter = 0
         
         jsonld = {
             "@context": self.context_data['@context'],
@@ -30,9 +33,6 @@ class Reporter(ReporterBase):
            
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         main_processing_steps = {processing_steps.rule for processing_steps in self.jobs}
-        
-        for job in self.dag.jobs:
-            print(f"Job: {job.jobid} -- {job.input}")
         
         for i, processing_step in enumerate(main_processing_steps):
             item = {
@@ -52,7 +52,8 @@ class Reporter(ReporterBase):
                 "start time": f"{datetime.fromtimestamp(job.starttime)}",
                 "end time": f"{datetime.fromtimestamp(job.endtime)}",
                 "has input": [],
-                "has output": []
+                "has output": [],
+                "has parameter": []
             }
             
             for _job in self.dag.jobs:
@@ -67,7 +68,39 @@ class Reporter(ReporterBase):
                             file_counter += 1
                             params = self.extract_params(job.rule, file)
                             if params != {}:
-                                print(f"Parameters for {file}: {params}")
+                                for param_name, param_data in params.items():
+                                    param_name = param_name.replace("-", "_")
+                                    if param_data['data-type'] != None and param_data['data-type'] == "schema:Text":
+                                        params_dict[f"{param_name}_{param_counter}"] = {
+                                            "@id": f"local:variable_{param_name}_{param_counter}",
+                                            "@type": "text variable",
+                                            "label": param_name,
+                                            "has string value": param_data['value'],
+                                        }
+                                    else:
+                                        params_dict[f"{param_name}_{param_counter}"] = {
+                                            "@id": f"local:variable_{param_name}_{param_counter}",
+                                            "@type": "numerical variable",
+                                            "label": param_name,
+                                            "has numerical value": param_data['value']
+                                        }
+                                    if param_data['unit'] is not None:
+                                        params_dict[f"{param_name}_{param_counter}"]["has unit"] = {"@id": param_data['unit']}
+                                    fields_dict[f"{param_name}_{param_counter}"] = {
+                                        "@id": f"local:field_{param_name}_{param_counter}",
+                                        "@type": "cr:Field",
+                                        "represents": {"@id": f"local:variable_{param_name}_{param_counter}"},
+                                        "source": {
+                                            "fileObject": {"@id": f"local:file_{file_counter}"},
+                                            "extract": {
+                                                "jsonPath": param_data['json-path']
+                                            }
+                                        }
+                                    }
+                                    if param_data['data-type'] is not None:
+                                       fields_dict[f"{param_name}_{param_counter}"]["dataType"] = param_data['data-type']
+                                    item["has parameter"].append({"@id": params_dict[f"{param_name}_{param_counter}"]["@id"]})
+                                    param_counter += 1
                     item["has input"].append({"@id": files_dict[file]["@id"]})
             
             for file in job.output:
@@ -78,13 +111,10 @@ class Reporter(ReporterBase):
                         "label": file
                     }
                     file_counter += 1
-                    params = self.extract_params(job.rule, file)
-                    if params != {}:
-                        print(f"Parameters for {file}: {params}")
                 item["has output"].append({"@id": files_dict[file]["@id"]})
             jobs_dict[job_label] = item
         
-        for node in (main_processing_steps_dict, jobs_dict, files_dict):
+        for node in (main_processing_steps_dict, jobs_dict, files_dict, params_dict, fields_dict):
             jsonld["@graph"].extend(node.values())
         
         with open("report.jsonld", "w", encoding='utf8') as file:
@@ -99,26 +129,28 @@ class Reporter(ReporterBase):
             self.context_data = json.loads(response.text)
         else:
             print(f"Failed to fetch context data. Status code: {response.status_code}")
-            self.context_data = {}
     
     def extract_params(self, rule_name:str, file_path:str):
         result = {}
         json_data = {}
         file_name = os.path.basename(file_path)
-        #print(f"Extracting parameters from {file_name} for rule {rule_name}")
         if file_name.startswith("parameters_") and rule_name == "generate_input_files":
             with open(file_path) as f:
                 json_data = json.load(f)
             for key, item in json_data.items():
                 if isinstance(item, dict):
                     result[key] = {
-                        'Value': item['value'],
-                        'Unit': item['unit']
+                        'value': item['value'],
+                        'unit': self.get_unit(key),
+                        'json-path': f"/{key}/value",
+                        'data-type':self.get_type(item['value'])
                     }
                 else:
                     result[key] = {
-                        'Value': item,
-                        'Unit': None
+                        'value': item,
+                        'unit': None,
+                        'json-path': f"/{key}",
+                        'data-type':self.get_type(item)
                     }
         return result
             
@@ -134,3 +166,21 @@ class Reporter(ReporterBase):
         graph = Graph()
         graph.parse(data=jsonld_data, format="json-ld")
         graph.serialize("report.ttl", format="ttl")
+    
+    def get_unit(self, param_name: str):
+        if param_name == "young-modulus":
+            return "units:PA"
+        elif param_name == "load":
+            return "unit:MegaPA"
+        elif param_name == "length" or param_name == "radius" or param_name == "element-size":
+            return "unit:m"
+        return None
+    
+    def get_type(self, param_value: any):
+        if isinstance(param_value,float):
+            return "schema:Float"
+        elif isinstance(param_value,float):
+            return "schema:Integer"
+        elif isinstance(param_value,str):
+            return "schema:Text"
+        return None
