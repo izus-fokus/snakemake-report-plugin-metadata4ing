@@ -1,9 +1,4 @@
 .DS_Store
 dist
 poetry.lock
-cleanup.log
-goodbye.log
-hello.log
-prepare.log
-report.ttl
-report.jsonld
+simulation/.snakemake/log
