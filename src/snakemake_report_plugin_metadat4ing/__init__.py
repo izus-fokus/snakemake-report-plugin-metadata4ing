@@ -26,6 +26,7 @@ class Reporter(ReporterBase):
             "@graph": []
         }
         jsonld['@context']['local'] = "https://local-domain.org/"
+        jsonld['@context']['units'] = "http://qudt.org/vocab/unit/"
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         main_steps = {job.rule for job in self.jobs}
@@ -167,10 +168,10 @@ class Reporter(ReporterBase):
     def get_unit(self, name: str):
         return {
             "young-modulus": "units:PA",
-            "load": "unit:MegaPA",
-            "length": "unit:m",
-            "radius": "unit:m",
-            "element-size": "unit:m"
+            "load": "units:MegaPA",
+            "length": "units:m",
+            "radius": "units:m",
+            "element-size": "units:m"
         }.get(name)
 
     def get_type(self, val):
