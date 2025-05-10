@@ -1,15 +1,29 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
+from pathlib import Path
+from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
 from rdflib import Graph
 import requests
 import json
 import os
+import importlib.util
+import inspect
+from snakemake_report_plugin_metadat4ing.interfaces import ParameterExtractorInterface
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
-    pass
+    paramscript: Optional[Path] = field(
+        default=None,
+        metadata={
+            "help": "Path to external Python script which implements the ParameterExtractorInterface.",
+            "env_var": False,
+            "required": False,
+            "parse_func": Path,
+            "unparse_func": str,
+        },
+    )
 
 class Reporter(ReporterBase):
     def __post_init__(self):
@@ -75,10 +89,11 @@ class Reporter(ReporterBase):
         for file in input_files:
             file_node, file_counter = self._add_file(file, files_dict, file_counter)
             node["has input"].append({"@id": file_node["@id"]})
-            param_id_list, field_nodes = self._extract_parameters(job.rule, file, file_node)
-            fields_dict.update(field_nodes)
-            for param in param_id_list:
-                node["has parameter"].append({"@id": param})
+            if self.settings.paramscript:
+                param_id_list, field_nodes = self._extract_parameters(job.rule, file, file_node)
+                fields_dict.update(field_nodes)
+                for param in param_id_list:
+                    node["has parameter"].append({"@id": param})
 
         for file in job.output:
             file_node, file_counter = self._add_file(file, files_dict, file_counter)
@@ -99,7 +114,8 @@ class Reporter(ReporterBase):
     def _extract_parameters(self, rule, file, file_node):
         param_id_list = []
         field_dict = {}
-        for name, data in self.extract_params(rule, file).items():
+        extract_params_obj= self._load_param_extractor_obj()
+        for name, data in extract_params_obj.extract_params(rule, file).items():
             name = name.replace("-", "_")
             param_id = ""
             param = {
@@ -142,49 +158,27 @@ class Reporter(ReporterBase):
         else:
             print(f"Failed to fetch context data. Status code: {response.status_code}")
 
-    def extract_params(self, rule_name: str, file_path: str):
-        results = {}
-        file_name = os.path.basename(file_path)
-        if file_name.startswith("parameters_") and rule_name == "generate_input_files":
-            with open(file_path) as f:
-                data = json.load(f)
-            for key, val in data.items():
-                if isinstance(val, dict):
-                    results[key] = {
-                        'value': val['value'],
-                        'unit': self.get_unit(key),
-                        'json-path': f"/{key}/value",
-                        'data-type': self.get_type(val['value'])
-                    }
-                else:
-                    results[key] = {
-                        'value': val,
-                        'unit': None,
-                        'json-path': f"/{key}",
-                        'data-type': self.get_type(val)
-                    }
-        return results
-
-    def get_unit(self, name: str):
-        return {
-            "young-modulus": "units:PA",
-            "load": "units:MegaPA",
-            "length": "units:m",
-            "radius": "units:m",
-            "element-size": "units:m"
-        }.get(name)
-
-    def get_type(self, val):
-        if isinstance(val, float):
-            return "schema:Float"
-        elif isinstance(val, int):
-            return "schema:Integer"
-        elif isinstance(val, str):
-            return "schema:Text"
-        return None
-
     def create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize("report.ttl", format="ttl")
 
     def add_dependencies(self):
         pass
+
+    def _load_param_extractor_obj(self):
+        script_path = self.settings.paramscript
+        if not script_path or not script_path.exists():
+            raise FileNotFoundError(f"Script not found: {script_path}")
+
+        spec = importlib.util.spec_from_file_location("extractor_module", script_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        extractor_class = None
+        for _, obj in inspect.getmembers(module, inspect.isclass):
+            if issubclass(obj, ParameterExtractorInterface) and obj is not ParameterExtractorInterface:
+                extractor_class = obj
+                break
+        if extractor_class is None:
+            raise ImportError("No subclass of ParameterExtractorInterface found in script")
+        
+        return extractor_class()
