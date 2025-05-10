@@ -1145,24 +1145,24 @@
         {
             "@id": "local:main_processing_step_0",
             "@type": "processing step",
-            "label": "generate_input_files"
+            "label": "summary"
         },
         {
             "@id": "local:main_processing_step_1",
             "@type": "processing step",
-            "label": "run_simulation"
+            "label": "generate_input_files"
         },
         {
             "@id": "local:main_processing_step_2",
             "@type": "processing step",
-            "label": "summary"
+            "label": "run_simulation"
         },
         {
             "@id": "local:processing_step_24",
             "@type": "processing step",
             "label": "generate_input_files_24",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:38.691962",
             "end time": "2025-05-08 17:43:42.420089",
@@ -1189,7 +1189,7 @@
             "@type": "processing step",
             "label": "generate_input_files_21",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:42.432643",
             "end time": "2025-05-08 17:43:42.613523",
@@ -1235,7 +1235,7 @@
             "@type": "processing step",
             "label": "generate_input_files_18",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:42.624086",
             "end time": "2025-05-08 17:43:42.804100",
@@ -1293,7 +1293,7 @@
             "@type": "processing step",
             "label": "generate_input_files_15",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:42.814972",
             "end time": "2025-05-08 17:43:43.372435",
@@ -1348,7 +1348,7 @@
             "@type": "processing step",
             "label": "generate_input_files_12",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:43.383551",
             "end time": "2025-05-08 17:43:43.584401",
@@ -1403,7 +1403,7 @@
             "@type": "processing step",
             "label": "generate_input_files_9",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:43.595218",
             "end time": "2025-05-08 17:43:43.781201",
@@ -1458,7 +1458,7 @@
             "@type": "processing step",
             "label": "generate_input_files_6",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:43.791865",
             "end time": "2025-05-08 17:43:44.063168",
@@ -1513,7 +1513,7 @@
             "@type": "processing step",
             "label": "generate_input_files_3",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:43:44.074716",
             "end time": "2025-05-08 17:43:44.254022",
@@ -1568,7 +1568,7 @@
             "@type": "processing step",
             "label": "run_simulation_23",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:43:44.265480",
             "end time": "2025-05-08 17:43:59.758811",
@@ -1592,7 +1592,7 @@
             "@type": "processing step",
             "label": "summary_22",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:00.019030",
             "end time": "2025-05-08 17:44:01.092781",
@@ -1622,7 +1622,7 @@
             "@type": "processing step",
             "label": "run_simulation_20",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:01.106382",
             "end time": "2025-05-08 17:44:01.486223",
@@ -1646,7 +1646,7 @@
             "@type": "processing step",
             "label": "summary_19",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:01.667889",
             "end time": "2025-05-08 17:44:02.726419",
@@ -1676,7 +1676,7 @@
             "@type": "processing step",
             "label": "run_simulation_17",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:02.739668",
             "end time": "2025-05-08 17:44:03.083429",
@@ -1700,7 +1700,7 @@
             "@type": "processing step",
             "label": "summary_16",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:03.263660",
             "end time": "2025-05-08 17:44:04.312575",
@@ -1730,7 +1730,7 @@
             "@type": "processing step",
             "label": "run_simulation_14",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:04.325367",
             "end time": "2025-05-08 17:44:05.523016",
@@ -1754,7 +1754,7 @@
             "@type": "processing step",
             "label": "summary_13",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:05.705026",
             "end time": "2025-05-08 17:44:06.750276",
@@ -1784,7 +1784,7 @@
             "@type": "processing step",
             "label": "run_simulation_11",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:06.762165",
             "end time": "2025-05-08 17:44:07.105087",
@@ -1808,7 +1808,7 @@
             "@type": "processing step",
             "label": "summary_10",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:07.285741",
             "end time": "2025-05-08 17:44:08.333978",
@@ -1838,7 +1838,7 @@
             "@type": "processing step",
             "label": "generate_input_files_27",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-05-08 17:44:08.346576",
             "end time": "2025-05-08 17:44:08.535009",
@@ -1896,7 +1896,7 @@
             "@type": "processing step",
             "label": "run_simulation_26",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:08.546540",
             "end time": "2025-05-08 17:44:08.881063",
@@ -1920,7 +1920,7 @@
             "@type": "processing step",
             "label": "summary_25",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:09.062034",
             "end time": "2025-05-08 17:44:10.121734",
@@ -1950,7 +1950,7 @@
             "@type": "processing step",
             "label": "run_simulation_8",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:10.134780",
             "end time": "2025-05-08 17:44:10.457065",
@@ -1974,7 +1974,7 @@
             "@type": "processing step",
             "label": "summary_7",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:10.639225",
             "end time": "2025-05-08 17:44:11.702906",
@@ -2004,7 +2004,7 @@
             "@type": "processing step",
             "label": "run_simulation_2",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:11.716279",
             "end time": "2025-05-08 17:44:12.032759",
@@ -2028,7 +2028,7 @@
             "@type": "processing step",
             "label": "run_simulation_5",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:12.043457",
             "end time": "2025-05-08 17:44:12.508217",
@@ -2052,7 +2052,7 @@
             "@type": "processing step",
             "label": "summary_4",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:12.692080",
             "end time": "2025-05-08 17:44:13.748170",
@@ -2082,7 +2082,7 @@
             "@type": "processing step",
             "label": "summary_1",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:13.920081",
             "end time": "2025-05-08 17:44:14.963284",
@@ -2486,1443 +2486,1443 @@
         },
         {
             "@id": "local:field_radius_0",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_1",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_2",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_3",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_3"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_4",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_5",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_6",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_7",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_8",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_9",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_1"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_10",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_11",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_12",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_13",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_10"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_14",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_11"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_15",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_12"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_16",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_17",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_13"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_18",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_19",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_4"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_20",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_21",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_22",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_23",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_10"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_24",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_25",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_12"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_26",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_27",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_13"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_28",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_29",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_7"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_30",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_31",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_32",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_33",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_14"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_34",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_35",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_36",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_37",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_38",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_39",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_10"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_40",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_41",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_42",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_43",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_15"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_44",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_45",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_46",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_47",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_48",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_49",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_13"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_50",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_51",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_52",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_53",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_16"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_54",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_55",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_56",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_57",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_58",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_59",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_16"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_60",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_61",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_62",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_63",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_17"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_64",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_65",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_66",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_67",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_68",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_69",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_19"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_70",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_71",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_72",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_73",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_18"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_74",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_11"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_75",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_12"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_76",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_77",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_13"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_78",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_79",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_22"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_radius_80",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/radius/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_length_81",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/length/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_load_82",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/load/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_size_83",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_10"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/element-size/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_element_order_84",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/element-order"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_element_degree_85",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/element-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_quadrature_rule_86",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-rule"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
                 }
             },
-            "dataType": "schema:Text"
+            "cr:dataType": "schema:Text"
         },
         {
             "@id": "local:field_quadrature_degree_87",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/quadrature-degree"
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
                 }
             },
-            "dataType": "schema:Integer"
+            "cr:dataType": "schema:Integer"
         },
         {
             "@id": "local:field_young_modulus_88",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/young-modulus/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         },
         {
             "@id": "local:field_poisson_ratio_89",
-            "@type": "cr:Field",
+            "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
             },
             "source": {
-                "fileObject": {
+                "file object": {
                     "@id": "local:file_35"
                 },
-                "extract": {
-                    "jsonPath": "/poisson-ratio/value"
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
                 }
             },
-            "dataType": "schema:Float"
+            "cr:dataType": "schema:Float"
         }
     ]
 }

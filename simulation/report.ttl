@@ -9,548 +9,548 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 local:field_element_degree_15 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_element_degree_12 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_12 .
 
 local:field_element_degree_25 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_element_degree_12 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_12 .
 
 local:field_element_degree_35 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_element_degree_5 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_5 .
 
 local:field_element_degree_45 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_element_degree_5 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_5 .
 
 local:field_element_degree_5 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_element_degree_5 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_5 .
 
 local:field_element_degree_55 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_element_degree_5 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_5 .
 
 local:field_element_degree_65 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_element_degree_5 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_5 .
 
 local:field_element_degree_75 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_element_degree_12 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_12 .
 
 local:field_element_degree_85 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-degree" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_element_degree_5 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/element-degree" ] ] ;
+    sio:SIO_000210 local:variable_element_degree_5 .
 
 local:field_element_order_14 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_element_order_11 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_11 .
 
 local:field_element_order_24 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_order_34 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_order_4 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_order_44 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_order_54 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_order_64 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_order_74 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_element_order_11 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_11 .
 
 local:field_element_order_84 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-order" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_element_order_4 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/element-order" ] ] ;
+    sio:SIO_000210 local:variable_element_order_4 .
 
 local:field_element_size_13 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_element_size_10 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_10 .
 
 local:field_element_size_23 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_element_size_10 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_10 .
 
 local:field_element_size_3 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_element_size_3 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_3 .
 
 local:field_element_size_33 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_element_size_14 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_14 .
 
 local:field_element_size_43 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_element_size_15 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_15 .
 
 local:field_element_size_53 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_element_size_16 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_16 .
 
 local:field_element_size_63 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_element_size_17 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_17 .
 
 local:field_element_size_73 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_element_size_18 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_18 .
 
 local:field_element_size_83 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/element-size/value" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_element_size_10 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
+    sio:SIO_000210 local:variable_element_size_10 .
 
 local:field_length_1 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_11 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_21 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_31 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_41 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_51 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_61 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_71 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_length_81 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/length/value" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_length_1 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/length/value" ] ] ;
+    sio:SIO_000210 local:variable_length_1 .
 
 local:field_load_12 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_2 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_22 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_32 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_42 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_52 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_62 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_72 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_load_82 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/load/value" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_load_2 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/load/value" ] ] ;
+    sio:SIO_000210 local:variable_load_2 .
 
 local:field_poisson_ratio_19 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_29 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_39 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_49 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_59 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_69 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_79 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_89 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_poisson_ratio_9 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/poisson-ratio/value" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
 
 local:field_quadrature_degree_17 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_13 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_13 .
 
 local:field_quadrature_degree_27 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_13 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_13 .
 
 local:field_quadrature_degree_37 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_7 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 .
 
 local:field_quadrature_degree_47 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_7 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 .
 
 local:field_quadrature_degree_57 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_7 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 .
 
 local:field_quadrature_degree_67 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_7 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 .
 
 local:field_quadrature_degree_7 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_7 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 .
 
 local:field_quadrature_degree_77 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_13 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_13 .
 
 local:field_quadrature_degree_87 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-degree" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_quadrature_degree_7 ;
-    m4i:dataType "schema:Integer" .
+    cr:dataType "schema:Integer" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_degree_7 .
 
 local:field_quadrature_rule_16 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_26 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_36 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_46 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_56 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_6 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_66 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_76 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_quadrature_rule_86 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/quadrature-rule" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_quadrature_rule_6 ;
-    m4i:dataType "schema:Text" .
+    cr:dataType "schema:Text" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
+    sio:SIO_000210 local:variable_quadrature_rule_6 .
 
 local:field_radius_0 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_10 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_20 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_30 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_40 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_50 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_60 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_70 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_radius_80 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/radius/value" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_radius_0 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/radius/value" ] ] ;
+    sio:SIO_000210 local:variable_radius_0 .
 
 local:field_young_modulus_18 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_4 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_4 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_28 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_7 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_7 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_38 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_10 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_10 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_48 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_13 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_13 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_58 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_16 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_16 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_68 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_19 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_19 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_78 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_22 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_22 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_8 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_1 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:field_young_modulus_88 a cr:Field ;
-    cr:source [ m4i:extract [ m4i:jsonPath "/young-modulus/value" ] ;
-            m4i:fileObject local:file_35 ] ;
-    sio:SIO_000210 local:variable_young_modulus_8 ;
-    m4i:dataType "schema:Float" .
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
+            cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
+    sio:SIO_000210 local:variable_young_modulus_8 .
 
 local:processing_step_1 a m4i:ProcessingStep ;
     rdfs:label "summary_1" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_22,
         local:file_23,
         local:file_24,
@@ -561,7 +561,7 @@ local:processing_step_1 a m4i:ProcessingStep ;
 
 local:processing_step_10 a m4i:ProcessingStep ;
     rdfs:label "summary_10" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_13,
         local:file_14,
         local:file_15,
@@ -572,7 +572,7 @@ local:processing_step_10 a m4i:ProcessingStep ;
 
 local:processing_step_11 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_11" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_14,
         local:file_15 ;
     obo:RO_0002234 local:file_33 ;
@@ -581,7 +581,7 @@ local:processing_step_11 a m4i:ProcessingStep ;
 
 local:processing_step_12 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_12" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_13 ;
     obo:RO_0002234 local:file_14,
@@ -600,7 +600,7 @@ local:processing_step_12 a m4i:ProcessingStep ;
 
 local:processing_step_13 a m4i:ProcessingStep ;
     rdfs:label "summary_13" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_10,
         local:file_11,
         local:file_12,
@@ -611,7 +611,7 @@ local:processing_step_13 a m4i:ProcessingStep ;
 
 local:processing_step_14 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_14" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_11,
         local:file_12 ;
     obo:RO_0002234 local:file_31 ;
@@ -620,7 +620,7 @@ local:processing_step_14 a m4i:ProcessingStep ;
 
 local:processing_step_15 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_15" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_10 ;
     obo:RO_0002234 local:file_11,
@@ -639,7 +639,7 @@ local:processing_step_15 a m4i:ProcessingStep ;
 
 local:processing_step_16 a m4i:ProcessingStep ;
     rdfs:label "summary_16" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_29,
         local:file_7,
         local:file_8,
@@ -650,7 +650,7 @@ local:processing_step_16 a m4i:ProcessingStep ;
 
 local:processing_step_17 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_17" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_8,
         local:file_9 ;
     obo:RO_0002234 local:file_29 ;
@@ -659,7 +659,7 @@ local:processing_step_17 a m4i:ProcessingStep ;
 
 local:processing_step_18 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_18" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_7 ;
     obo:RO_0002234 local:file_8,
@@ -679,7 +679,7 @@ local:processing_step_18 a m4i:ProcessingStep ;
 
 local:processing_step_19 a m4i:ProcessingStep ;
     rdfs:label "summary_19" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_27,
         local:file_4,
         local:file_5,
@@ -690,7 +690,7 @@ local:processing_step_19 a m4i:ProcessingStep ;
 
 local:processing_step_2 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_2" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_23,
         local:file_24 ;
     obo:RO_0002234 local:file_42 ;
@@ -699,7 +699,7 @@ local:processing_step_2 a m4i:ProcessingStep ;
 
 local:processing_step_20 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_20" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_5,
         local:file_6 ;
     obo:RO_0002234 local:file_27 ;
@@ -708,7 +708,7 @@ local:processing_step_20 a m4i:ProcessingStep ;
 
 local:processing_step_21 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_21" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_4 ;
     obo:RO_0002234 local:file_5,
@@ -724,7 +724,7 @@ local:processing_step_21 a m4i:ProcessingStep ;
 
 local:processing_step_22 a m4i:ProcessingStep ;
     rdfs:label "summary_22" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_1,
         local:file_2,
         local:file_25,
@@ -735,7 +735,7 @@ local:processing_step_22 a m4i:ProcessingStep ;
 
 local:processing_step_23 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_23" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_2,
         local:file_3 ;
     obo:RO_0002234 local:file_25 ;
@@ -744,7 +744,7 @@ local:processing_step_23 a m4i:ProcessingStep ;
 
 local:processing_step_24 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_24" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_1 ;
     obo:RO_0002234 local:file_2,
@@ -754,7 +754,7 @@ local:processing_step_24 a m4i:ProcessingStep ;
 
 local:processing_step_25 a m4i:ProcessingStep ;
     rdfs:label "summary_25" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_35,
         local:file_36,
         local:file_37,
@@ -765,7 +765,7 @@ local:processing_step_25 a m4i:ProcessingStep ;
 
 local:processing_step_26 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_26" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_36,
         local:file_37 ;
     obo:RO_0002234 local:file_38 ;
@@ -774,7 +774,7 @@ local:processing_step_26 a m4i:ProcessingStep ;
 
 local:processing_step_27 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_27" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_35 ;
     obo:RO_0002234 local:file_36,
@@ -794,7 +794,7 @@ local:processing_step_27 a m4i:ProcessingStep ;
 
 local:processing_step_3 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_3" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_22 ;
     obo:RO_0002234 local:file_23,
@@ -813,7 +813,7 @@ local:processing_step_3 a m4i:ProcessingStep ;
 
 local:processing_step_4 a m4i:ProcessingStep ;
     rdfs:label "summary_4" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_19,
         local:file_20,
         local:file_21,
@@ -824,7 +824,7 @@ local:processing_step_4 a m4i:ProcessingStep ;
 
 local:processing_step_5 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_5" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_20,
         local:file_21 ;
     obo:RO_0002234 local:file_43 ;
@@ -833,7 +833,7 @@ local:processing_step_5 a m4i:ProcessingStep ;
 
 local:processing_step_6 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_6" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_19 ;
     obo:RO_0002234 local:file_20,
@@ -852,7 +852,7 @@ local:processing_step_6 a m4i:ProcessingStep ;
 
 local:processing_step_7 a m4i:ProcessingStep ;
     rdfs:label "summary_7" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_16,
         local:file_17,
         local:file_18,
@@ -863,7 +863,7 @@ local:processing_step_7 a m4i:ProcessingStep ;
 
 local:processing_step_8 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_8" ;
-    obo:BFO_0000050 local:main_processing_step_1 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_17,
         local:file_18 ;
     obo:RO_0002234 local:file_40 ;
@@ -872,7 +872,7 @@ local:processing_step_8 a m4i:ProcessingStep ;
 
 local:processing_step_9 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files_9" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_1 ;
     obo:RO_0002233 local:file_0,
         local:file_16 ;
     obo:RO_0002234 local:file_17,
@@ -1048,13 +1048,13 @@ local:file_0 a cr:FileObject ;
     rdfs:label "experiment.json" .
 
 local:main_processing_step_0 a m4i:ProcessingStep ;
-    rdfs:label "generate_input_files" .
+    rdfs:label "summary" .
 
 local:main_processing_step_1 a m4i:ProcessingStep ;
-    rdfs:label "run_simulation" .
+    rdfs:label "generate_input_files" .
 
 local:main_processing_step_2 a m4i:ProcessingStep ;
-    rdfs:label "summary" .
+    rdfs:label "run_simulation" .
 
 local:variable_element_degree_5 a m4i:NumericalVariable ;
     rdfs:label "element_degree" ;

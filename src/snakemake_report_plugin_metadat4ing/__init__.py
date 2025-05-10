@@ -139,13 +139,13 @@ class Reporter(ReporterBase):
 
             field_dict[f"{name}_{self.field_counter}"] = {
                 "@id": f"local:field_{name}_{self.field_counter}",
-                "@type": "cr:Field",
+                "@type": "Field",
                 "represents": {"@id": param_id},
                 "source": {
-                    "fileObject": {"@id": file_node["@id"]},
-                    "extract": {"jsonPath": data['json-path']}
+                    "file object": {"@id": file_node["@id"]},
+                    "cr:extract": {"cr:jsonPath": data['json-path']}
                 },
-                **({"dataType": data['data-type']} if data['data-type'] else {})
+                **({"cr:dataType": data['data-type']} if data['data-type'] else {})
             }
             self.field_counter += 1
         return param_id_list, field_dict
