@@ -30,7 +30,7 @@ class Reporter(ReporterBase):
         self.context_data = {}
 
     def render(self):
-        self.get_context()
+        self._get_context()
         self.param_counter = 0
         self.field_counter = 0
         self.param_dict = {}
@@ -69,7 +69,7 @@ class Reporter(ReporterBase):
         with open("report.jsonld", "w", encoding='utf8') as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
 
-        self.create_ttl_from_jsonld(jsonld)
+        self._create_ttl_from_jsonld(jsonld)
 
     def _create_job_node(self, job, main_steps_dict, files_dict, fields_dict, file_counter):
         node = {
@@ -115,42 +115,45 @@ class Reporter(ReporterBase):
         param_id_list = []
         field_dict = {}
         extract_params_obj= self._load_param_extractor_obj()
-        for name, data in extract_params_obj.extract_params(rule, file).items():
-            name = name.replace("-", "_")
-            param_id = ""
-            param = {
-                "@type": "text variable" if data['data-type'] == "schema:Text" else "numerical variable",
-                "label": name,
-            }
-            if data['data-type'] == "schema:Text":
-                param["has string value"] = data['value']
-            else:
-                param["has numerical value"] = data['value']
-                if data['unit']:
-                    param["has unit"] = {"@id": data['unit']}
-            
-            if param in self.param_dict.values():
-                param_id = next((k for k, v in self.param_dict.items() if v == param), None)
-                param_id_list.append(param_id)
-            else:
-                param_id = f"local:variable_{name}_{self.param_counter}"
-                self.param_dict[param_id] = param
-                self.param_counter += 1
+        params = extract_params_obj.extract_params(rule, file)
+        if params:
+            params = self._validate_extract_param_output(params)
+            for name, data in params.items():
+                name = name.replace("-", "_")
+                param_id = ""
+                param = {
+                    "@type": "text variable" if data['data-type'] == "schema:Text" else "numerical variable",
+                    "label": name,
+                }
+                if data['data-type'] == "schema:Text":
+                    param["has string value"] = data['value']
+                else:
+                    param["has numerical value"] = data['value']
+                    if data['unit']:
+                        param["has unit"] = {"@id": data['unit']}
 
-            field_dict[f"{name}_{self.field_counter}"] = {
-                "@id": f"local:field_{name}_{self.field_counter}",
-                "@type": "Field",
-                "represents": {"@id": param_id},
-                "source": {
-                    "file object": {"@id": file_node["@id"]},
-                    "cr:extract": {"cr:jsonPath": data['json-path']}
-                },
-                **({"cr:dataType": data['data-type']} if data['data-type'] else {})
-            }
-            self.field_counter += 1
+                if param in self.param_dict.values():
+                    param_id = next((k for k, v in self.param_dict.items() if v == param), None)
+                    param_id_list.append(param_id)
+                else:
+                    param_id = f"local:variable_{name}_{self.param_counter}"
+                    self.param_dict[param_id] = param
+                    self.param_counter += 1
+
+                field_dict[f"{name}_{self.field_counter}"] = {
+                    "@id": f"local:field_{name}_{self.field_counter}",
+                    "@type": "Field",
+                    "represents": {"@id": param_id},
+                    "source": {
+                        "file object": {"@id": file_node["@id"]},
+                        "cr:extract": {"cr:jsonPath": data['json-path']}
+                    },
+                    **({"cr:dataType": data['data-type']} if data['data-type'] else {})
+                }
+                self.field_counter += 1
         return param_id_list, field_dict
 
-    def get_context(self):
+    def _get_context(self):
         url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
         response = requests.get(url)
         if response.ok:
@@ -158,10 +161,10 @@ class Reporter(ReporterBase):
         else:
             print(f"Failed to fetch context data. Status code: {response.status_code}")
 
-    def create_ttl_from_jsonld(self, data: dict):
+    def _create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize("report.ttl", format="ttl")
 
-    def add_dependencies(self):
+    def _add_dependencies(self):
         pass
 
     def _load_param_extractor_obj(self):
@@ -182,3 +185,23 @@ class Reporter(ReporterBase):
             raise ImportError("No subclass of ParameterExtractorInterface found in script")
         
         return extractor_class()
+
+    def _validate_extract_param_output(self, result):
+        if not isinstance(result, dict):
+            raise TypeError("Function output must be a dictionary.")
+        for key, value in result.items():
+            if not isinstance(key, str):
+                raise TypeError(f"Key '{key}' must be a string.")
+            if not isinstance(value, dict):
+                raise TypeError(f"Value for key '{key}' must be a dictionary.")
+            required_keys = ['value', 'unit', 'json-path', 'data-type']
+            for rk in required_keys:
+                if rk not in value:
+                    raise ValueError(f"Missing key '{rk}' in value for '{key}'.")
+            if value['unit'] and not isinstance(value['unit'], str):
+                raise TypeError(f"'unit' for '{key}' must be a string.")
+            if not isinstance(value['json-path'], str):
+                raise TypeError(f"'json-path' for '{key}' must be a string.")
+            if not isinstance(value['data-type'], str):
+                raise TypeError(f"'data-type' for '{key}' must be a string.")
+        return result
