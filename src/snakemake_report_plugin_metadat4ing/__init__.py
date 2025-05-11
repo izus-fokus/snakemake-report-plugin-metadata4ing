@@ -7,10 +7,12 @@ from snakemake_interface_report_plugins.settings import ReportSettingsBase
 from rdflib import Graph
 import requests
 import json
-import os
 import importlib.util
 import inspect
-from snakemake_report_plugin_metadat4ing.interfaces import ParameterExtractorInterface
+from snakemake_report_plugin_metadat4ing.interfaces import (
+    ParameterExtractorInterface,
+)
+
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -25,6 +27,7 @@ class ReportSettings(ReportSettingsBase):
         },
     )
 
+
 class Reporter(ReporterBase):
     def __post_init__(self):
         self.context_data = {}
@@ -34,13 +37,13 @@ class Reporter(ReporterBase):
         self.param_counter = 0
         self.field_counter = 0
         self.param_dict = {}
-        
+
         jsonld = {
-            "@context": self.context_data.get('@context', {}),
-            "@graph": []
+            "@context": self.context_data.get("@context", {}),
+            "@graph": [],
         }
-        jsonld['@context']['local'] = "https://local-domain.org/"
-        jsonld['@context']['units'] = "http://qudt.org/vocab/unit/"
+        jsonld["@context"]["local"] = "https://local-domain.org/"
+        jsonld["@context"]["units"] = "http://qudt.org/vocab/unit/"
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         main_steps = {job.rule for job in self.jobs}
@@ -51,27 +54,37 @@ class Reporter(ReporterBase):
             step_nodes[step] = {
                 "@id": f"local:main_processing_step_{i}",
                 "@type": "processing step",
-                "label": step
+                "label": step,
             }
 
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node = self._create_job_node(job, step_nodes, file_nodes, field_nodes, file_counter)
+            step_node = self._create_job_node(
+                job, step_nodes, file_nodes, field_nodes, file_counter
+            )
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
 
         for key, value in self.param_dict.items():
             value["@id"] = key
-        
-        for d in (step_nodes, job_nodes, file_nodes, self.param_dict, field_nodes):
+
+        for d in (
+            step_nodes,
+            job_nodes,
+            file_nodes,
+            self.param_dict,
+            field_nodes,
+        ):
             jsonld["@graph"].extend(d.values())
-        
-        with open("report.jsonld", "w", encoding='utf8') as f:
+
+        with open("report.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
 
         self._create_ttl_from_jsonld(jsonld)
 
-    def _create_job_node(self, job, main_steps_dict, files_dict, fields_dict, file_counter):
+    def _create_job_node(
+        self, job, main_steps_dict, files_dict, fields_dict, file_counter
+    ):
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -81,22 +94,33 @@ class Reporter(ReporterBase):
             "end time": f"{datetime.fromtimestamp(job.endtime)}",
             "has input": [],
             "has output": [],
-            "has parameter": []
+            "has parameter": [],
         }
-        
-        input_files = [f for j in self.dag.jobs if j.jobid == job.job.jobid for f in j.input]
-        
+
+        input_files = [
+            f
+            for j in self.dag.jobs
+            if j.jobid == job.job.jobid
+            for f in j.input
+        ]
+
         for file in input_files:
-            file_node, file_counter = self._add_file(file, files_dict, file_counter)
+            file_node, file_counter = self._add_file(
+                file, files_dict, file_counter
+            )
             node["has input"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                param_id_list, field_nodes = self._extract_parameters(job.rule, file, file_node)
+                param_id_list, field_nodes = self._extract_parameters(
+                    job.rule, file, file_node
+                )
                 fields_dict.update(field_nodes)
                 for param in param_id_list:
                     node["has parameter"].append({"@id": param})
 
         for file in job.output:
-            file_node, file_counter = self._add_file(file, files_dict, file_counter)
+            file_node, file_counter = self._add_file(
+                file, files_dict, file_counter
+            )
             node["has output"].append({"@id": file_node["@id"]})
 
         return node
@@ -106,7 +130,7 @@ class Reporter(ReporterBase):
             file_dict[file_path] = {
                 "@id": f"local:file_{counter}",
                 "@type": "cr:FileObject",
-                "label": file_path
+                "label": file_path,
             }
             counter += 1
         return file_dict[file_path], counter
@@ -114,7 +138,7 @@ class Reporter(ReporterBase):
     def _extract_parameters(self, rule, file, file_node):
         param_id_list = []
         field_dict = {}
-        extract_params_obj= self._load_param_extractor_obj()
+        extract_params_obj = self._load_param_extractor_obj()
         params = extract_params_obj.extract_params(rule, file)
         if params:
             params = self._validate_extract_param_output(params)
@@ -122,18 +146,25 @@ class Reporter(ReporterBase):
                 name = name.replace("-", "_")
                 param_id = ""
                 param = {
-                    "@type": "text variable" if data['data-type'] == "schema:Text" else "numerical variable",
+                    "@type": (
+                        "text variable"
+                        if data["data-type"] == "schema:Text"
+                        else "numerical variable"
+                    ),
                     "label": name,
                 }
-                if data['data-type'] == "schema:Text":
-                    param["has string value"] = data['value']
+                if data["data-type"] == "schema:Text":
+                    param["has string value"] = data["value"]
                 else:
-                    param["has numerical value"] = data['value']
-                    if data['unit']:
-                        param["has unit"] = {"@id": data['unit']}
+                    param["has numerical value"] = data["value"]
+                    if data["unit"]:
+                        param["has unit"] = {"@id": data["unit"]}
 
                 if param in self.param_dict.values():
-                    param_id = next((k for k, v in self.param_dict.items() if v == param), None)
+                    param_id = next(
+                        (k for k, v in self.param_dict.items() if v == param),
+                        None,
+                    )
                     param_id_list.append(param_id)
                 else:
                     param_id = f"local:variable_{name}_{self.param_counter}"
@@ -146,9 +177,13 @@ class Reporter(ReporterBase):
                     "represents": {"@id": param_id},
                     "source": {
                         "file object": {"@id": file_node["@id"]},
-                        "cr:extract": {"cr:jsonPath": data['json-path']}
+                        "cr:extract": {"cr:jsonPath": data["json-path"]},
                     },
-                    **({"cr:dataType": data['data-type']} if data['data-type'] else {})
+                    **(
+                        {"cr:dataType": data["data-type"]}
+                        if data["data-type"]
+                        else {}
+                    ),
                 }
                 self.field_counter += 1
         return param_id_list, field_dict
@@ -159,10 +194,14 @@ class Reporter(ReporterBase):
         if response.ok:
             self.context_data = response.json()
         else:
-            print(f"Failed to fetch context data. Status code: {response.status_code}")
+            print(
+                f"Failed to fetch context data. Status code: {response.status_code}"
+            )
 
     def _create_ttl_from_jsonld(self, data: dict):
-        Graph().parse(data=data, format="json-ld").serialize("report.ttl", format="ttl")
+        Graph().parse(data=data, format="json-ld").serialize(
+            "report.ttl", format="ttl"
+        )
 
     def _add_dependencies(self):
         pass
@@ -172,18 +211,25 @@ class Reporter(ReporterBase):
         if not script_path or not script_path.exists():
             raise FileNotFoundError(f"Script not found: {script_path}")
 
-        spec = importlib.util.spec_from_file_location("extractor_module", script_path)
+        spec = importlib.util.spec_from_file_location(
+            "extractor_module", script_path
+        )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
         extractor_class = None
         for _, obj in inspect.getmembers(module, inspect.isclass):
-            if issubclass(obj, ParameterExtractorInterface) and obj is not ParameterExtractorInterface:
+            if (
+                issubclass(obj, ParameterExtractorInterface)
+                and obj is not ParameterExtractorInterface
+            ):
                 extractor_class = obj
                 break
         if extractor_class is None:
-            raise ImportError("No subclass of ParameterExtractorInterface found in script")
-        
+            raise ImportError(
+                "No subclass of ParameterExtractorInterface found in script"
+            )
+
         return extractor_class()
 
     def _validate_extract_param_output(self, result):
@@ -194,14 +240,16 @@ class Reporter(ReporterBase):
                 raise TypeError(f"Key '{key}' must be a string.")
             if not isinstance(value, dict):
                 raise TypeError(f"Value for key '{key}' must be a dictionary.")
-            required_keys = ['value', 'unit', 'json-path', 'data-type']
+            required_keys = ["value", "unit", "json-path", "data-type"]
             for rk in required_keys:
                 if rk not in value:
-                    raise ValueError(f"Missing key '{rk}' in value for '{key}'.")
-            if value['unit'] and not isinstance(value['unit'], str):
+                    raise ValueError(
+                        f"Missing key '{rk}' in value for '{key}'."
+                    )
+            if value["unit"] and not isinstance(value["unit"], str):
                 raise TypeError(f"'unit' for '{key}' must be a string.")
-            if not isinstance(value['json-path'], str):
+            if not isinstance(value["json-path"], str):
                 raise TypeError(f"'json-path' for '{key}' must be a string.")
-            if not isinstance(value['data-type'], str):
+            if not isinstance(value["data-type"], str):
                 raise TypeError(f"'data-type' for '{key}' must be a string.")
         return result
