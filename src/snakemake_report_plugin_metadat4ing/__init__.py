@@ -203,9 +203,6 @@ class Reporter(ReporterBase):
             "report.ttl", format="ttl"
         )
 
-    def _add_dependencies(self):
-        pass
-
     def _load_param_extractor_obj(self):
         script_path = self.settings.paramscript
         if not script_path or not script_path.exists():
