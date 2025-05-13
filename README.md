@@ -17,6 +17,9 @@ Then, use it as the reporter in your Snakemake workflow:
 ```
 snakemake --reporter metadat4ing ...
 ```
+## Output Format
+
+The reporter creates 2 files, `reporter.jsonld` and `reporter.ttl` in the same directory where snakemake file is located.
 
 ## Parameter Extractor
 It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
