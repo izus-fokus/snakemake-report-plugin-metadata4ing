@@ -4,9 +4,9 @@ This project is based on the Snakemake [reporter plugin](https://github.com/snak
 
 ## Installation
 
-Install the plugin using pip (currently not working):
+Install the plugin using pip:
 ```
-pip install snakemake_report_plugin_metadat4ing
+python -m pip install git+https://github.com/M-Jafarkhani/snakemake-report-plugin-metadata4ing
 ```
 or from the source code:
 ```
