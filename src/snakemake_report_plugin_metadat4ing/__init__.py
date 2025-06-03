@@ -37,7 +37,10 @@ class Reporter(ReporterBase):
         self.param_counter = 0
         self.field_counter = 0
         self.param_dict = {}
-
+        self.conda_envs_dict = {}
+        self.tool_counter = 0
+        self.tools_dict = {}
+        
         jsonld = {
             "@context": self.context_data.get("@context", {}),
             "@graph": [],
@@ -64,7 +67,7 @@ class Reporter(ReporterBase):
             )
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
-
+            
         for key, value in self.param_dict.items():
             value["@id"] = key
 
@@ -74,6 +77,7 @@ class Reporter(ReporterBase):
             file_nodes,
             self.param_dict,
             field_nodes,
+            self.tools_dict,
         ):
             jsonld["@graph"].extend(d.values())
 
@@ -95,8 +99,9 @@ class Reporter(ReporterBase):
             "has input": [],
             "has output": [],
             "has parameter": [],
+            "has employed tool": [],
         }
-
+      
         input_files = [
             f
             for j in self.dag.jobs
@@ -104,6 +109,18 @@ class Reporter(ReporterBase):
             for f in j.input
         ]
 
+        conda_files = [
+            j.conda_env
+            for j in self.dag.jobs
+            if j.jobid == job.job.jobid
+        ]
+        
+        for conda_file in conda_files:
+            if conda_file and conda_file not in self.conda_envs_dict:
+                tools = self._extract_tools(job.rule, conda_file.content)
+                for tool in tools:
+                    node["has employed tool"].append({"@id": tool["@id"]})
+        
         for file in input_files:
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
@@ -122,6 +139,12 @@ class Reporter(ReporterBase):
                 file, files_dict, file_counter
             )
             node["has output"].append({"@id": file_node["@id"]})
+            if self.settings.paramscript:
+                param_id_list, field_nodes = self._extract_parameters(
+                    job.rule, file, file_node
+                )
+                fields_dict.update(field_nodes)
+                # param_id_list
 
         return node
 
@@ -188,6 +211,31 @@ class Reporter(ReporterBase):
                 self.field_counter += 1
         return param_id_list, field_dict
 
+    def _extract_tools(self, rule, file):
+        tools_list = []
+        extract_params_obj = self._load_param_extractor_obj()
+        tools = extract_params_obj.extract_tools(rule, file)
+        if tools:
+            tools = self._validate_extract_tools_output(tools)
+            for name, version in tools.items():
+                if name not in self.tools_dict:
+                    item = {
+                        "@id": f"local:tool_{self.tool_counter}",
+                        "@type": "prov:SoftwareAgent",
+                        "label": name,
+                        **(
+                            {"schema:softwareVersion": version}
+                            if version
+                            else {}
+                        ),
+                    }
+                    self.tools_dict[name] = item
+                    self.tool_counter += 1
+                    tools_list.append(item)
+                else:
+                    tools_list.append(self.tools_dict[name])    
+        return tools_list
+    
     def _get_context(self):
         url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
         response = requests.get(url)
@@ -249,4 +297,26 @@ class Reporter(ReporterBase):
                 raise TypeError(f"'json-path' for '{key}' must be a string.")
             if not isinstance(value["data-type"], str):
                 raise TypeError(f"'data-type' for '{key}' must be a string.")
+        return result
+    
+    def _validate_extract_tools_output(self, result):
+        if not isinstance(result, dict):
+            raise TypeError("Function output must be a dictionary.")
+        for key, value in result.items():
+            if not isinstance(key, str):
+                raise TypeError(f"Key '{key}' must be a string.")
+            # if not isinstance(value, dict):
+            #     raise TypeError(f"Value for key '{key}' must be a dictionary.")
+            # required_keys = ["value", "unit", "json-path", "data-type"]
+            # for rk in required_keys:
+            #     if rk not in value:
+            #         raise ValueError(
+            #             f"Missing key '{rk}' in value for '{key}'."
+            #         )
+            # if value["unit"] and not isinstance(value["unit"], str):
+            #     raise TypeError(f"'unit' for '{key}' must be a string.")
+            # if not isinstance(value["json-path"], str):
+            #     raise TypeError(f"'json-path' for '{key}' must be a string.")
+            # if not isinstance(value["data-type"], str):
+            #     raise TypeError(f"'data-type' for '{key}' must be a string.")
         return result

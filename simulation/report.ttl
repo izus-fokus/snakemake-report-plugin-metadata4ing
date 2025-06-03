@@ -2,6 +2,7 @@
 @prefix local: <https://local-domain.org/> .
 @prefix m4i: <http://w3id.org/nfdi4ing/metadata4ing#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix schema: <https://schema.org/> .
 @prefix sio: <http://semanticscience.org/resource/> .
@@ -56,7 +57,7 @@ local:field_element_degree_75 a cr:Field ;
             cr:extract [ cr:jsonPath "/element-degree" ] ] ;
     sio:SIO_000210 local:variable_element_degree_12 .
 
-local:field_element_degree_85 a cr:Field ;
+local:field_element_degree_88 a cr:Field ;
     cr:dataType "schema:Integer" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/element-degree" ] ] ;
@@ -110,7 +111,7 @@ local:field_element_order_74 a cr:Field ;
             cr:extract [ cr:jsonPath "/element-order" ] ] ;
     sio:SIO_000210 local:variable_element_order_11 .
 
-local:field_element_order_84 a cr:Field ;
+local:field_element_order_87 a cr:Field ;
     cr:dataType "schema:Integer" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/element-order" ] ] ;
@@ -164,7 +165,7 @@ local:field_element_size_73 a cr:Field ;
             cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
     sio:SIO_000210 local:variable_element_size_18 .
 
-local:field_element_size_83 a cr:Field ;
+local:field_element_size_86 a cr:Field ;
     cr:dataType "schema:Float" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/element-size/value" ] ] ;
@@ -218,7 +219,7 @@ local:field_length_71 a cr:Field ;
             cr:extract [ cr:jsonPath "/length/value" ] ] ;
     sio:SIO_000210 local:variable_length_1 .
 
-local:field_length_81 a cr:Field ;
+local:field_length_84 a cr:Field ;
     cr:dataType "schema:Float" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/length/value" ] ] ;
@@ -272,11 +273,53 @@ local:field_load_72 a cr:Field ;
             cr:extract [ cr:jsonPath "/load/value" ] ] ;
     sio:SIO_000210 local:variable_load_2 .
 
-local:field_load_82 a cr:Field ;
+local:field_load_85 a cr:Field ;
     cr:dataType "schema:Float" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/load/value" ] ] ;
     sio:SIO_000210 local:variable_load_2 .
+
+local:field_max_mises_stress_80 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_26 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_19 .
+
+local:field_max_mises_stress_81 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_32 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_20 .
+
+local:field_max_mises_stress_82 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_34 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_21 .
+
+local:field_max_mises_stress_93 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_39 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_22 .
+
+local:field_max_mises_stress_94 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_41 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_23 .
+
+local:field_max_mises_stress_95 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_44 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_24 .
+
+local:field_max_mises_stress_96 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_45 ;
+            cr:extract [ cr:jsonPath "/max_mises_stress" ] ] ;
+    sio:SIO_000210 local:variable_max_mises_stress_25 .
 
 local:field_poisson_ratio_19 a cr:Field ;
     cr:dataType "schema:Float" ;
@@ -320,15 +363,15 @@ local:field_poisson_ratio_79 a cr:Field ;
             cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
     sio:SIO_000210 local:variable_poisson_ratio_9 .
 
-local:field_poisson_ratio_89 a cr:Field ;
-    cr:dataType "schema:Float" ;
-    cr:source [ cr:FileObject local:file_35 ;
-            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
-    sio:SIO_000210 local:variable_poisson_ratio_9 .
-
 local:field_poisson_ratio_9 a cr:Field ;
     cr:dataType "schema:Float" ;
     cr:source [ cr:FileObject local:file_1 ;
+            cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
+    sio:SIO_000210 local:variable_poisson_ratio_9 .
+
+local:field_poisson_ratio_92 a cr:Field ;
+    cr:dataType "schema:Float" ;
+    cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/poisson-ratio/value" ] ] ;
     sio:SIO_000210 local:variable_poisson_ratio_9 .
 
@@ -380,7 +423,7 @@ local:field_quadrature_degree_77 a cr:Field ;
             cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
     sio:SIO_000210 local:variable_quadrature_degree_13 .
 
-local:field_quadrature_degree_87 a cr:Field ;
+local:field_quadrature_degree_90 a cr:Field ;
     cr:dataType "schema:Integer" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/quadrature-degree" ] ] ;
@@ -434,7 +477,7 @@ local:field_quadrature_rule_76 a cr:Field ;
             cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
     sio:SIO_000210 local:variable_quadrature_rule_6 .
 
-local:field_quadrature_rule_86 a cr:Field ;
+local:field_quadrature_rule_89 a cr:Field ;
     cr:dataType "schema:Text" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/quadrature-rule" ] ] ;
@@ -488,7 +531,7 @@ local:field_radius_70 a cr:Field ;
             cr:extract [ cr:jsonPath "/radius/value" ] ] ;
     sio:SIO_000210 local:variable_radius_0 .
 
-local:field_radius_80 a cr:Field ;
+local:field_radius_83 a cr:Field ;
     cr:dataType "schema:Float" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/radius/value" ] ] ;
@@ -542,7 +585,7 @@ local:field_young_modulus_8 a cr:Field ;
             cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
     sio:SIO_000210 local:variable_young_modulus_8 .
 
-local:field_young_modulus_88 a cr:Field ;
+local:field_young_modulus_91 a cr:Field ;
     cr:dataType "schema:Float" ;
     cr:source [ cr:FileObject local:file_35 ;
             cr:extract [ cr:jsonPath "/young-modulus/value" ] ] ;
@@ -550,7 +593,7 @@ local:field_young_modulus_88 a cr:Field ;
 
 local:processing_step_1 a m4i:ProcessingStep ;
     rdfs:label "summary_1" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_22,
         local:file_23,
         local:file_24,
@@ -561,7 +604,7 @@ local:processing_step_1 a m4i:ProcessingStep ;
 
 local:processing_step_10 a m4i:ProcessingStep ;
     rdfs:label "summary_10" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_13,
         local:file_14,
         local:file_15,
@@ -572,10 +615,16 @@ local:processing_step_10 a m4i:ProcessingStep ;
 
 local:processing_step_11 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_11" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_14,
         local:file_15 ;
     obo:RO_0002234 local:file_33 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:07.105087"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:06.762165"^^schema:DateTime .
 
@@ -586,6 +635,12 @@ local:processing_step_12 a m4i:ProcessingStep ;
         local:file_13 ;
     obo:RO_0002234 local:file_14,
         local:file_15 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_5,
         local:variable_element_order_4,
         local:variable_length_1,
@@ -600,7 +655,7 @@ local:processing_step_12 a m4i:ProcessingStep ;
 
 local:processing_step_13 a m4i:ProcessingStep ;
     rdfs:label "summary_13" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_10,
         local:file_11,
         local:file_12,
@@ -611,10 +666,16 @@ local:processing_step_13 a m4i:ProcessingStep ;
 
 local:processing_step_14 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_14" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_11,
         local:file_12 ;
     obo:RO_0002234 local:file_31 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:05.523016"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:04.325367"^^schema:DateTime .
 
@@ -625,6 +686,12 @@ local:processing_step_15 a m4i:ProcessingStep ;
         local:file_10 ;
     obo:RO_0002234 local:file_11,
         local:file_12 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_5,
         local:variable_element_order_4,
         local:variable_length_1,
@@ -639,7 +706,7 @@ local:processing_step_15 a m4i:ProcessingStep ;
 
 local:processing_step_16 a m4i:ProcessingStep ;
     rdfs:label "summary_16" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_29,
         local:file_7,
         local:file_8,
@@ -650,10 +717,16 @@ local:processing_step_16 a m4i:ProcessingStep ;
 
 local:processing_step_17 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_17" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_8,
         local:file_9 ;
     obo:RO_0002234 local:file_29 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:03.083429"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:02.739668"^^schema:DateTime .
 
@@ -664,6 +737,12 @@ local:processing_step_18 a m4i:ProcessingStep ;
         local:file_7 ;
     obo:RO_0002234 local:file_8,
         local:file_9 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_12,
         local:variable_element_order_4,
         local:variable_element_size_10,
@@ -679,7 +758,7 @@ local:processing_step_18 a m4i:ProcessingStep ;
 
 local:processing_step_19 a m4i:ProcessingStep ;
     rdfs:label "summary_19" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_27,
         local:file_4,
         local:file_5,
@@ -690,19 +769,31 @@ local:processing_step_19 a m4i:ProcessingStep ;
 
 local:processing_step_2 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_2" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_23,
         local:file_24 ;
     obo:RO_0002234 local:file_42 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:12.032759"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:11.716279"^^schema:DateTime .
 
 local:processing_step_20 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_20" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_5,
         local:file_6 ;
     obo:RO_0002234 local:file_27 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:01.486223"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:01.106382"^^schema:DateTime .
 
@@ -713,6 +804,12 @@ local:processing_step_21 a m4i:ProcessingStep ;
         local:file_4 ;
     obo:RO_0002234 local:file_5,
         local:file_6 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_length_1,
         local:variable_load_2,
         local:variable_poisson_ratio_9,
@@ -724,7 +821,7 @@ local:processing_step_21 a m4i:ProcessingStep ;
 
 local:processing_step_22 a m4i:ProcessingStep ;
     rdfs:label "summary_22" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_1,
         local:file_2,
         local:file_25,
@@ -735,10 +832,16 @@ local:processing_step_22 a m4i:ProcessingStep ;
 
 local:processing_step_23 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_23" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_2,
         local:file_3 ;
     obo:RO_0002234 local:file_25 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:43:59.758811"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:44.265480"^^schema:DateTime .
 
@@ -749,12 +852,18 @@ local:processing_step_24 a m4i:ProcessingStep ;
         local:file_1 ;
     obo:RO_0002234 local:file_2,
         local:file_3 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:43:42.420089"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:38.691962"^^schema:DateTime .
 
 local:processing_step_25 a m4i:ProcessingStep ;
     rdfs:label "summary_25" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_35,
         local:file_36,
         local:file_37,
@@ -765,10 +874,16 @@ local:processing_step_25 a m4i:ProcessingStep ;
 
 local:processing_step_26 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_26" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_36,
         local:file_37 ;
     obo:RO_0002234 local:file_38 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:08.881063"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:08.546540"^^schema:DateTime .
 
@@ -779,6 +894,12 @@ local:processing_step_27 a m4i:ProcessingStep ;
         local:file_35 ;
     obo:RO_0002234 local:file_36,
         local:file_37 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_5,
         local:variable_element_order_4,
         local:variable_element_size_10,
@@ -799,6 +920,12 @@ local:processing_step_3 a m4i:ProcessingStep ;
         local:file_22 ;
     obo:RO_0002234 local:file_23,
         local:file_24 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_12,
         local:variable_element_order_11,
         local:variable_length_1,
@@ -813,7 +940,7 @@ local:processing_step_3 a m4i:ProcessingStep ;
 
 local:processing_step_4 a m4i:ProcessingStep ;
     rdfs:label "summary_4" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_19,
         local:file_20,
         local:file_21,
@@ -824,10 +951,16 @@ local:processing_step_4 a m4i:ProcessingStep ;
 
 local:processing_step_5 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_5" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_20,
         local:file_21 ;
     obo:RO_0002234 local:file_43 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:12.508217"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:12.043457"^^schema:DateTime .
 
@@ -838,6 +971,12 @@ local:processing_step_6 a m4i:ProcessingStep ;
         local:file_19 ;
     obo:RO_0002234 local:file_20,
         local:file_21 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_5,
         local:variable_element_order_4,
         local:variable_length_1,
@@ -852,7 +991,7 @@ local:processing_step_6 a m4i:ProcessingStep ;
 
 local:processing_step_7 a m4i:ProcessingStep ;
     rdfs:label "summary_7" ;
-    obo:BFO_0000050 local:main_processing_step_2 ;
+    obo:BFO_0000050 local:main_processing_step_0 ;
     obo:RO_0002233 local:file_16,
         local:file_17,
         local:file_18,
@@ -863,10 +1002,16 @@ local:processing_step_7 a m4i:ProcessingStep ;
 
 local:processing_step_8 a m4i:ProcessingStep ;
     rdfs:label "run_simulation_8" ;
-    obo:BFO_0000050 local:main_processing_step_0 ;
+    obo:BFO_0000050 local:main_processing_step_2 ;
     obo:RO_0002233 local:file_17,
         local:file_18 ;
     obo:RO_0002234 local:file_40 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     schema:endTime "2025-05-08 17:44:10.457065"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:44:10.134780"^^schema:DateTime .
 
@@ -877,6 +1022,12 @@ local:processing_step_9 a m4i:ProcessingStep ;
         local:file_16 ;
     obo:RO_0002234 local:file_17,
         local:file_18 ;
+    m4i:hasEmployedTool local:tool_0,
+        local:tool_1,
+        local:tool_2,
+        local:tool_3,
+        local:tool_4,
+        local:tool_5 ;
     m4i:hasParameter local:variable_element_degree_5,
         local:variable_element_order_4,
         local:variable_length_1,
@@ -889,32 +1040,11 @@ local:processing_step_9 a m4i:ProcessingStep ;
     schema:endTime "2025-05-08 17:43:43.781201"^^schema:DateTime ;
     schema:startTime "2025-05-08 17:43:43.595218"^^schema:DateTime .
 
-local:file_26 a cr:FileObject ;
-    rdfs:label "summary_003125.json" .
-
 local:file_28 a cr:FileObject ;
     rdfs:label "summary_geo2fun2fine.json" .
 
 local:file_30 a cr:FileObject ;
     rdfs:label "summary_geo1fun2.json" .
-
-local:file_32 a cr:FileObject ;
-    rdfs:label "summary_00625.json" .
-
-local:file_34 a cr:FileObject ;
-    rdfs:label "summary_025.json" .
-
-local:file_39 a cr:FileObject ;
-    rdfs:label "summary_1.json" .
-
-local:file_41 a cr:FileObject ;
-    rdfs:label "summary_05.json" .
-
-local:file_44 a cr:FileObject ;
-    rdfs:label "summary_0125.json" .
-
-local:file_45 a cr:FileObject ;
-    rdfs:label "summary_geo2fun2.json" .
 
 local:variable_element_size_14 a m4i:NumericalVariable ;
     rdfs:label "element_size" ;
@@ -946,8 +1076,39 @@ local:variable_element_size_3 a m4i:NumericalVariable ;
     m4i:hasNumericalValue 3.125e-03 ;
     m4i:hasUnit units:m .
 
+local:variable_max_mises_stress_19 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 2.981001e+08 .
+
+local:variable_max_mises_stress_20 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 2.96148e+08 .
+
+local:variable_max_mises_stress_21 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 2.830879e+08 .
+
+local:variable_max_mises_stress_22 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 2.262704e+08 .
+
+local:variable_max_mises_stress_23 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 2.63992e+08 .
+
+local:variable_max_mises_stress_24 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 2.916621e+08 .
+
+local:variable_max_mises_stress_25 a m4i:NumericalVariable ;
+    rdfs:label "max_mises_stress" ;
+    m4i:hasNumericalValue 1.973918e+08 .
+
 local:file_25 a cr:FileObject ;
     rdfs:label "data/output_003125.vtk" .
+
+local:file_26 a cr:FileObject ;
+    rdfs:label "summary_003125.json" .
 
 local:file_27 a cr:FileObject ;
     rdfs:label "data/output_geo2fun2fine.vtk" .
@@ -958,20 +1119,38 @@ local:file_29 a cr:FileObject ;
 local:file_31 a cr:FileObject ;
     rdfs:label "data/output_00625.vtk" .
 
+local:file_32 a cr:FileObject ;
+    rdfs:label "summary_00625.json" .
+
 local:file_33 a cr:FileObject ;
     rdfs:label "data/output_025.vtk" .
+
+local:file_34 a cr:FileObject ;
+    rdfs:label "summary_025.json" .
 
 local:file_38 a cr:FileObject ;
     rdfs:label "data/output_1.vtk" .
 
+local:file_39 a cr:FileObject ;
+    rdfs:label "summary_1.json" .
+
 local:file_40 a cr:FileObject ;
     rdfs:label "data/output_05.vtk" .
+
+local:file_41 a cr:FileObject ;
+    rdfs:label "summary_05.json" .
 
 local:file_42 a cr:FileObject ;
     rdfs:label "data/output_geo2fun2.vtk" .
 
 local:file_43 a cr:FileObject ;
     rdfs:label "data/output_0125.vtk" .
+
+local:file_44 a cr:FileObject ;
+    rdfs:label "summary_0125.json" .
+
+local:file_45 a cr:FileObject ;
+    rdfs:label "summary_geo2fun2.json" .
 
 local:file_11 a cr:FileObject ;
     rdfs:label "data/input_00625.json" .
@@ -1048,13 +1227,13 @@ local:file_0 a cr:FileObject ;
     rdfs:label "experiment.json" .
 
 local:main_processing_step_0 a m4i:ProcessingStep ;
-    rdfs:label "run_simulation" .
+    rdfs:label "summary" .
 
 local:main_processing_step_1 a m4i:ProcessingStep ;
     rdfs:label "generate_input_files" .
 
 local:main_processing_step_2 a m4i:ProcessingStep ;
-    rdfs:label "summary" .
+    rdfs:label "run_simulation" .
 
 local:variable_element_degree_5 a m4i:NumericalVariable ;
     rdfs:label "element_degree" ;
@@ -1122,4 +1301,24 @@ local:variable_young_modulus_8 a m4i:NumericalVariable ;
     rdfs:label "young_modulus" ;
     m4i:hasNumericalValue 2.1e+11 ;
     m4i:hasUnit units:PA .
+
+local:tool_0 a prov:SoftwareAgent ;
+    rdfs:label "python" ;
+    schema:softwareVersion ">=3.10" .
+
+local:tool_1 a prov:SoftwareAgent ;
+    rdfs:label "fenics-dolfinx" .
+
+local:tool_2 a prov:SoftwareAgent ;
+    rdfs:label "libadios2" ;
+    schema:softwareVersion "=2.10.1" .
+
+local:tool_3 a prov:SoftwareAgent ;
+    rdfs:label "petsc4py" .
+
+local:tool_4 a prov:SoftwareAgent ;
+    rdfs:label "python-gmsh" .
+
+local:tool_5 a prov:SoftwareAgent ;
+    rdfs:label "pint" .
 

@@ -1145,7 +1145,7 @@
         {
             "@id": "local:main_processing_step_0",
             "@type": "processing step",
-            "label": "run_simulation"
+            "label": "summary"
         },
         {
             "@id": "local:main_processing_step_1",
@@ -1155,7 +1155,7 @@
         {
             "@id": "local:main_processing_step_2",
             "@type": "processing step",
-            "label": "summary"
+            "label": "run_simulation"
         },
         {
             "@id": "local:processing_step_24",
@@ -1182,7 +1182,27 @@
                     "@id": "local:file_3"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_21",
@@ -1227,6 +1247,26 @@
                 },
                 {
                     "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
                 }
             ]
         },
@@ -1286,6 +1326,26 @@
                 {
                     "@id": "local:variable_poisson_ratio_9"
                 }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
             ]
         },
         {
@@ -1340,6 +1400,26 @@
                 },
                 {
                     "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
                 }
             ]
         },
@@ -1396,6 +1476,26 @@
                 {
                     "@id": "local:variable_poisson_ratio_9"
                 }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
             ]
         },
         {
@@ -1450,6 +1550,26 @@
                 },
                 {
                     "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
                 }
             ]
         },
@@ -1506,6 +1626,26 @@
                 {
                     "@id": "local:variable_poisson_ratio_9"
                 }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
             ]
         },
         {
@@ -1561,6 +1701,26 @@
                 {
                     "@id": "local:variable_poisson_ratio_9"
                 }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
             ]
         },
         {
@@ -1568,7 +1728,7 @@
             "@type": "processing step",
             "label": "run_simulation_23",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:43:44.265480",
             "end time": "2025-05-08 17:43:59.758811",
@@ -1585,14 +1745,34 @@
                     "@id": "local:file_25"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_22",
             "@type": "processing step",
             "label": "summary_22",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:00.019030",
             "end time": "2025-05-08 17:44:01.092781",
@@ -1615,14 +1795,15 @@
                     "@id": "local:file_26"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_20",
             "@type": "processing step",
             "label": "run_simulation_20",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:01.106382",
             "end time": "2025-05-08 17:44:01.486223",
@@ -1639,14 +1820,34 @@
                     "@id": "local:file_27"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_19",
             "@type": "processing step",
             "label": "summary_19",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:01.667889",
             "end time": "2025-05-08 17:44:02.726419",
@@ -1669,14 +1870,15 @@
                     "@id": "local:file_28"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_17",
             "@type": "processing step",
             "label": "run_simulation_17",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:02.739668",
             "end time": "2025-05-08 17:44:03.083429",
@@ -1693,14 +1895,34 @@
                     "@id": "local:file_29"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_16",
             "@type": "processing step",
             "label": "summary_16",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:03.263660",
             "end time": "2025-05-08 17:44:04.312575",
@@ -1723,14 +1945,15 @@
                     "@id": "local:file_30"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_14",
             "@type": "processing step",
             "label": "run_simulation_14",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:04.325367",
             "end time": "2025-05-08 17:44:05.523016",
@@ -1747,14 +1970,34 @@
                     "@id": "local:file_31"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_13",
             "@type": "processing step",
             "label": "summary_13",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:05.705026",
             "end time": "2025-05-08 17:44:06.750276",
@@ -1777,14 +2020,15 @@
                     "@id": "local:file_32"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_11",
             "@type": "processing step",
             "label": "run_simulation_11",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:06.762165",
             "end time": "2025-05-08 17:44:07.105087",
@@ -1801,14 +2045,34 @@
                     "@id": "local:file_33"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_10",
             "@type": "processing step",
             "label": "summary_10",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:07.285741",
             "end time": "2025-05-08 17:44:08.333978",
@@ -1831,7 +2095,8 @@
                     "@id": "local:file_34"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_27",
@@ -1889,6 +2154,26 @@
                 {
                     "@id": "local:variable_poisson_ratio_9"
                 }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
             ]
         },
         {
@@ -1896,7 +2181,7 @@
             "@type": "processing step",
             "label": "run_simulation_26",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:08.546540",
             "end time": "2025-05-08 17:44:08.881063",
@@ -1913,14 +2198,34 @@
                     "@id": "local:file_38"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_25",
             "@type": "processing step",
             "label": "summary_25",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:09.062034",
             "end time": "2025-05-08 17:44:10.121734",
@@ -1943,14 +2248,15 @@
                     "@id": "local:file_39"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_8",
             "@type": "processing step",
             "label": "run_simulation_8",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:10.134780",
             "end time": "2025-05-08 17:44:10.457065",
@@ -1967,14 +2273,34 @@
                     "@id": "local:file_40"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_7",
             "@type": "processing step",
             "label": "summary_7",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:10.639225",
             "end time": "2025-05-08 17:44:11.702906",
@@ -1997,14 +2323,15 @@
                     "@id": "local:file_41"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_2",
             "@type": "processing step",
             "label": "run_simulation_2",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:11.716279",
             "end time": "2025-05-08 17:44:12.032759",
@@ -2021,14 +2348,34 @@
                     "@id": "local:file_42"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_5",
             "@type": "processing step",
             "label": "run_simulation_5",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-05-08 17:44:12.043457",
             "end time": "2025-05-08 17:44:12.508217",
@@ -2045,14 +2392,34 @@
                     "@id": "local:file_43"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
         },
         {
             "@id": "local:processing_step_4",
             "@type": "processing step",
             "label": "summary_4",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:12.692080",
             "end time": "2025-05-08 17:44:13.748170",
@@ -2075,14 +2442,15 @@
                     "@id": "local:file_44"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:processing_step_1",
             "@type": "processing step",
             "label": "summary_1",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-05-08 17:44:13.920081",
             "end time": "2025-05-08 17:44:14.963284",
@@ -2105,7 +2473,8 @@
                     "@id": "local:file_45"
                 }
             ],
-            "has parameter": []
+            "has parameter": [],
+            "has employed tool": []
         },
         {
             "@id": "local:file_0",
@@ -2483,6 +2852,48 @@
                 "@id": "units:m"
             },
             "@id": "local:variable_element_size_18"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 298100064.0,
+            "@id": "local:variable_max_mises_stress_19"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 296148032.0,
+            "@id": "local:variable_max_mises_stress_20"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 283087904.0,
+            "@id": "local:variable_max_mises_stress_21"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 226270384.0,
+            "@id": "local:variable_max_mises_stress_22"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 263992000.0,
+            "@id": "local:variable_max_mises_stress_23"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 291662080.0,
+            "@id": "local:variable_max_mises_stress_24"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 197391808.0,
+            "@id": "local:variable_max_mises_stress_25"
         },
         {
             "@id": "local:field_radius_0",
@@ -3765,7 +4176,55 @@
             "cr:dataType": "schema:Float"
         },
         {
-            "@id": "local:field_radius_80",
+            "@id": "local:field_max_mises_stress_80",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_19"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_26"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_81",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_20"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_32"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_82",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_21"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_34"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_83",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_radius_0"
@@ -3781,7 +4240,7 @@
             "cr:dataType": "schema:Float"
         },
         {
-            "@id": "local:field_length_81",
+            "@id": "local:field_length_84",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_length_1"
@@ -3797,7 +4256,7 @@
             "cr:dataType": "schema:Float"
         },
         {
-            "@id": "local:field_load_82",
+            "@id": "local:field_load_85",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_load_2"
@@ -3813,7 +4272,7 @@
             "cr:dataType": "schema:Float"
         },
         {
-            "@id": "local:field_element_size_83",
+            "@id": "local:field_element_size_86",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_size_10"
@@ -3829,7 +4288,7 @@
             "cr:dataType": "schema:Float"
         },
         {
-            "@id": "local:field_element_order_84",
+            "@id": "local:field_element_order_87",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_order_4"
@@ -3845,7 +4304,7 @@
             "cr:dataType": "schema:Integer"
         },
         {
-            "@id": "local:field_element_degree_85",
+            "@id": "local:field_element_degree_88",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_element_degree_5"
@@ -3861,7 +4320,7 @@
             "cr:dataType": "schema:Integer"
         },
         {
-            "@id": "local:field_quadrature_rule_86",
+            "@id": "local:field_quadrature_rule_89",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_rule_6"
@@ -3877,7 +4336,7 @@
             "cr:dataType": "schema:Text"
         },
         {
-            "@id": "local:field_quadrature_degree_87",
+            "@id": "local:field_quadrature_degree_90",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_quadrature_degree_7"
@@ -3893,7 +4352,7 @@
             "cr:dataType": "schema:Integer"
         },
         {
-            "@id": "local:field_young_modulus_88",
+            "@id": "local:field_young_modulus_91",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_young_modulus_8"
@@ -3909,7 +4368,7 @@
             "cr:dataType": "schema:Float"
         },
         {
-            "@id": "local:field_poisson_ratio_89",
+            "@id": "local:field_poisson_ratio_92",
             "@type": "Field",
             "represents": {
                 "@id": "local:variable_poisson_ratio_9"
@@ -3923,6 +4382,102 @@
                 }
             },
             "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_93",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_22"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_39"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_94",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_23"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_41"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_95",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_24"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_44"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_96",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_25"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_45"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:tool_0",
+            "@type": "prov:SoftwareAgent",
+            "label": "python",
+            "schema:softwareVersion": ">=3.10"
+        },
+        {
+            "@id": "local:tool_1",
+            "@type": "prov:SoftwareAgent",
+            "label": "fenics-dolfinx"
+        },
+        {
+            "@id": "local:tool_2",
+            "@type": "prov:SoftwareAgent",
+            "label": "libadios2",
+            "schema:softwareVersion": "=2.10.1"
+        },
+        {
+            "@id": "local:tool_3",
+            "@type": "prov:SoftwareAgent",
+            "label": "petsc4py"
+        },
+        {
+            "@id": "local:tool_4",
+            "@type": "prov:SoftwareAgent",
+            "label": "python-gmsh"
+        },
+        {
+            "@id": "local:tool_5",
+            "@type": "prov:SoftwareAgent",
+            "label": "pint"
         }
     ]
 }
