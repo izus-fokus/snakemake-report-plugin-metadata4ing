@@ -1,0 +1,4483 @@
+{
+    "@context": {
+        "@vocab": "http://w3id.org/nfdi4ing/metadata4ing#",
+        "brick": "https://brickschema.org/schema/Brick#",
+        "csvw": "http://www.w3.org/ns/csvw#",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "dcat": "http://www.w3.org/ns/dcat#",
+        "dcmitype": "http://purl.org/dc/dcmitype/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dcam": "http://purl.org/dc/dcam/",
+        "doap": "http://usefulinc.com/ns/doap#",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "geo": "http://www.opengis.net/ont/geosparql#",
+        "odrl": "http://www.w3.org/ns/odrl/2/",
+        "org": "http://www.w3.org/ns/org#",
+        "prof": "http://www.w3.org/ns/dx/prof/",
+        "prov": "http://www.w3.org/ns/prov#",
+        "qb": "http://purl.org/linked-data/cube#",
+        "schema": "https://schema.org/",
+        "sh": "http://www.w3.org/ns/shacl#",
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "sosa": "http://www.w3.org/ns/sosa/",
+        "ssn": "http://www.w3.org/ns/ssn/",
+        "time": "http://www.w3.org/2006/time#",
+        "vann": "http://purl.org/vocab/vann/",
+        "void": "http://rdfs.org/ns/void#",
+        "wgs": "https://www.w3.org/2003/01/geo/wgs84_pos#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "xml": "http://www.w3.org/XML/1998/namespace",
+        "m4i": "http://w3id.org/nfdi4ing/metadata4ing#",
+        "bibo": "http://purl.org/ontology/bibo/",
+        "biro": "http://purl.org/spar/biro/",
+        "cr": "http://mlcommons.org/croissant/",
+        "dcc": "https://ptb.de/dcc/",
+        "emmo": "http://emmo.info/emmo#",
+        "mod": "https://w3id.org/mod#",
+        "obo": "http://purl.obolibrary.org/obo/",
+        "pims-ii": "http://www.molmod.info/semantics/pims-ii.ttl#",
+        "premis": "http://www.loc.gov/premis/rdf/v3/",
+        "qudt": "http://qudt.org/schema/qudt/",
+        "si": "https://ptb.de/si/",
+        "sio": "http://semanticscience.org/resource/",
+        "voaf": "http://purl.org/vocommons/voaf#",
+        "label": {
+            "@id": "rdfs:label"
+        },
+        "comment": {
+            "@id": "rdfs:comment"
+        },
+        "Field": {
+            "@id": "cr:Field"
+        },
+        "Feld": {
+            "@id": "cr:Field"
+        },
+        "file object": {
+            "@id": "cr:FileObject"
+        },
+        "Dateiobject": {
+            "@id": "cr:FileObject"
+        },
+        "file set": {
+            "@id": "cr:FileSet"
+        },
+        "Dateimenge": {
+            "@id": "cr:FileSet"
+        },
+        "record set": {
+            "@id": "cr:RecordSet"
+        },
+        "Menge von Einträgen": {
+            "@id": "cr:RecordSet"
+        },
+        "Prozess": {
+            "@id": "obo:BFO_0000015"
+        },
+        "process": {
+            "@id": "obo:BFO_0000015"
+        },
+        "realisierbare Entität": {
+            "@id": "obo:BFO_0000017"
+        },
+        "realizable entity": {
+            "@id": "obo:BFO_0000017"
+        },
+        "bibliografischer Eintrag": {
+            "@id": "biro:BibliographicRecord"
+        },
+        "bibliographic record": {
+            "@id": "biro:BibliographicRecord"
+        },
+        "Größenart": {
+            "@id": "qudt:QuantityKind"
+        },
+        "quantity kind": {
+            "@id": "qudt:QuantityKind"
+        },
+        "Einheit": {
+            "@id": "qudt:Unit"
+        },
+        "unit": {
+            "@id": "qudt:Unit"
+        },
+        "Methode": {
+            "@id": "m4i:Method"
+        },
+        "method": {
+            "@id": "m4i:Method"
+        },
+        "numerical assignment": {
+            "@id": "m4i:NumericalAssignment"
+        },
+        "numerische Zuweisung": {
+            "@id": "m4i:NumericalAssignment"
+        },
+        "numerical variable": {
+            "@id": "m4i:NumericalVariable"
+        },
+        "numerische Variable": {
+            "@id": "m4i:NumericalVariable"
+        },
+        "Arbeitsschritt": {
+            "@id": "m4i:ProcessingStep"
+        },
+        "processing step": {
+            "@id": "m4i:ProcessingStep"
+        },
+        "text variable": {
+            "@id": "m4i:TextVariable"
+        },
+        "textbasierte Variable": {
+            "@id": "m4i:TextVariable"
+        },
+        "Werkzeug": {
+            "@id": "m4i:Tool"
+        },
+        "tool": {
+            "@id": "m4i:Tool"
+        },
+        "Unsicherheitsdeklaration": {
+            "@id": "m4i:UncertaintyDeclaration"
+        },
+        "uncertainty declaration": {
+            "@id": "m4i:UncertaintyDeclaration"
+        },
+        "assignment": {
+            "@id": "pims-ii:Assignment"
+        },
+        "Zuweisung": {
+            "@id": "pims-ii:Assignment"
+        },
+        "Eigenschaft": {
+            "@id": "pims-ii:Property"
+        },
+        "property": {
+            "@id": "pims-ii:Property"
+        },
+        "Größenwert": {
+            "@id": "pims-ii:QuantityValue"
+        },
+        "quantity value": {
+            "@id": "pims-ii:QuantityValue"
+        },
+        "value": {
+            "@id": "pims-ii:Value"
+        },
+        "Wert": {
+            "@id": "pims-ii:Value"
+        },
+        "Variable": {
+            "@id": "pims-ii:Variable"
+        },
+        "variable": {
+            "@id": "pims-ii:Variable"
+        },
+        "Datensatz": {
+            "@id": "dcat:Dataset"
+        },
+        "dataset": {
+            "@id": "dcat:Dataset"
+        },
+        "Datensatzserie": {
+            "@id": "dcat:DatasetSeries"
+        },
+        "dataset series": {
+            "@id": "dcat:DatasetSeries"
+        },
+        "Verteilung": {
+            "@id": "dcat:Distribution"
+        },
+        "distribution": {
+            "@id": "dcat:Distribution"
+        },
+        "activity": {
+            "@id": "prov:Activity"
+        },
+        "Aktivität": {
+            "@id": "prov:Activity"
+        },
+        "Akteur": {
+            "@id": "prov:Agent"
+        },
+        "agent": {
+            "@id": "prov:Agent"
+        },
+        "association": {
+            "@id": "prov:Association"
+        },
+        "Verknüpfung": {
+            "@id": "prov:Association"
+        },
+        "Organisation": {
+            "@id": "prov:Organization"
+        },
+        "organization": {
+            "@id": "prov:Organization"
+        },
+        "Person": {
+            "@id": "prov:Person"
+        },
+        "person": {
+            "@id": "prov:Person"
+        },
+        "role": {
+            "@id": "prov:Role"
+        },
+        "Rolle des Akteurs": {
+            "@id": "prov:Role"
+        },
+        "Software-Akteur": {
+            "@id": "prov:SoftwareAgent"
+        },
+        "software agent": {
+            "@id": "prov:SoftwareAgent"
+        },
+        "coverage interval": {
+            "@id": "si:CoverageInterval"
+        },
+        "Überdeckungsintervall": {
+            "@id": "si:CoverageInterval"
+        },
+        "erweiterte Unsicherheit": {
+            "@id": "si:ExpandedUnc"
+        },
+        "expanded uncertainty": {
+            "@id": "si:ExpandedUnc"
+        },
+        "real": {
+            "@id": "si:Real"
+        },
+        "Reell": {
+            "@id": "si:Real"
+        },
+        "intangible": {
+            "@id": "schema:Intangible"
+        },
+        "Ungreifbares": {
+            "@id": "schema:Intangible"
+        },
+        "project": {
+            "@id": "schema:Project"
+        },
+        "Projekt": {
+            "@id": "schema:Project"
+        },
+        "Forschungsprojekt": {
+            "@id": "schema:ResearchProject"
+        },
+        "research project": {
+            "@id": "schema:ResearchProject"
+        },
+        "Beschreibung": {
+            "@id": "dcterms:description"
+        },
+        "description": {
+            "@id": "dcterms:description"
+        },
+        "is referenced by": {
+            "@id": "dcterms:isReferencedBy"
+        },
+        "ist referenziert von": {
+            "@id": "dcterms:isReferencedBy"
+        },
+        "references": {
+            "@id": "dcterms:references"
+        },
+        "referenziert": {
+            "@id": "dcterms:references"
+        },
+        "Titel": {
+            "@id": "dcterms:title"
+        },
+        "title": {
+            "@id": "dcterms:title"
+        },
+        "Organisationszugehörigkeit": {
+            "@id": "schema:affiliation"
+        },
+        "affiliation": {
+            "@id": "schema:affiliation"
+        },
+        "Förderer": {
+            "@id": "schema:funder"
+        },
+        "funder": {
+            "@id": "schema:funder"
+        },
+        "Formel": {
+            "@id": "dcc:formulaType"
+        },
+        "formula": {
+            "@id": "dcc:formulaType"
+        },
+        "date with time": {
+            "@id": "schema:DateTime"
+        },
+        "Datum mit Zeit": {
+            "@id": "schema:DateTime"
+        },
+        "Teil von": {
+            "@id": "obo:BFO_0000050"
+        },
+        "part of": {
+            "@id": "obo:BFO_0000050"
+        },
+        "has part": {
+            "@id": "obo:BFO_0000051"
+        },
+        "hat Teil": {
+            "@id": "obo:BFO_0000051"
+        },
+        "realisiert in": {
+            "@id": "obo:BFO_0000054",
+            "@type": "obo:BFO_0000015"
+        },
+        "realized in": {
+            "@id": "obo:BFO_0000054",
+            "@type": "obo:BFO_0000015"
+        },
+        "realisiert": {
+            "@id": "obo:BFO_0000055",
+            "@type": "obo:BFO_0000017"
+        },
+        "realizes": {
+            "@id": "obo:BFO_0000055",
+            "@type": "obo:BFO_0000017"
+        },
+        "findet statt vor": {
+            "@id": "obo:BFO_0000063",
+            "@type": "obo:BFO_0000015"
+        },
+        "precedes": {
+            "@id": "obo:BFO_0000063",
+            "@type": "obo:BFO_0000015"
+        },
+        "ist beteiligt an": {
+            "@id": "prov:wasAssociateFor"
+        },
+        "participates in": {
+            "@id": "prov:wasAssociateFor"
+        },
+        "has participant": {
+            "@id": "prov:wasAssociatedWith",
+            "@type": "prov:Agent"
+        },
+        "hat Teilnehmer": {
+            "@id": "prov:wasAssociatedWith",
+            "@type": "prov:Agent"
+        },
+        "immediately precedes": {
+            "@id": "obo:RO_0002090",
+            "@type": "obo:BFO_0000015"
+        },
+        "findet statt unmittelbar vor": {
+            "@id": "obo:RO_0002090",
+            "@type": "obo:BFO_0000015"
+        },
+        "beginnt mit": {
+            "@id": "obo:RO_0002224",
+            "@type": "m4i:ProcessingStep"
+        },
+        "starts with": {
+            "@id": "obo:RO_0002224",
+            "@type": "m4i:ProcessingStep"
+        },
+        "endet mit": {
+            "@id": "obo:RO_0002230",
+            "@type": "m4i:ProcessingStep"
+        },
+        "ends with": {
+            "@id": "obo:RO_0002230",
+            "@type": "m4i:ProcessingStep"
+        },
+        "has input": {
+            "@id": "obo:RO_0002233"
+        },
+        "hat Input": {
+            "@id": "obo:RO_0002233"
+        },
+        "has output": {
+            "@id": "obo:RO_0002234"
+        },
+        "hat Output": {
+            "@id": "obo:RO_0002234"
+        },
+        "Input von": {
+            "@id": "obo:RO_0002352"
+        },
+        "input of": {
+            "@id": "obo:RO_0002352"
+        },
+        "Output von": {
+            "@id": "obo:RO_0002353"
+        },
+        "output of": {
+            "@id": "obo:RO_0002353"
+        },
+        "has admissible unit": {
+            "@id": "m4i:hasAdmissibleUnit",
+            "@type": "qudt:Unit"
+        },
+        "hat als zulässige Einheit": {
+            "@id": "m4i:hasAdmissibleUnit",
+            "@type": "qudt:Unit"
+        },
+        "has admissible value": {
+            "@id": "m4i:hasAdmissibleValue",
+            "@type": "pims-ii:Value"
+        },
+        "hat als zulässigen Wert": {
+            "@id": "m4i:hasAdmissibleValue",
+            "@type": "pims-ii:Value"
+        },
+        "has assigned value": {
+            "@id": "m4i:hasAssignedValue",
+            "@type": "pims-ii:Value"
+        },
+        "hat zugewiesenen Wert": {
+            "@id": "m4i:hasAssignedValue",
+            "@type": "pims-ii:Value"
+        },
+        "has coverage interval": {
+            "@id": "m4i:hasCoverageInterval",
+            "@type": "si:CoverageInterval"
+        },
+        "hat Überdeckungsintervall": {
+            "@id": "m4i:hasCoverageInterval",
+            "@type": "si:CoverageInterval"
+        },
+        "has employed tool": {
+            "@id": "m4i:hasEmployedTool",
+            "@type": "m4i:Tool"
+        },
+        "hat eingesetztes Werkzeug": {
+            "@id": "m4i:hasEmployedTool",
+            "@type": "m4i:Tool"
+        },
+        "has expanded uncertainty": {
+            "@id": "m4i:hasExpandedUnc",
+            "@type": "si:ExpandedUnc"
+        },
+        "hat erweiterte Unsicherheit": {
+            "@id": "m4i:hasExpandedUnc",
+            "@type": "si:ExpandedUnc"
+        },
+        "has kind of quantity": {
+            "@id": "m4i:hasKindOfQuantity",
+            "@type": "qudt:QuantityKind"
+        },
+        "hat Größenart": {
+            "@id": "m4i:hasKindOfQuantity",
+            "@type": "qudt:QuantityKind"
+        },
+        "has parameter": {
+            "@id": "m4i:hasParameter",
+            "@type": "pims-ii:Variable"
+        },
+        "hat Parameter": {
+            "@id": "m4i:hasParameter",
+            "@type": "pims-ii:Variable"
+        },
+        "has runtime assignment": {
+            "@id": "m4i:hasRuntimeAssignment",
+            "@type": "pims-ii:Assignment"
+        },
+        "hat Laufzeitzuweisung": {
+            "@id": "m4i:hasRuntimeAssignment",
+            "@type": "pims-ii:Assignment"
+        },
+        "has uncertainty declaration": {
+            "@id": "m4i:hasUncertaintyDeclaration",
+            "@type": "m4i:UncertaintyDeclaration"
+        },
+        "hat Unsicherheitsdeklaration": {
+            "@id": "m4i:hasUncertaintyDeclaration",
+            "@type": "m4i:UncertaintyDeclaration"
+        },
+        "has unit": {
+            "@id": "m4i:hasUnit",
+            "@type": "qudt:Unit"
+        },
+        "hat Einheit": {
+            "@id": "m4i:hasUnit",
+            "@type": "qudt:Unit"
+        },
+        "has variable": {
+            "@id": "m4i:hasVariable",
+            "@type": "pims-ii:Variable"
+        },
+        "hat Variable": {
+            "@id": "m4i:hasVariable",
+            "@type": "pims-ii:Variable"
+        },
+        "implemented by": {
+            "@id": "ssn:implementedBy"
+        },
+        "wird implementiert durch": {
+            "@id": "ssn:implementedBy"
+        },
+        "implementiert": {
+            "@id": "ssn:implements"
+        },
+        "implements": {
+            "@id": "ssn:implements"
+        },
+        "associated to project": {
+            "@id": "m4i:inProject",
+            "@type": "schema:Project"
+        },
+        "gehört zu Projekt": {
+            "@id": "m4i:inProject",
+            "@type": "schema:Project"
+        },
+        "investigates": {
+            "@id": "m4i:investigates",
+            "@type": "owl:Thing"
+        },
+        "untersucht": {
+            "@id": "m4i:investigates",
+            "@type": "owl:Thing"
+        },
+        "investigates property": {
+            "@id": "m4i:investigatesProperty",
+            "@type": "pims-ii:Property"
+        },
+        "untersucht Eigenschaft": {
+            "@id": "m4i:investigatesProperty",
+            "@type": "pims-ii:Property"
+        },
+        "is employed tool": {
+            "@id": "m4i:isEmployedToolIn",
+            "@type": "m4i:ProcessingStep"
+        },
+        "ist eingesetztes Werkzeug": {
+            "@id": "m4i:isEmployedToolIn",
+            "@type": "m4i:ProcessingStep"
+        },
+        "hat Projektmitglied": {
+            "@id": "m4i:projectParticipant"
+        },
+        "project participant": {
+            "@id": "m4i:projectParticipant"
+        },
+        "realisiert Methode": {
+            "@id": "m4i:realizesMethod",
+            "@type": "m4i:Method"
+        },
+        "realizes method": {
+            "@id": "m4i:realizesMethod",
+            "@type": "m4i:Method"
+        },
+        "repräsentiert Variable": {
+            "@id": "m4i:representsVariable",
+            "@type": "pims-ii:Variable"
+        },
+        "represents variable": {
+            "@id": "m4i:representsVariable",
+            "@type": "pims-ii:Variable"
+        },
+        "is related to": {
+            "@id": "sio:SIO_000001"
+        },
+        "ist verwandt mit": {
+            "@id": "sio:SIO_000001"
+        },
+        "repräsentiert": {
+            "@id": "sio:SIO_000210"
+        },
+        "represents": {
+            "@id": "sio:SIO_000210"
+        },
+        "bezieht sich auf": {
+            "@id": "sio:SIO_000628"
+        },
+        "refers to": {
+            "@id": "sio:SIO_000628"
+        },
+        "is admissible unit for": {
+            "@id": "pims-ii:isAdmissibleUnitFor"
+        },
+        "ist zulässige Einheit für": {
+            "@id": "pims-ii:isAdmissibleUnitFor"
+        },
+        "is admissible value for": {
+            "@id": "pims-ii:isAdmissibleValueFor",
+            "@type": "pims-ii:Variable"
+        },
+        "ist zulässiger Wert für": {
+            "@id": "pims-ii:isAdmissibleValueFor",
+            "@type": "pims-ii:Variable"
+        },
+        "is assignment for": {
+            "@id": "pims-ii:isAssignmentFor"
+        },
+        "ist Zuweisung in Bezug auf": {
+            "@id": "pims-ii:isAssignmentFor"
+        },
+        "is value in assignment": {
+            "@id": "pims-ii:isValueInAssignment",
+            "@type": "pims-ii:Assignment"
+        },
+        "ist Wert in Zuweisung": {
+            "@id": "pims-ii:isValueInAssignment",
+            "@type": "pims-ii:Assignment"
+        },
+        "is variable in assignment": {
+            "@id": "pims-ii:isVariableInAssignment",
+            "@type": "pims-ii:Assignment"
+        },
+        "ist Variable in Zuweisung": {
+            "@id": "pims-ii:isVariableInAssignment",
+            "@type": "pims-ii:Assignment"
+        },
+        "source": {
+            "@id": "cr:source"
+        },
+        "Quelle": {
+            "@id": "cr:source"
+        },
+        "field": {
+            "@id": "cr:field",
+            "@type": "cr:Field"
+        },
+        "hat Feld": {
+            "@id": "cr:field",
+            "@type": "cr:Field"
+        },
+        "Kompressionsformat": {
+            "@id": "dcat:compressFormat"
+        },
+        "compression format": {
+            "@id": "dcat:compressFormat"
+        },
+        "has distribution": {
+            "@id": "dcat:distribution",
+            "@type": "dcat:Distribution"
+        },
+        "hat Verteilung": {
+            "@id": "dcat:distribution",
+            "@type": "dcat:Distribution"
+        },
+        "Downloadlink": {
+            "@id": "dcat:downloadURL"
+        },
+        "download URL": {
+            "@id": "dcat:downloadURL"
+        },
+        "in Serie": {
+            "@id": "dcat:inSeries",
+            "@type": "dcat:DatasetSeries"
+        },
+        "in series": {
+            "@id": "dcat:inSeries",
+            "@type": "dcat:DatasetSeries"
+        },
+        "Medientyp": {
+            "@id": "dcat:mediaType"
+        },
+        "media type": {
+            "@id": "dcat:mediaType"
+        },
+        "Packformat": {
+            "@id": "dcat:packageFormat"
+        },
+        "packaging format": {
+            "@id": "dcat:packageFormat"
+        },
+        "has agent": {
+            "@id": "prov:agent",
+            "@type": "prov:Agent"
+        },
+        "hat Akteur": {
+            "@id": "prov:agent",
+            "@type": "prov:Agent"
+        },
+        "had role": {
+            "@id": "prov:hadRole"
+        },
+        "hatte Rolle": {
+            "@id": "prov:hadRole"
+        },
+        "näher beschriebene Verbindung": {
+            "@id": "prov:qualifiedAssociation",
+            "@type": "prov:Association"
+        },
+        "qualified association": {
+            "@id": "prov:qualifiedAssociation",
+            "@type": "prov:Association"
+        },
+        "war Rolle in": {
+            "@id": "prov:wasRoleIn"
+        },
+        "was role in": {
+            "@id": "prov:wasRoleIn"
+        },
+        "has property": {
+            "@id": "ssn:hasProperty"
+        },
+        "hat Eigenschaft": {
+            "@id": "ssn:hasProperty"
+        },
+        "is property of": {
+            "@id": "ssn:isPropertyOf"
+        },
+        "ist Eigenschaft von": {
+            "@id": "ssn:isPropertyOf"
+        },
+        "E-Mail-Adresse": {
+            "@id": "foaf:mbox",
+            "@type": "owl:Thing"
+        },
+        "personal mailbox": {
+            "@id": "foaf:mbox",
+            "@type": "owl:Thing"
+        },
+        "nutzt Instrument": {
+            "@id": "schema:instrument"
+        },
+        "uses instrument": {
+            "@id": "schema:instrument"
+        },
+        "Verwendungshinweis": {
+            "@id": "m4i:UsageInstruction"
+        },
+        "usage instruction": {
+            "@id": "m4i:UsageInstruction"
+        },
+        "Projektenddatum": {
+            "@id": "m4i:endOfProject",
+            "@type": "xsd:date"
+        },
+        "project end date": {
+            "@id": "m4i:endOfProject",
+            "@type": "xsd:date"
+        },
+        "has assignment timestamp": {
+            "@id": "m4i:hasAssignmentTimestamp",
+            "@type": "schema:DateTime"
+        },
+        "hat Zuweisungszeitstempel": {
+            "@id": "m4i:hasAssignmentTimestamp",
+            "@type": "schema:DateTime"
+        },
+        "has date assignment created": {
+            "@id": "m4i:hasDateAssignmentCreated",
+            "@type": "schema:DateTime"
+        },
+        "hat Datumszuweisung erzeugt": {
+            "@id": "m4i:hasDateAssignmentCreated",
+            "@type": "schema:DateTime"
+        },
+        "has date assignment deleted": {
+            "@id": "m4i:hasDateAssignmentDeleted",
+            "@type": "schema:DateTime"
+        },
+        "hat Datumszuweisung gelöscht": {
+            "@id": "m4i:hasDateAssignmentDeleted",
+            "@type": "schema:DateTime"
+        },
+        "has date assignment modified": {
+            "@id": "m4i:hasDateAssignmentModified",
+            "@type": "schema:DateTime"
+        },
+        "hat Datumszuweisung bearbeitet": {
+            "@id": "m4i:hasDateAssignmentModified",
+            "@type": "schema:DateTime"
+        },
+        "has date assignment valid from": {
+            "@id": "m4i:hasDateAssignmentValidFrom",
+            "@type": "schema:DateTime"
+        },
+        "hat Datumszuweisung gültig ab": {
+            "@id": "m4i:hasDateAssignmentValidFrom",
+            "@type": "schema:DateTime"
+        },
+        "has date assignment valid until": {
+            "@id": "m4i:hasDateAssignmentValidUntil",
+            "@type": "schema:DateTime"
+        },
+        "hat Datumszuweisung gültig bis": {
+            "@id": "m4i:hasDateAssignmentValidUntil",
+            "@type": "schema:DateTime"
+        },
+        "has maximum value": {
+            "@id": "m4i:hasMaximumValue"
+        },
+        "hat Maximalwert": {
+            "@id": "m4i:hasMaximumValue"
+        },
+        "has minimum value": {
+            "@id": "m4i:hasMinimumValue"
+        },
+        "hat Minimalwert": {
+            "@id": "m4i:hasMinimumValue"
+        },
+        "has numerical value": {
+            "@id": "m4i:hasNumericalValue"
+        },
+        "hat Zahlenwert": {
+            "@id": "m4i:hasNumericalValue"
+        },
+        "has ROR ID": {
+            "@id": "m4i:hasRorId"
+        },
+        "hat ROR ID": {
+            "@id": "m4i:hasRorId"
+        },
+        "has step size": {
+            "@id": "m4i:hasStepSize"
+        },
+        "hat Schrittweite": {
+            "@id": "m4i:hasStepSize"
+        },
+        "has string value": {
+            "@id": "m4i:hasStringValue",
+            "@type": "xsd:string"
+        },
+        "hat Zeichenwert": {
+            "@id": "m4i:hasStringValue",
+            "@type": "xsd:string"
+        },
+        "has symbol": {
+            "@id": "m4i:hasSymbol",
+            "@type": "xsd:string"
+        },
+        "hat Symbol": {
+            "@id": "m4i:hasSymbol",
+            "@type": "xsd:string"
+        },
+        "has value": {
+            "@id": "m4i:hasValue"
+        },
+        "hat Wert": {
+            "@id": "m4i:hasValue"
+        },
+        "has variable description": {
+            "@id": "m4i:hasVariableDescription",
+            "@type": "xsd:string"
+        },
+        "hat Variablenbeschreibung": {
+            "@id": "m4i:hasVariableDescription",
+            "@type": "xsd:string"
+        },
+        "has identifier": {
+            "@id": "m4i:identifier",
+            "@type": "xsd:string"
+        },
+        "hat Identifikator": {
+            "@id": "m4i:identifier",
+            "@type": "xsd:string"
+        },
+        "has ORCID ID": {
+            "@id": "m4i:orcidId"
+        },
+        "hat ORCID ID": {
+            "@id": "m4i:orcidId"
+        },
+        "has project ID": {
+            "@id": "m4i:projectReferenceID",
+            "@type": "xsd:string"
+        },
+        "hat Projekt-ID": {
+            "@id": "m4i:projectReferenceID",
+            "@type": "xsd:string"
+        },
+        "Projektstartdatum": {
+            "@id": "m4i:startOfProject",
+            "@type": "xsd:date"
+        },
+        "project start date": {
+            "@id": "m4i:startOfProject",
+            "@type": "xsd:date"
+        },
+        "Dateigröße (in Byte)": {
+            "@id": "dcat:byteSize"
+        },
+        "file size (in bytes)": {
+            "@id": "dcat:byteSize"
+        },
+        "räumliche Auflösung (in Metern)": {
+            "@id": "dcat:spatialResolutionInMeters",
+            "@type": "xsd:decimal"
+        },
+        "spatial resolution (in metres)": {
+            "@id": "dcat:spatialResolutionInMeters",
+            "@type": "xsd:decimal"
+        },
+        "temporal resolution": {
+            "@id": "dcat:temporalResolution",
+            "@type": "xsd:duration"
+        },
+        "zeitliche Auflösung": {
+            "@id": "dcat:temporalResolution",
+            "@type": "xsd:duration"
+        },
+        "Vorname": {
+            "@id": "foaf:firstName",
+            "@type": "rdfs:Literal"
+        },
+        "first name": {
+            "@id": "foaf:firstName",
+            "@type": "rdfs:Literal"
+        },
+        "Nachname": {
+            "@id": "foaf:lastName",
+            "@type": "rdfs:Literal"
+        },
+        "last name": {
+            "@id": "foaf:lastName",
+            "@type": "rdfs:Literal"
+        },
+        "Anrede": {
+            "@id": "foaf:title",
+            "@type": "rdfs:Literal"
+        },
+        "salutation": {
+            "@id": "foaf:title",
+            "@type": "rdfs:Literal"
+        },
+        "has coverage factor": {
+            "@id": "si:hasCoverageFactor"
+        },
+        "hat Überdeckungsfaktor": {
+            "@id": "si:hasCoverageFactor"
+        },
+        "has coverage probability": {
+            "@id": "si:hasCoverageProbability"
+        },
+        "hat Deckungswahrscheinlichkeit": {
+            "@id": "si:hasCoverageProbability"
+        },
+        "has statistical distribution": {
+            "@id": "si:hasDistribution",
+            "@type": "xsd:string"
+        },
+        "hat statistische Verteilung": {
+            "@id": "si:hasDistribution",
+            "@type": "xsd:string"
+        },
+        "has interval maximum": {
+            "@id": "si:hasIntervalMax",
+            "@type": "xsd:decimal"
+        },
+        "hat Intervallmaximum": {
+            "@id": "si:hasIntervalMax",
+            "@type": "xsd:decimal"
+        },
+        "has interval minimum": {
+            "@id": "si:hasIntervalMin",
+            "@type": "xsd:decimal"
+        },
+        "hat Intervallminimum": {
+            "@id": "si:hasIntervalMin",
+            "@type": "xsd:decimal"
+        },
+        "has standard uncertainty": {
+            "@id": "si:hasStandardUnc"
+        },
+        "hat Standardunsicherheit": {
+            "@id": "si:hasStandardUnc"
+        },
+        "has uncertainty": {
+            "@id": "si:hasUncertainty"
+        },
+        "hat Unsicherheit": {
+            "@id": "si:hasUncertainty"
+        },
+        "Endzeit": {
+            "@id": "schema:endTime",
+            "@type": "schema:DateTime"
+        },
+        "end time": {
+            "@id": "schema:endTime",
+            "@type": "schema:DateTime"
+        },
+        "Startzeit": {
+            "@id": "schema:startTime",
+            "@type": "schema:DateTime"
+        },
+        "start time": {
+            "@id": "schema:startTime",
+            "@type": "schema:DateTime"
+        },
+        "has timestamp": {
+            "@id": "schema:temporal",
+            "@type": "schema:DateTime"
+        },
+        "hat Zeitstempel": {
+            "@id": "schema:temporal",
+            "@type": "schema:DateTime"
+        },
+        "Kontaktperson": {
+            "@id": "m4i:ContactPerson"
+        },
+        "contact person": {
+            "@id": "m4i:ContactPerson"
+        },
+        "Datenerfasser*in": {
+            "@id": "m4i:DataCollector"
+        },
+        "data collector": {
+            "@id": "m4i:DataCollector"
+        },
+        "Datenkurator*in": {
+            "@id": "m4i:DataCurator"
+        },
+        "data curator": {
+            "@id": "m4i:DataCurator"
+        },
+        "Datenverwalter*in": {
+            "@id": "m4i:DataManager"
+        },
+        "data manager": {
+            "@id": "m4i:DataManager"
+        },
+        "Anbieter*in": {
+            "@id": "m4i:Distributor"
+        },
+        "distributor": {
+            "@id": "m4i:Distributor"
+        },
+        "Herausgeber*in": {
+            "@id": "m4i:Editor"
+        },
+        "editor": {
+            "@id": "m4i:Editor"
+        },
+        "bereitstellende Institution": {
+            "@id": "m4i:HostingInstitution"
+        },
+        "hosting institution": {
+            "@id": "m4i:HostingInstitution"
+        },
+        "other person": {
+            "@id": "m4i:Other"
+        },
+        "weitere Person": {
+            "@id": "m4i:Other"
+        },
+        "Produzent*in": {
+            "@id": "m4i:Producer"
+        },
+        "producer": {
+            "@id": "m4i:Producer"
+        },
+        "Projektleiter*in": {
+            "@id": "m4i:ProjectLeader"
+        },
+        "project leader": {
+            "@id": "m4i:ProjectLeader"
+        },
+        "Projektmanager*in": {
+            "@id": "m4i:ProjectManager"
+        },
+        "project manager": {
+            "@id": "m4i:ProjectManager"
+        },
+        "Projektmitglied": {
+            "@id": "m4i:ProjectMember"
+        },
+        "project member": {
+            "@id": "m4i:ProjectMember"
+        },
+        "Registrierungsstelle": {
+            "@id": "m4i:RegistrationAgency"
+        },
+        "registration agency": {
+            "@id": "m4i:RegistrationAgency"
+        },
+        "Registrierungsbehörde": {
+            "@id": "m4i:RegistrationAuthority"
+        },
+        "registration authority": {
+            "@id": "m4i:RegistrationAuthority"
+        },
+        "related person": {
+            "@id": "m4i:RelatedPerson"
+        },
+        "zugehörige Person": {
+            "@id": "m4i:RelatedPerson"
+        },
+        "Forschungsgruppe": {
+            "@id": "m4i:ResearchGroup"
+        },
+        "research group": {
+            "@id": "m4i:ResearchGroup"
+        },
+        "Rechercheur*in": {
+            "@id": "m4i:Researcher"
+        },
+        "researcher": {
+            "@id": "m4i:Researcher"
+        },
+        "Rechteinhaber*in": {
+            "@id": "m4i:RightsHolder"
+        },
+        "rights holder": {
+            "@id": "m4i:RightsHolder"
+        },
+        "Sponsor*in": {
+            "@id": "m4i:Sponsor"
+        },
+        "sponsor": {
+            "@id": "m4i:Sponsor"
+        },
+        "Betreuer*in": {
+            "@id": "m4i:Supervisor"
+        },
+        "supervisor": {
+            "@id": "m4i:Supervisor"
+        },
+        "Arbeitspaketleiter*in": {
+            "@id": "m4i:WorkPackageLeader"
+        },
+        "work package leader": {
+            "@id": "m4i:WorkPackageLeader"
+        },
+        "local": "https://local-domain.org/",
+        "units": "http://qudt.org/vocab/unit/"
+    },
+    "@graph": [
+        {
+            "@id": "local:main_processing_step_0",
+            "@type": "processing step",
+            "label": "summary"
+        },
+        {
+            "@id": "local:main_processing_step_1",
+            "@type": "processing step",
+            "label": "generate_input_files"
+        },
+        {
+            "@id": "local:main_processing_step_2",
+            "@type": "processing step",
+            "label": "run_simulation"
+        },
+        {
+            "@id": "local:processing_step_24",
+            "@type": "processing step",
+            "label": "generate_input_files_24",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:38.691962",
+            "end time": "2025-05-08 17:43:42.420089",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_1"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_2"
+                },
+                {
+                    "@id": "local:file_3"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_21",
+            "@type": "processing step",
+            "label": "generate_input_files_21",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:42.432643",
+            "end time": "2025-05-08 17:43:42.613523",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_4"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_5"
+                },
+                {
+                    "@id": "local:file_6"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_18",
+            "@type": "processing step",
+            "label": "generate_input_files_18",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:42.624086",
+            "end time": "2025-05-08 17:43:42.804100",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_7"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_8"
+                },
+                {
+                    "@id": "local:file_9"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_size_10"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_12"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_13"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_15",
+            "@type": "processing step",
+            "label": "generate_input_files_15",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:42.814972",
+            "end time": "2025-05-08 17:43:43.372435",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_10"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_11"
+                },
+                {
+                    "@id": "local:file_12"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_5"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_7"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_12",
+            "@type": "processing step",
+            "label": "generate_input_files_12",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:43.383551",
+            "end time": "2025-05-08 17:43:43.584401",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_13"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_14"
+                },
+                {
+                    "@id": "local:file_15"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_5"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_7"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_9",
+            "@type": "processing step",
+            "label": "generate_input_files_9",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:43.595218",
+            "end time": "2025-05-08 17:43:43.781201",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_16"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_17"
+                },
+                {
+                    "@id": "local:file_18"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_5"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_7"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_6",
+            "@type": "processing step",
+            "label": "generate_input_files_6",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:43.791865",
+            "end time": "2025-05-08 17:43:44.063168",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_19"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_20"
+                },
+                {
+                    "@id": "local:file_21"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_5"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_7"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_3",
+            "@type": "processing step",
+            "label": "generate_input_files_3",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:43:44.074716",
+            "end time": "2025-05-08 17:43:44.254022",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_22"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_23"
+                },
+                {
+                    "@id": "local:file_24"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_order_11"
+                },
+                {
+                    "@id": "local:variable_element_degree_12"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_13"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_23",
+            "@type": "processing step",
+            "label": "run_simulation_23",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:43:44.265480",
+            "end time": "2025-05-08 17:43:59.758811",
+            "has input": [
+                {
+                    "@id": "local:file_2"
+                },
+                {
+                    "@id": "local:file_3"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_25"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_22",
+            "@type": "processing step",
+            "label": "summary_22",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:00.019030",
+            "end time": "2025-05-08 17:44:01.092781",
+            "has input": [
+                {
+                    "@id": "local:file_25"
+                },
+                {
+                    "@id": "local:file_2"
+                },
+                {
+                    "@id": "local:file_3"
+                },
+                {
+                    "@id": "local:file_1"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_26"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_20",
+            "@type": "processing step",
+            "label": "run_simulation_20",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:01.106382",
+            "end time": "2025-05-08 17:44:01.486223",
+            "has input": [
+                {
+                    "@id": "local:file_5"
+                },
+                {
+                    "@id": "local:file_6"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_27"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_19",
+            "@type": "processing step",
+            "label": "summary_19",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:01.667889",
+            "end time": "2025-05-08 17:44:02.726419",
+            "has input": [
+                {
+                    "@id": "local:file_27"
+                },
+                {
+                    "@id": "local:file_5"
+                },
+                {
+                    "@id": "local:file_6"
+                },
+                {
+                    "@id": "local:file_4"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_28"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_17",
+            "@type": "processing step",
+            "label": "run_simulation_17",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:02.739668",
+            "end time": "2025-05-08 17:44:03.083429",
+            "has input": [
+                {
+                    "@id": "local:file_8"
+                },
+                {
+                    "@id": "local:file_9"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_29"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_16",
+            "@type": "processing step",
+            "label": "summary_16",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:03.263660",
+            "end time": "2025-05-08 17:44:04.312575",
+            "has input": [
+                {
+                    "@id": "local:file_29"
+                },
+                {
+                    "@id": "local:file_8"
+                },
+                {
+                    "@id": "local:file_9"
+                },
+                {
+                    "@id": "local:file_7"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_30"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_14",
+            "@type": "processing step",
+            "label": "run_simulation_14",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:04.325367",
+            "end time": "2025-05-08 17:44:05.523016",
+            "has input": [
+                {
+                    "@id": "local:file_11"
+                },
+                {
+                    "@id": "local:file_12"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_31"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_13",
+            "@type": "processing step",
+            "label": "summary_13",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:05.705026",
+            "end time": "2025-05-08 17:44:06.750276",
+            "has input": [
+                {
+                    "@id": "local:file_31"
+                },
+                {
+                    "@id": "local:file_11"
+                },
+                {
+                    "@id": "local:file_12"
+                },
+                {
+                    "@id": "local:file_10"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_32"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_11",
+            "@type": "processing step",
+            "label": "run_simulation_11",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:06.762165",
+            "end time": "2025-05-08 17:44:07.105087",
+            "has input": [
+                {
+                    "@id": "local:file_14"
+                },
+                {
+                    "@id": "local:file_15"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_33"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_10",
+            "@type": "processing step",
+            "label": "summary_10",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:07.285741",
+            "end time": "2025-05-08 17:44:08.333978",
+            "has input": [
+                {
+                    "@id": "local:file_33"
+                },
+                {
+                    "@id": "local:file_14"
+                },
+                {
+                    "@id": "local:file_15"
+                },
+                {
+                    "@id": "local:file_13"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_34"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_27",
+            "@type": "processing step",
+            "label": "generate_input_files_27",
+            "part of": {
+                "@id": "local:main_processing_step_1"
+            },
+            "start time": "2025-05-08 17:44:08.346576",
+            "end time": "2025-05-08 17:44:08.535009",
+            "has input": [
+                {
+                    "@id": "local:file_0"
+                },
+                {
+                    "@id": "local:file_35"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_36"
+                },
+                {
+                    "@id": "local:file_37"
+                }
+            ],
+            "has parameter": [
+                {
+                    "@id": "local:variable_radius_0"
+                },
+                {
+                    "@id": "local:variable_length_1"
+                },
+                {
+                    "@id": "local:variable_load_2"
+                },
+                {
+                    "@id": "local:variable_element_size_10"
+                },
+                {
+                    "@id": "local:variable_element_order_4"
+                },
+                {
+                    "@id": "local:variable_element_degree_5"
+                },
+                {
+                    "@id": "local:variable_quadrature_rule_6"
+                },
+                {
+                    "@id": "local:variable_quadrature_degree_7"
+                },
+                {
+                    "@id": "local:variable_young_modulus_8"
+                },
+                {
+                    "@id": "local:variable_poisson_ratio_9"
+                }
+            ],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_26",
+            "@type": "processing step",
+            "label": "run_simulation_26",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:08.546540",
+            "end time": "2025-05-08 17:44:08.881063",
+            "has input": [
+                {
+                    "@id": "local:file_36"
+                },
+                {
+                    "@id": "local:file_37"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_38"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_25",
+            "@type": "processing step",
+            "label": "summary_25",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:09.062034",
+            "end time": "2025-05-08 17:44:10.121734",
+            "has input": [
+                {
+                    "@id": "local:file_38"
+                },
+                {
+                    "@id": "local:file_36"
+                },
+                {
+                    "@id": "local:file_37"
+                },
+                {
+                    "@id": "local:file_35"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_39"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_8",
+            "@type": "processing step",
+            "label": "run_simulation_8",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:10.134780",
+            "end time": "2025-05-08 17:44:10.457065",
+            "has input": [
+                {
+                    "@id": "local:file_17"
+                },
+                {
+                    "@id": "local:file_18"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_40"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_7",
+            "@type": "processing step",
+            "label": "summary_7",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:10.639225",
+            "end time": "2025-05-08 17:44:11.702906",
+            "has input": [
+                {
+                    "@id": "local:file_40"
+                },
+                {
+                    "@id": "local:file_17"
+                },
+                {
+                    "@id": "local:file_18"
+                },
+                {
+                    "@id": "local:file_16"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_41"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_2",
+            "@type": "processing step",
+            "label": "run_simulation_2",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:11.716279",
+            "end time": "2025-05-08 17:44:12.032759",
+            "has input": [
+                {
+                    "@id": "local:file_23"
+                },
+                {
+                    "@id": "local:file_24"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_42"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_5",
+            "@type": "processing step",
+            "label": "run_simulation_5",
+            "part of": {
+                "@id": "local:main_processing_step_2"
+            },
+            "start time": "2025-05-08 17:44:12.043457",
+            "end time": "2025-05-08 17:44:12.508217",
+            "has input": [
+                {
+                    "@id": "local:file_20"
+                },
+                {
+                    "@id": "local:file_21"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_43"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": [
+                {
+                    "@id": "local:tool_0"
+                },
+                {
+                    "@id": "local:tool_1"
+                },
+                {
+                    "@id": "local:tool_2"
+                },
+                {
+                    "@id": "local:tool_3"
+                },
+                {
+                    "@id": "local:tool_4"
+                },
+                {
+                    "@id": "local:tool_5"
+                }
+            ]
+        },
+        {
+            "@id": "local:processing_step_4",
+            "@type": "processing step",
+            "label": "summary_4",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:12.692080",
+            "end time": "2025-05-08 17:44:13.748170",
+            "has input": [
+                {
+                    "@id": "local:file_43"
+                },
+                {
+                    "@id": "local:file_20"
+                },
+                {
+                    "@id": "local:file_21"
+                },
+                {
+                    "@id": "local:file_19"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_44"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:processing_step_1",
+            "@type": "processing step",
+            "label": "summary_1",
+            "part of": {
+                "@id": "local:main_processing_step_0"
+            },
+            "start time": "2025-05-08 17:44:13.920081",
+            "end time": "2025-05-08 17:44:14.963284",
+            "has input": [
+                {
+                    "@id": "local:file_42"
+                },
+                {
+                    "@id": "local:file_23"
+                },
+                {
+                    "@id": "local:file_24"
+                },
+                {
+                    "@id": "local:file_22"
+                }
+            ],
+            "has output": [
+                {
+                    "@id": "local:file_45"
+                }
+            ],
+            "has parameter": [],
+            "has employed tool": []
+        },
+        {
+            "@id": "local:file_0",
+            "@type": "cr:FileObject",
+            "label": "experiment.json"
+        },
+        {
+            "@id": "local:file_1",
+            "@type": "cr:FileObject",
+            "label": "parameters_003125.json"
+        },
+        {
+            "@id": "local:file_2",
+            "@type": "cr:FileObject",
+            "label": "data/input_003125.json"
+        },
+        {
+            "@id": "local:file_3",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_003125.msh"
+        },
+        {
+            "@id": "local:file_4",
+            "@type": "cr:FileObject",
+            "label": "parameters_geo2fun2fine.json"
+        },
+        {
+            "@id": "local:file_5",
+            "@type": "cr:FileObject",
+            "label": "data/input_geo2fun2fine.json"
+        },
+        {
+            "@id": "local:file_6",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_geo2fun2fine.msh"
+        },
+        {
+            "@id": "local:file_7",
+            "@type": "cr:FileObject",
+            "label": "parameters_geo1fun2.json"
+        },
+        {
+            "@id": "local:file_8",
+            "@type": "cr:FileObject",
+            "label": "data/input_geo1fun2.json"
+        },
+        {
+            "@id": "local:file_9",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_geo1fun2.msh"
+        },
+        {
+            "@id": "local:file_10",
+            "@type": "cr:FileObject",
+            "label": "parameters_00625.json"
+        },
+        {
+            "@id": "local:file_11",
+            "@type": "cr:FileObject",
+            "label": "data/input_00625.json"
+        },
+        {
+            "@id": "local:file_12",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_00625.msh"
+        },
+        {
+            "@id": "local:file_13",
+            "@type": "cr:FileObject",
+            "label": "parameters_025.json"
+        },
+        {
+            "@id": "local:file_14",
+            "@type": "cr:FileObject",
+            "label": "data/input_025.json"
+        },
+        {
+            "@id": "local:file_15",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_025.msh"
+        },
+        {
+            "@id": "local:file_16",
+            "@type": "cr:FileObject",
+            "label": "parameters_05.json"
+        },
+        {
+            "@id": "local:file_17",
+            "@type": "cr:FileObject",
+            "label": "data/input_05.json"
+        },
+        {
+            "@id": "local:file_18",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_05.msh"
+        },
+        {
+            "@id": "local:file_19",
+            "@type": "cr:FileObject",
+            "label": "parameters_0125.json"
+        },
+        {
+            "@id": "local:file_20",
+            "@type": "cr:FileObject",
+            "label": "data/input_0125.json"
+        },
+        {
+            "@id": "local:file_21",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_0125.msh"
+        },
+        {
+            "@id": "local:file_22",
+            "@type": "cr:FileObject",
+            "label": "parameters_geo2fun2.json"
+        },
+        {
+            "@id": "local:file_23",
+            "@type": "cr:FileObject",
+            "label": "data/input_geo2fun2.json"
+        },
+        {
+            "@id": "local:file_24",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_geo2fun2.msh"
+        },
+        {
+            "@id": "local:file_25",
+            "@type": "cr:FileObject",
+            "label": "data/output_003125.vtk"
+        },
+        {
+            "@id": "local:file_26",
+            "@type": "cr:FileObject",
+            "label": "summary_003125.json"
+        },
+        {
+            "@id": "local:file_27",
+            "@type": "cr:FileObject",
+            "label": "data/output_geo2fun2fine.vtk"
+        },
+        {
+            "@id": "local:file_28",
+            "@type": "cr:FileObject",
+            "label": "summary_geo2fun2fine.json"
+        },
+        {
+            "@id": "local:file_29",
+            "@type": "cr:FileObject",
+            "label": "data/output_geo1fun2.vtk"
+        },
+        {
+            "@id": "local:file_30",
+            "@type": "cr:FileObject",
+            "label": "summary_geo1fun2.json"
+        },
+        {
+            "@id": "local:file_31",
+            "@type": "cr:FileObject",
+            "label": "data/output_00625.vtk"
+        },
+        {
+            "@id": "local:file_32",
+            "@type": "cr:FileObject",
+            "label": "summary_00625.json"
+        },
+        {
+            "@id": "local:file_33",
+            "@type": "cr:FileObject",
+            "label": "data/output_025.vtk"
+        },
+        {
+            "@id": "local:file_34",
+            "@type": "cr:FileObject",
+            "label": "summary_025.json"
+        },
+        {
+            "@id": "local:file_35",
+            "@type": "cr:FileObject",
+            "label": "parameters_1.json"
+        },
+        {
+            "@id": "local:file_36",
+            "@type": "cr:FileObject",
+            "label": "data/input_1.json"
+        },
+        {
+            "@id": "local:file_37",
+            "@type": "cr:FileObject",
+            "label": "data/mesh_1.msh"
+        },
+        {
+            "@id": "local:file_38",
+            "@type": "cr:FileObject",
+            "label": "data/output_1.vtk"
+        },
+        {
+            "@id": "local:file_39",
+            "@type": "cr:FileObject",
+            "label": "summary_1.json"
+        },
+        {
+            "@id": "local:file_40",
+            "@type": "cr:FileObject",
+            "label": "data/output_05.vtk"
+        },
+        {
+            "@id": "local:file_41",
+            "@type": "cr:FileObject",
+            "label": "summary_05.json"
+        },
+        {
+            "@id": "local:file_42",
+            "@type": "cr:FileObject",
+            "label": "data/output_geo2fun2.vtk"
+        },
+        {
+            "@id": "local:file_43",
+            "@type": "cr:FileObject",
+            "label": "data/output_0125.vtk"
+        },
+        {
+            "@id": "local:file_44",
+            "@type": "cr:FileObject",
+            "label": "summary_0125.json"
+        },
+        {
+            "@id": "local:file_45",
+            "@type": "cr:FileObject",
+            "label": "summary_geo2fun2.json"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "radius",
+            "has numerical value": 0.33,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_radius_0"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "length",
+            "has numerical value": 1.0,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_length_1"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "load",
+            "has numerical value": 100.0,
+            "has unit": {
+                "@id": "units:MegaPA"
+            },
+            "@id": "local:variable_load_2"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.003125,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_3"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 1,
+            "@id": "local:variable_element_order_4"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 1,
+            "@id": "local:variable_element_degree_5"
+        },
+        {
+            "@type": "text variable",
+            "label": "quadrature_rule",
+            "has string value": "gauss",
+            "@id": "local:variable_quadrature_rule_6"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 1,
+            "@id": "local:variable_quadrature_degree_7"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "young_modulus",
+            "has numerical value": 210000000000.0,
+            "has unit": {
+                "@id": "units:PA"
+            },
+            "@id": "local:variable_young_modulus_8"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "poisson_ratio",
+            "has numerical value": 0.3,
+            "@id": "local:variable_poisson_ratio_9"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.1,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_10"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_order",
+            "has numerical value": 2,
+            "@id": "local:variable_element_order_11"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_degree",
+            "has numerical value": 2,
+            "@id": "local:variable_element_degree_12"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "quadrature_degree",
+            "has numerical value": 2,
+            "@id": "local:variable_quadrature_degree_13"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.00625,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_14"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.025,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_15"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.05,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_16"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.0125,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_17"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "element_size",
+            "has numerical value": 0.5,
+            "has unit": {
+                "@id": "units:m"
+            },
+            "@id": "local:variable_element_size_18"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 298100064.0,
+            "@id": "local:variable_max_mises_stress_19"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 296148032.0,
+            "@id": "local:variable_max_mises_stress_20"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 283087904.0,
+            "@id": "local:variable_max_mises_stress_21"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 226270384.0,
+            "@id": "local:variable_max_mises_stress_22"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 263992000.0,
+            "@id": "local:variable_max_mises_stress_23"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 291662080.0,
+            "@id": "local:variable_max_mises_stress_24"
+        },
+        {
+            "@type": "numerical variable",
+            "label": "max_mises_stress",
+            "has numerical value": 197391808.0,
+            "@id": "local:variable_max_mises_stress_25"
+        },
+        {
+            "@id": "local:field_radius_0",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_1",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_2",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_3",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_3"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_4",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_5",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_6",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_7",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_8",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_9",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_1"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_10",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_11",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_12",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_13",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_10"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_14",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_11"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_15",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_12"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_16",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_17",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_13"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_18",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_19",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_4"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_20",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_21",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_22",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_23",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_10"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_24",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_25",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_12"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_26",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_27",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_13"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_28",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_29",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_7"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_30",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_31",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_32",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_33",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_14"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_34",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_35",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_36",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_37",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_38",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_39",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_10"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_40",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_41",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_42",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_43",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_15"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_44",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_45",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_46",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_47",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_48",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_49",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_13"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_50",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_51",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_52",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_53",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_16"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_54",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_55",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_56",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_57",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_58",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_59",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_16"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_60",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_61",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_62",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_63",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_17"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_64",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_65",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_66",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_67",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_68",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_69",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_19"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_70",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_71",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_72",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_73",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_18"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_74",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_11"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_75",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_12"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_76",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_77",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_13"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_78",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_79",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_22"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_80",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_19"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_26"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_81",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_20"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_32"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_82",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_21"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_34"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_radius_83",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_radius_0"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/radius/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_length_84",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_length_1"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/length/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_load_85",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_load_2"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/load/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_size_86",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_size_10"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-size/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_element_order_87",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_order_4"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-order"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_element_degree_88",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_element_degree_5"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/element-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_quadrature_rule_89",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_rule_6"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-rule"
+                }
+            },
+            "cr:dataType": "schema:Text"
+        },
+        {
+            "@id": "local:field_quadrature_degree_90",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_quadrature_degree_7"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/quadrature-degree"
+                }
+            },
+            "cr:dataType": "schema:Integer"
+        },
+        {
+            "@id": "local:field_young_modulus_91",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_young_modulus_8"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/young-modulus/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_poisson_ratio_92",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_poisson_ratio_9"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_35"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/poisson-ratio/value"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_93",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_22"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_39"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_94",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_23"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_41"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_95",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_24"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_44"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:field_max_mises_stress_96",
+            "@type": "Field",
+            "represents": {
+                "@id": "local:variable_max_mises_stress_25"
+            },
+            "source": {
+                "file object": {
+                    "@id": "local:file_45"
+                },
+                "cr:extract": {
+                    "cr:jsonPath": "/max_mises_stress"
+                }
+            },
+            "cr:dataType": "schema:Float"
+        },
+        {
+            "@id": "local:tool_0",
+            "@type": "prov:SoftwareAgent",
+            "label": "python",
+            "schema:softwareVersion": ">=3.10"
+        },
+        {
+            "@id": "local:tool_1",
+            "@type": "prov:SoftwareAgent",
+            "label": "fenics-dolfinx"
+        },
+        {
+            "@id": "local:tool_2",
+            "@type": "prov:SoftwareAgent",
+            "label": "libadios2",
+            "schema:softwareVersion": "=2.10.1"
+        },
+        {
+            "@id": "local:tool_3",
+            "@type": "prov:SoftwareAgent",
+            "label": "petsc4py"
+        },
+        {
+            "@id": "local:tool_4",
+            "@type": "prov:SoftwareAgent",
+            "label": "python-gmsh"
+        },
+        {
+            "@id": "local:tool_5",
+            "@type": "prov:SoftwareAgent",
+            "label": "pint"
+        }
+    ]
+}

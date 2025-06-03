@@ -305,18 +305,4 @@ class Reporter(ReporterBase):
         for key, value in result.items():
             if not isinstance(key, str):
                 raise TypeError(f"Key '{key}' must be a string.")
-            # if not isinstance(value, dict):
-            #     raise TypeError(f"Value for key '{key}' must be a dictionary.")
-            # required_keys = ["value", "unit", "json-path", "data-type"]
-            # for rk in required_keys:
-            #     if rk not in value:
-            #         raise ValueError(
-            #             f"Missing key '{rk}' in value for '{key}'."
-            #         )
-            # if value["unit"] and not isinstance(value["unit"], str):
-            #     raise TypeError(f"'unit' for '{key}' must be a string.")
-            # if not isinstance(value["json-path"], str):
-            #     raise TypeError(f"'json-path' for '{key}' must be a string.")
-            # if not isinstance(value["data-type"], str):
-            #     raise TypeError(f"'data-type' for '{key}' must be a string.")
         return result

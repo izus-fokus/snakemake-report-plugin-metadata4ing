@@ -2,7 +2,6 @@
     "name": "00625",
     "parameters": "parameters_00625.json",
     "input": "data/input_00625.json",
-    "mesh": "data/mesh_00625.mdpa",
-    "output": "data/output_00625",
-    "max_mises_stress": 296148032.0
+    "mesh": "data/mesh_00625.msh",
+    "output": "data/output_00625.vtk"
 }
