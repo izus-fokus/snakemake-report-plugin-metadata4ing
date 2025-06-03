@@ -2,4 +2,5 @@
 dist
 poetry.lock
 simulation/.snakemake/log
+full simulation/.snakemake/log
 sample_extractor/__pycache__/
