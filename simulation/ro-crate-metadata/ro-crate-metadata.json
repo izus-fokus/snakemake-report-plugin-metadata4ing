@@ -1,0 +1,95 @@
+{
+    "@context": "https://w3id.org/ro/crate/1.1/context",
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "datePublished": "2025-06-19T12:35:01+00:00",
+            "hasPart": [
+                {
+                    "@id": "experiment.json"
+                },
+                {
+                    "@id": "parameters_00625.json"
+                },
+                {
+                    "@id": "data/input_00625.json"
+                },
+                {
+                    "@id": "data/mesh_00625.msh"
+                },
+                {
+                    "@id": "data/output_00625.vtk"
+                },
+                {
+                    "@id": "summary_00625.json"
+                },
+                {
+                    "@id": "provenance.jsonld"
+                }
+            ]
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            }
+        },
+        {
+            "@id": "experiment.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "experiment.json"
+        },
+        {
+            "@id": "parameters_00625.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "parameters_00625.json"
+        },
+        {
+            "@id": "data/input_00625.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "data/input_00625.json"
+        },
+        {
+            "@id": "data/mesh_00625.msh",
+            "@type": "File",
+            "encodingFormat": "model/mesh",
+            "name": "data/mesh_00625.msh"
+        },
+        {
+            "@id": "data/output_00625.vtk",
+            "@type": "File",
+            "encodingFormat": "application/octet-stream",
+            "name": "data/output_00625.vtk"
+        },
+        {
+            "@id": "summary_00625.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "summary_00625.json"
+        },
+        {
+            "@id": "provenance.jsonld",
+            "@type": "File",
+            "conformsTo": [
+                "https://w3id.org/ro/crate/1.1",
+                "https://w3id.org/nfdi4ing/metadata4ing/1.3.0"
+            ],
+            "encodingFormat": "application/ld+json",
+            "name": "provenance.jsonld"
+        },
+        {
+            "@id": "#snakemake",
+            "@type": "SoftwareApplication",
+            "name": "Snakemake",
+            "url": "https://snakemake.readthedocs.io/"
+        }
+    ]
+}

@@ -12,6 +12,9 @@ import inspect
 from snakemake_report_plugin_metadat4ing.interfaces import (
     ParameterExtractorInterface,
 )
+from rocrate.rocrate import ROCrate
+from rocrate.model.softwareapplication import SoftwareApplication
+import mimetypes
 
 
 @dataclass
@@ -40,7 +43,9 @@ class Reporter(ReporterBase):
         self.conda_envs_dict = {}
         self.tool_counter = 0
         self.tools_dict = {}
-        
+        self.crate = ROCrate()
+        self.provenance_filename = "provenance.jsonld"
+
         jsonld = {
             "@context": self.context_data.get("@context", {}),
             "@graph": [],
@@ -67,7 +72,7 @@ class Reporter(ReporterBase):
             )
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
-            
+
         for key, value in self.param_dict.items():
             value["@id"] = key
 
@@ -81,10 +86,13 @@ class Reporter(ReporterBase):
         ):
             jsonld["@graph"].extend(d.values())
 
-        with open("report.jsonld", "w", encoding="utf8") as f:
+        with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
 
-        self._create_ttl_from_jsonld(jsonld)
+        # self._create_ttl_from_jsonld(jsonld)
+        self._add_ro_crate_file_nodes(file_nodes)
+        # self._add_ro_crate_software()
+        self._create_ro_crate_file()
 
     def _create_job_node(
         self, job, main_steps_dict, files_dict, fields_dict, file_counter
@@ -101,7 +109,7 @@ class Reporter(ReporterBase):
             "has parameter": [],
             "has employed tool": [],
         }
-      
+
         input_files = [
             f
             for j in self.dag.jobs
@@ -110,17 +118,19 @@ class Reporter(ReporterBase):
         ]
 
         conda_files = [
-            j.conda_env
-            for j in self.dag.jobs
-            if j.jobid == job.job.jobid
+            j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
-        
+
         for conda_file in conda_files:
-            if conda_file and conda_file not in self.conda_envs_dict:
+            if (
+                self.settings.paramscript
+                and conda_file
+                and conda_file not in self.conda_envs_dict
+            ):
                 tools = self._extract_tools(job.rule, conda_file.content)
                 for tool in tools:
                     node["has employed tool"].append({"@id": tool["@id"]})
-        
+
         for file in input_files:
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
@@ -144,14 +154,13 @@ class Reporter(ReporterBase):
                     job.rule, file, file_node
                 )
                 fields_dict.update(field_nodes)
-                # param_id_list
 
         return node
 
     def _add_file(self, file_path, file_dict, counter):
         if file_path not in file_dict:
             file_dict[file_path] = {
-                "@id": f"local:file_{counter}",
+                "@id": file_path,
                 "@type": "cr:FileObject",
                 "label": file_path,
             }
@@ -221,7 +230,7 @@ class Reporter(ReporterBase):
                 if name not in self.tools_dict:
                     item = {
                         "@id": f"local:tool_{self.tool_counter}",
-                        "@type": "prov:SoftwareAgent",
+                        "@type": "schema:SoftwareApplication",
                         "label": name,
                         **(
                             {"schema:softwareVersion": version}
@@ -233,11 +242,12 @@ class Reporter(ReporterBase):
                     self.tool_counter += 1
                     tools_list.append(item)
                 else:
-                    tools_list.append(self.tools_dict[name])    
+                    tools_list.append(self.tools_dict[name])
         return tools_list
-    
+
     def _get_context(self):
-        url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
+        # url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
+        url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i2rocrate_context.jsonld"
         response = requests.get(url)
         if response.ok:
             self.context_data = response.json()
@@ -246,10 +256,42 @@ class Reporter(ReporterBase):
                 f"Failed to fetch context data. Status code: {response.status_code}"
             )
 
+    def _add_ro_crate_file_nodes(self, file_nodes):
+        for file in file_nodes.keys():
+            _ = self.crate.add_file(
+                file,
+                dest_path=file,
+                properties={
+                    "name": file,
+                    "encodingFormat": self.get_mime_type(file),
+                },
+            )
+        _ = self.crate.add_file(
+            self.provenance_filename,
+            dest_path=self.provenance_filename,
+            properties={
+                "name": self.provenance_filename,
+                "encodingFormat": "application/ld+json",
+                "conformsTo": [
+                    "https://w3id.org/ro/crate/1.1",
+                    "https://w3id.org/nfdi4ing/metadata4ing/1.3.0",
+                ],
+            },
+        )
+
+    def _add_ro_crate_software(self):
+        self.crate.add(SoftwareApplication(self.crate, "Snakemake", {
+            "name": "Snakemake",
+            "url": "https://snakemake.readthedocs.io/"
+        }))
+    
     def _create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize(
-            "report.ttl", format="ttl"
+            "provenance.ttl", format="ttl"
         )
+
+    def _create_ro_crate_file(self):
+        self.crate.write("ro-crate-metadata")
 
     def _load_param_extractor_obj(self):
         script_path = self.settings.paramscript
@@ -298,7 +340,7 @@ class Reporter(ReporterBase):
             if not isinstance(value["data-type"], str):
                 raise TypeError(f"'data-type' for '{key}' must be a string.")
         return result
-    
+
     def _validate_extract_tools_output(self, result):
         if not isinstance(result, dict):
             raise TypeError("Function output must be a dictionary.")
@@ -306,3 +348,24 @@ class Reporter(ReporterBase):
             if not isinstance(key, str):
                 raise TypeError(f"Key '{key}' must be a string.")
         return result
+
+    def get_mime_type(self, file_name: str) -> str:
+        """
+        Return the MIME type that corresponds to a file’s extension.
+
+        Parameters
+        ----------
+        file_name : str
+            A file name (or full path) that includes an extension, e.g. 'report.pdf'.
+
+        Returns
+        -------
+        str
+            The detected MIME type, e.g. 'application/pdf'.
+            Falls back to 'application/octet-stream' if the type is unknown.
+        """
+        # Ensure we’re only passing the name, not a PosixPath object, to mimetypes.
+        file_name = Path(file_name).name
+
+        mime_type, _ = mimetypes.guess_type(file_name, strict=False)
+        return mime_type or "application/octet-stream"

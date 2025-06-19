@@ -44,12 +44,8 @@
         "si": "https://ptb.de/si/",
         "sio": "http://semanticscience.org/resource/",
         "voaf": "http://purl.org/vocommons/voaf#",
-        "label": {
-            "@id": "rdfs:label"
-        },
-        "comment": {
-            "@id": "rdfs:comment"
-        },
+        "pcmd": "https://pcdm.org/2016/04/18/models#",
+        "label": "rdfs:label",
         "Field": {
             "@id": "cr:Field"
         },
@@ -57,10 +53,10 @@
             "@id": "cr:Field"
         },
         "file object": {
-            "@id": "cr:FileObject"
+            "@id": "schema:MediaObject"
         },
         "Dateiobject": {
-            "@id": "cr:FileObject"
+            "@id": "schema:MediaObject"
         },
         "file set": {
             "@id": "cr:FileSet"
@@ -117,28 +113,28 @@
             "@id": "m4i:NumericalAssignment"
         },
         "numerical variable": {
-            "@id": "m4i:NumericalVariable"
+            "@id": "schema:PropertyValue"
         },
         "numerische Variable": {
-            "@id": "m4i:NumericalVariable"
+            "@id": "schema:PropertyValue"
         },
         "Arbeitsschritt": {
-            "@id": "m4i:ProcessingStep"
+            "@id": "schema:Action"
         },
         "processing step": {
-            "@id": "m4i:ProcessingStep"
+            "@id": "schema:Action"
         },
         "text variable": {
-            "@id": "m4i:TextVariable"
+            "@id": "schema:PropertyValue"
         },
         "textbasierte Variable": {
-            "@id": "m4i:TextVariable"
+            "@id": "schema:PropertyValue"
         },
         "Werkzeug": {
-            "@id": "m4i:Tool"
+            "@id": "schema:IndividualProduct"
         },
         "tool": {
-            "@id": "m4i:Tool"
+            "@id": "schema:IndividualProduct"
         },
         "Unsicherheitsdeklaration": {
             "@id": "m4i:UncertaintyDeclaration"
@@ -171,16 +167,16 @@
             "@id": "pims-ii:Value"
         },
         "Variable": {
-            "@id": "pims-ii:Variable"
+            "@id": "schema:StructuredValue"
         },
         "variable": {
-            "@id": "pims-ii:Variable"
+            "@id": "schema:StructuredValue"
         },
         "Datensatz": {
-            "@id": "dcat:Dataset"
+            "@id": "schema:Dataset"
         },
         "dataset": {
-            "@id": "dcat:Dataset"
+            "@id": "schema:Dataset"
         },
         "Datensatzserie": {
             "@id": "dcat:DatasetSeries"
@@ -189,10 +185,10 @@
             "@id": "dcat:DatasetSeries"
         },
         "Verteilung": {
-            "@id": "dcat:Distribution"
+            "@id": "schema:DataDownload"
         },
         "distribution": {
-            "@id": "dcat:Distribution"
+            "@id": "schema:DataDownload"
         },
         "activity": {
             "@id": "prov:Activity"
@@ -213,16 +209,16 @@
             "@id": "prov:Association"
         },
         "Organisation": {
-            "@id": "prov:Organization"
+            "@id": "schema:Organization"
         },
         "organization": {
-            "@id": "prov:Organization"
+            "@id": "schema:Organization"
         },
         "Person": {
-            "@id": "prov:Person"
+            "@id": "schema:Person"
         },
         "person": {
-            "@id": "prov:Person"
+            "@id": "schema:Person"
         },
         "role": {
             "@id": "prov:Role"
@@ -321,16 +317,16 @@
             "@id": "schema:DateTime"
         },
         "Teil von": {
-            "@id": "obo:BFO_0000050"
+            "@id": "schema:isPartOf"
         },
         "part of": {
-            "@id": "obo:BFO_0000050"
+            "@id": "schema:isPartOf"
         },
         "has part": {
-            "@id": "obo:BFO_0000051"
+            "@id": "schema:hasPart"
         },
         "hat Teil": {
-            "@id": "obo:BFO_0000051"
+            "@id": "schema:hasPart"
         },
         "realisiert in": {
             "@id": "obo:BFO_0000054",
@@ -395,16 +391,16 @@
             "@type": "m4i:ProcessingStep"
         },
         "has input": {
-            "@id": "obo:RO_0002233"
+            "@id": "schema:object"
         },
         "hat Input": {
-            "@id": "obo:RO_0002233"
+            "@id": "schema:object"
         },
         "has output": {
-            "@id": "obo:RO_0002234"
+            "@id": "schema:result"
         },
         "hat Output": {
-            "@id": "obo:RO_0002234"
+            "@id": "schema:result"
         },
         "Input von": {
             "@id": "obo:RO_0002352"
@@ -451,11 +447,11 @@
             "@type": "si:CoverageInterval"
         },
         "has employed tool": {
-            "@id": "m4i:hasEmployedTool",
+            "@id": "schema:instrument",
             "@type": "m4i:Tool"
         },
         "hat eingesetztes Werkzeug": {
-            "@id": "m4i:hasEmployedTool",
+            "@id": "schema:instrument",
             "@type": "m4i:Tool"
         },
         "has expanded uncertainty": {
@@ -499,11 +495,11 @@
             "@type": "m4i:UncertaintyDeclaration"
         },
         "has unit": {
-            "@id": "m4i:hasUnit",
+            "@id": "schema:unitCode",
             "@type": "qudt:Unit"
         },
         "hat Einheit": {
-            "@id": "m4i:hasUnit",
+            "@id": "schema:unitCode",
             "@type": "qudt:Unit"
         },
         "has variable": {
@@ -559,10 +555,10 @@
             "@type": "m4i:ProcessingStep"
         },
         "hat Projektmitglied": {
-            "@id": "m4i:projectParticipant"
+            "@id": "schema:member"
         },
         "project participant": {
-            "@id": "m4i:projectParticipant"
+            "@id": "schema:member"
         },
         "realisiert Methode": {
             "@id": "m4i:realizesMethod",
@@ -655,11 +651,11 @@
             "@id": "dcat:compressFormat"
         },
         "has distribution": {
-            "@id": "dcat:distribution",
+            "@id": "pcmd:hasFile",
             "@type": "dcat:Distribution"
         },
         "hat Verteilung": {
-            "@id": "dcat:distribution",
+            "@id": "pcmd:hasFile",
             "@type": "dcat:Distribution"
         },
         "Downloadlink": {
@@ -669,18 +665,18 @@
             "@id": "dcat:downloadURL"
         },
         "in Serie": {
-            "@id": "dcat:inSeries",
+            "@id": "pcmd:memberOf",
             "@type": "dcat:DatasetSeries"
         },
         "in series": {
-            "@id": "dcat:inSeries",
+            "@id": "pcmd:memberOf",
             "@type": "dcat:DatasetSeries"
         },
         "Medientyp": {
-            "@id": "dcat:mediaType"
+            "@id": "schema:encodingFormat"
         },
         "media type": {
-            "@id": "dcat:mediaType"
+            "@id": "schema:encodingFormat"
         },
         "Packformat": {
             "@id": "dcat:packageFormat"
@@ -689,11 +685,11 @@
             "@id": "dcat:packageFormat"
         },
         "has agent": {
-            "@id": "prov:agent",
+            "@id": "schema:agent",
             "@type": "prov:Agent"
         },
         "hat Akteur": {
-            "@id": "prov:agent",
+            "@id": "schema:agent",
             "@type": "prov:Agent"
         },
         "had role": {
@@ -805,22 +801,22 @@
             "@type": "schema:DateTime"
         },
         "has maximum value": {
-            "@id": "m4i:hasMaximumValue"
+            "@id": "schema:maxValue"
         },
         "hat Maximalwert": {
-            "@id": "m4i:hasMaximumValue"
+            "@id": "schema:maxValue"
         },
         "has minimum value": {
-            "@id": "m4i:hasMinimumValue"
+            "@id": "schema:minValue"
         },
         "hat Minimalwert": {
-            "@id": "m4i:hasMinimumValue"
+            "@id": "schema:minValue"
         },
         "has numerical value": {
-            "@id": "m4i:hasNumericalValue"
+            "@id": "schema:value"
         },
         "hat Zahlenwert": {
-            "@id": "m4i:hasNumericalValue"
+            "@id": "schema:value"
         },
         "has ROR ID": {
             "@id": "m4i:hasRorId"
@@ -835,11 +831,11 @@
             "@id": "m4i:hasStepSize"
         },
         "has string value": {
-            "@id": "m4i:hasStringValue",
+            "@id": "schema:value",
             "@type": "xsd:string"
         },
         "hat Zeichenwert": {
-            "@id": "m4i:hasStringValue",
+            "@id": "schema:value",
             "@type": "xsd:string"
         },
         "has symbol": {
@@ -851,25 +847,25 @@
             "@type": "xsd:string"
         },
         "has value": {
-            "@id": "m4i:hasValue"
+            "@id": "schema:value"
         },
         "hat Wert": {
-            "@id": "m4i:hasValue"
+            "@id": "schema:value"
         },
         "has variable description": {
-            "@id": "m4i:hasVariableDescription",
+            "@id": "schema:description",
             "@type": "xsd:string"
         },
         "hat Variablenbeschreibung": {
-            "@id": "m4i:hasVariableDescription",
+            "@id": "schema:description",
             "@type": "xsd:string"
         },
         "has identifier": {
-            "@id": "m4i:identifier",
+            "@id": "schema:identifier",
             "@type": "xsd:string"
         },
         "hat Identifikator": {
-            "@id": "m4i:identifier",
+            "@id": "schema:identifier",
             "@type": "xsd:string"
         },
         "has ORCID ID": {
@@ -879,11 +875,11 @@
             "@id": "m4i:orcidId"
         },
         "has project ID": {
-            "@id": "m4i:projectReferenceID",
+            "@id": "schema:identifier",
             "@type": "xsd:string"
         },
         "hat Projekt-ID": {
-            "@id": "m4i:projectReferenceID",
+            "@id": "schema:identifier",
             "@type": "xsd:string"
         },
         "Projektstartdatum": {
@@ -895,10 +891,10 @@
             "@type": "xsd:date"
         },
         "Dateigröße (in Byte)": {
-            "@id": "dcat:byteSize"
+            "@id": "schema:size"
         },
         "file size (in bytes)": {
-            "@id": "dcat:byteSize"
+            "@id": "schema:size"
         },
         "räumliche Auflösung (in Metern)": {
             "@id": "dcat:spatialResolutionInMeters",
@@ -917,19 +913,19 @@
             "@type": "xsd:duration"
         },
         "Vorname": {
-            "@id": "foaf:firstName",
+            "@id": "schema:givenName",
             "@type": "rdfs:Literal"
         },
         "first name": {
-            "@id": "foaf:firstName",
+            "@id": "schema:givenName",
             "@type": "rdfs:Literal"
         },
         "Nachname": {
-            "@id": "foaf:lastName",
+            "@id": "schema:familyName",
             "@type": "rdfs:Literal"
         },
         "last name": {
-            "@id": "foaf:lastName",
+            "@id": "schema:familyName",
             "@type": "rdfs:Literal"
         },
         "Anrede": {
@@ -1145,41 +1141,41 @@
         {
             "@id": "local:main_processing_step_0",
             "@type": "processing step",
-            "label": "summary"
+            "label": "run_simulation"
         },
         {
             "@id": "local:main_processing_step_1",
             "@type": "processing step",
-            "label": "generate_input_files"
+            "label": "summary"
         },
         {
             "@id": "local:main_processing_step_2",
             "@type": "processing step",
-            "label": "run_simulation"
+            "label": "generate_input_files"
         },
         {
             "@id": "local:processing_step_3",
             "@type": "processing step",
             "label": "generate_input_files_3",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-06-03 19:44:59.249479",
             "end time": "2025-06-03 19:45:01.388620",
             "has input": [
                 {
-                    "@id": "local:file_0"
+                    "@id": "experiment.json"
                 },
                 {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 }
             ],
             "has output": [
                 {
-                    "@id": "local:file_2"
+                    "@id": "data/input_00625.json"
                 },
                 {
-                    "@id": "local:file_3"
+                    "@id": "data/mesh_00625.msh"
                 }
             ],
             "has parameter": [],
@@ -1209,21 +1205,21 @@
             "@type": "processing step",
             "label": "run_simulation_2",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-06-03 19:45:01.392510",
             "end time": "2025-06-03 19:45:12.533423",
             "has input": [
                 {
-                    "@id": "local:file_2"
+                    "@id": "data/input_00625.json"
                 },
                 {
-                    "@id": "local:file_3"
+                    "@id": "data/mesh_00625.msh"
                 }
             ],
             "has output": [
                 {
-                    "@id": "local:file_4"
+                    "@id": "data/output_00625.vtk"
                 }
             ],
             "has parameter": [],
@@ -1253,59 +1249,59 @@
             "@type": "processing step",
             "label": "summary_1",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-06-03 19:45:12.799263",
             "end time": "2025-06-03 19:45:13.855689",
             "has input": [
                 {
-                    "@id": "local:file_4"
+                    "@id": "data/output_00625.vtk"
                 },
                 {
-                    "@id": "local:file_2"
+                    "@id": "data/input_00625.json"
                 },
                 {
-                    "@id": "local:file_3"
+                    "@id": "data/mesh_00625.msh"
                 },
                 {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 }
             ],
             "has output": [
                 {
-                    "@id": "local:file_5"
+                    "@id": "summary_00625.json"
                 }
             ],
             "has parameter": [],
             "has employed tool": []
         },
         {
-            "@id": "local:file_0",
+            "@id": "experiment.json",
             "@type": "cr:FileObject",
             "label": "experiment.json"
         },
         {
-            "@id": "local:file_1",
+            "@id": "parameters_00625.json",
             "@type": "cr:FileObject",
             "label": "parameters_00625.json"
         },
         {
-            "@id": "local:file_2",
+            "@id": "data/input_00625.json",
             "@type": "cr:FileObject",
             "label": "data/input_00625.json"
         },
         {
-            "@id": "local:file_3",
+            "@id": "data/mesh_00625.msh",
             "@type": "cr:FileObject",
             "label": "data/mesh_00625.msh"
         },
         {
-            "@id": "local:file_4",
+            "@id": "data/output_00625.vtk",
             "@type": "cr:FileObject",
             "label": "data/output_00625.vtk"
         },
         {
-            "@id": "local:file_5",
+            "@id": "summary_00625.json",
             "@type": "cr:FileObject",
             "label": "summary_00625.json"
         },
@@ -1392,7 +1388,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/radius/value"
@@ -1408,7 +1404,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/length/value"
@@ -1424,7 +1420,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/load/value"
@@ -1440,7 +1436,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/element-size/value"
@@ -1456,7 +1452,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/element-order"
@@ -1472,7 +1468,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/element-degree"
@@ -1488,7 +1484,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/quadrature-rule"
@@ -1504,7 +1500,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/quadrature-degree"
@@ -1520,7 +1516,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/young-modulus/value"
@@ -1536,7 +1532,7 @@
             },
             "source": {
                 "file object": {
-                    "@id": "local:file_1"
+                    "@id": "parameters_00625.json"
                 },
                 "cr:extract": {
                     "cr:jsonPath": "/poisson-ratio/value"
@@ -1546,34 +1542,34 @@
         },
         {
             "@id": "local:tool_0",
-            "@type": "prov:SoftwareAgent",
+            "@type": "schema:SoftwareApplication",
             "label": "python",
             "schema:softwareVersion": ">=3.10"
         },
         {
             "@id": "local:tool_1",
-            "@type": "prov:SoftwareAgent",
+            "@type": "schema:SoftwareApplication",
             "label": "fenics-dolfinx"
         },
         {
             "@id": "local:tool_2",
-            "@type": "prov:SoftwareAgent",
+            "@type": "schema:SoftwareApplication",
             "label": "libadios2",
             "schema:softwareVersion": "=2.10.1"
         },
         {
             "@id": "local:tool_3",
-            "@type": "prov:SoftwareAgent",
+            "@type": "schema:SoftwareApplication",
             "label": "petsc4py"
         },
         {
             "@id": "local:tool_4",
-            "@type": "prov:SoftwareAgent",
+            "@type": "schema:SoftwareApplication",
             "label": "python-gmsh"
         },
         {
             "@id": "local:tool_5",
-            "@type": "prov:SoftwareAgent",
+            "@type": "schema:SoftwareApplication",
             "label": "pint"
         }
     ]
