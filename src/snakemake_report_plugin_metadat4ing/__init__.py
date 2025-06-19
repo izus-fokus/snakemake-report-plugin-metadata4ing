@@ -120,7 +120,7 @@ class Reporter(ReporterBase):
         conda_files = [
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
-
+        
         for conda_file in conda_files:
             if (
                 self.settings.paramscript
@@ -257,15 +257,6 @@ class Reporter(ReporterBase):
             )
 
     def _add_ro_crate_file_nodes(self, file_nodes):
-        for file in file_nodes.keys():
-            _ = self.crate.add_file(
-                file,
-                dest_path=file,
-                properties={
-                    "name": file,
-                    "encodingFormat": self.get_mime_type(file),
-                },
-            )
         _ = self.crate.add_file(
             self.provenance_filename,
             dest_path=self.provenance_filename,
@@ -278,6 +269,16 @@ class Reporter(ReporterBase):
                 ],
             },
         )
+        
+        for file in file_nodes.keys():
+            _ = self.crate.add_file(
+                file,
+                dest_path=file,
+                properties={
+                    "name": file,
+                    "encodingFormat": self.get_mime_type(file),
+                },
+            )
 
     def _add_ro_crate_software(self):
         self.crate.add(SoftwareApplication(self.crate, "Snakemake", {
