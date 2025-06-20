@@ -15,7 +15,7 @@ from snakemake_report_plugin_metadat4ing.interfaces import (
 from rocrate.rocrate import ROCrate
 from rocrate.model.softwareapplication import SoftwareApplication
 import mimetypes
-
+import shlex
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -121,6 +121,22 @@ class Reporter(ReporterBase):
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
         
+        shell_cmds = [
+            j.shellcmd for j in self.dag.jobs if j.jobid == job.job.jobid and j.shellcmd
+        ]
+        
+        for shell_cmd_file in shell_cmds:
+            shell_file = self.extract_script(shell_cmd_file)
+            if shell_file:
+                _ = self.crate.add_file(
+                    shell_file,
+                    dest_path=shell_file,
+                    properties={
+                        "name": shell_file,
+                        "encodingFormat": self.get_mime_type(shell_file),
+                    },
+            )
+            
         for conda_file in conda_files:
             if (
                 self.settings.paramscript
@@ -370,3 +386,37 @@ class Reporter(ReporterBase):
 
         mime_type, _ = mimetypes.guess_type(file_name, strict=False)
         return mime_type or "application/octet-stream"
+
+    def extract_script(self, cmd: str) -> str | None:
+       """
+       Return the script filename from a shell‑command string, or None
+       if no plausible script can be identified.
+       """
+       _INTERPRETERS = {
+            "python", "python3", "python2",
+            "pypy", "pypy3",
+            "ruby", "perl", "node", "deno", "php", "lua",
+            "Rscript", "R", "bash", "sh", "zsh", "ksh", "fish"
+        }
+       
+       try:
+           tokens = shlex.split(cmd, posix=True)
+       except ValueError: 
+           return None
+
+       if not tokens:
+           return None
+
+       if Path(tokens[0]).name in _INTERPRETERS:
+           for tok in tokens[1:]:
+               if tok.startswith("-"):
+                   continue
+               return Path(tok).name 
+           return None
+
+       first = Path(tokens[0])
+       
+       if first.suffix and first.suffix not in {".exe", ".bat", ".cmd"}:
+           return first.name
+
+       return None

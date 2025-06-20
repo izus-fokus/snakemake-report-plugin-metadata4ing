@@ -1141,24 +1141,24 @@
         {
             "@id": "local:main_processing_step_0",
             "@type": "processing step",
-            "label": "summary"
+            "label": "generate_input_files"
         },
         {
             "@id": "local:main_processing_step_1",
             "@type": "processing step",
-            "label": "run_simulation"
+            "label": "summary"
         },
         {
             "@id": "local:main_processing_step_2",
             "@type": "processing step",
-            "label": "generate_input_files"
+            "label": "run_simulation"
         },
         {
             "@id": "local:processing_step_3",
             "@type": "processing step",
             "label": "generate_input_files_3",
             "part of": {
-                "@id": "local:main_processing_step_2"
+                "@id": "local:main_processing_step_0"
             },
             "start time": "2025-06-03 19:44:59.249479",
             "end time": "2025-06-03 19:45:01.388620",
@@ -1205,7 +1205,7 @@
             "@type": "processing step",
             "label": "run_simulation_2",
             "part of": {
-                "@id": "local:main_processing_step_1"
+                "@id": "local:main_processing_step_2"
             },
             "start time": "2025-06-03 19:45:01.392510",
             "end time": "2025-06-03 19:45:12.533423",
@@ -1249,7 +1249,7 @@
             "@type": "processing step",
             "label": "summary_1",
             "part of": {
-                "@id": "local:main_processing_step_0"
+                "@id": "local:main_processing_step_1"
             },
             "start time": "2025-06-03 19:45:12.799263",
             "end time": "2025-06-03 19:45:13.855689",

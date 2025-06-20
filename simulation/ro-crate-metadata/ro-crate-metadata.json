@@ -4,8 +4,14 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "datePublished": "2025-06-19T22:05:55+00:00",
+            "datePublished": "2025-06-20T15:53:07+00:00",
             "hasPart": [
+                {
+                    "@id": "create_input_files.py"
+                },
+                {
+                    "@id": "run_simulation.py"
+                },
                 {
                     "@id": "provenance.jsonld"
                 },
@@ -38,6 +44,18 @@
             "conformsTo": {
                 "@id": "https://w3id.org/ro/crate/1.1"
             }
+        },
+        {
+            "@id": "create_input_files.py",
+            "@type": "File",
+            "encodingFormat": "text/x-python",
+            "name": "create_input_files.py"
+        },
+        {
+            "@id": "run_simulation.py",
+            "@type": "File",
+            "encodingFormat": "text/x-python",
+            "name": "run_simulation.py"
         },
         {
             "@id": "provenance.jsonld",
