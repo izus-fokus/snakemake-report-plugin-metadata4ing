@@ -16,6 +16,7 @@ from rocrate.rocrate import ROCrate
 from rocrate.model.softwareapplication import SoftwareApplication
 import mimetypes
 import shlex
+import os
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -93,6 +94,8 @@ class Reporter(ReporterBase):
         self._add_ro_crate_file_nodes(file_nodes)
         # self._add_ro_crate_software()
         self._create_ro_crate_file()
+        
+        os.remove("provenance.jsonld")
 
     def _create_job_node(
         self, job, main_steps_dict, files_dict, fields_dict, file_counter
@@ -281,7 +284,7 @@ class Reporter(ReporterBase):
                 "encodingFormat": "application/ld+json",
                 "conformsTo": [
                     "https://w3id.org/ro/crate/1.1",
-                    "https://w3id.org/nfdi4ing/metadata4ing/1.3.0",
+                    "https://w3id.org/nfdi4ing/metadata4ing/1.3.1",
                 ],
             },
         )
@@ -308,7 +311,7 @@ class Reporter(ReporterBase):
         )
 
     def _create_ro_crate_file(self):
-        self.crate.write("ro-crate-metadata")
+        self.crate.write_zip("ro-crate-metadata.zip")
 
     def _load_param_extractor_obj(self):
         script_path = self.settings.paramscript
