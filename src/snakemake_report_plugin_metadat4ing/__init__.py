@@ -129,14 +129,14 @@ class Reporter(ReporterBase):
         ]
         
         for shell_cmd_file in shell_cmds:
-            shell_file = self.extract_script(shell_cmd_file)
+            shell_file = self._extract_script(shell_cmd_file)
             if shell_file:
                 _ = self.crate.add_file(
                     shell_file,
                     dest_path=shell_file,
                     properties={
                         "name": shell_file,
-                        "encodingFormat": self.get_mime_type(shell_file),
+                        "encodingFormat": self._get_mime_type(shell_file),
                     },
             )
             
@@ -173,7 +173,18 @@ class Reporter(ReporterBase):
                     job.rule, file, file_node
                 )
                 fields_dict.update(field_nodes)
-
+        snakefile, snakepath = self._find_snakefile()
+        
+        if snakefile:
+            _ = self.crate.add_file(
+                    snakefile,
+                    dest_path=snakepath,
+                    properties={
+                        "name": snakefile,
+                        "encodingFormat": "text/plain",
+                    },
+            )
+            
         return node
 
     def _add_file(self, file_path, file_dict, counter):
@@ -295,7 +306,7 @@ class Reporter(ReporterBase):
                 dest_path=file,
                 properties={
                     "name": file,
-                    "encodingFormat": self.get_mime_type(file),
+                    "encodingFormat": self._get_mime_type(file),
                 },
             )
 
@@ -369,7 +380,7 @@ class Reporter(ReporterBase):
                 raise TypeError(f"Key '{key}' must be a string.")
         return result
 
-    def get_mime_type(self, file_name: str) -> str:
+    def _get_mime_type(self, file_name: str) -> str:
         """
         Return the MIME type that corresponds to a file’s extension.
 
@@ -390,7 +401,7 @@ class Reporter(ReporterBase):
         mime_type, _ = mimetypes.guess_type(file_name, strict=False)
         return mime_type or "application/octet-stream"
 
-    def extract_script(self, cmd: str) -> str | None:
+    def _extract_script(self, cmd: str) -> str | None:
        """
        Return the script filename from a shell‑command string, or None
        if no plausible script can be identified.
@@ -423,3 +434,11 @@ class Reporter(ReporterBase):
            return first.name
 
        return None
+   
+    def _find_snakefile(self):
+        current_dir = os.getcwd()
+        for file in os.listdir(current_dir):
+            if file.lower() == "snakefile":
+                rel_path = os.path.relpath(os.path.join(current_dir, file))
+                return (file, rel_path)
+        return None
