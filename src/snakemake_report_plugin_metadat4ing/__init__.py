@@ -46,6 +46,7 @@ class Reporter(ReporterBase):
         self.tools_dict = {}
         self.crate = ROCrate()
         self.provenance_filename = "provenance.jsonld"
+        self.provenance_ttl_filename = "provenance.ttl"
 
         jsonld = {
             "@context": self.context_data.get("@context", {}),
@@ -90,12 +91,13 @@ class Reporter(ReporterBase):
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
 
-        # self._create_ttl_from_jsonld(jsonld)
+        self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         # self._add_ro_crate_software()
         self._create_ro_crate_file()
         
-        os.remove("provenance.jsonld")
+        os.remove(self.provenance_filename)
+        os.remove(self.provenance_ttl_filename)
 
     def _create_job_node(
         self, job, main_steps_dict, files_dict, fields_dict, file_counter
@@ -300,6 +302,15 @@ class Reporter(ReporterBase):
             },
         )
         
+        _ = self.crate.add_file(
+            self.provenance_ttl_filename,
+            dest_path=self.provenance_ttl_filename,
+            properties={
+                "name": self.provenance_ttl_filename,
+                "encodingFormat": "text/turtle",
+            },
+        )
+        
         for file in file_nodes.keys():
             _ = self.crate.add_file(
                 file,
@@ -318,7 +329,7 @@ class Reporter(ReporterBase):
     
     def _create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize(
-            "provenance.ttl", format="ttl"
+            "provenance.ttl", format="ttl", publicID="http://example.org/"
         )
 
     def _create_ro_crate_file(self):
