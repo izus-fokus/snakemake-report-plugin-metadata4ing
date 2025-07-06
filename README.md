@@ -6,7 +6,7 @@ This project is based on the Snakemake [reporter plugin](https://github.com/snak
 
 Install the plugin using pip:
 ```
-python -m pip install git+https://github.com/M-Jafarkhani/snakemake-report-plugin-metadata4ing
+python -m pip install git+https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing
 ```
 or from the source code:
 ```

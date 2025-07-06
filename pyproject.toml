@@ -8,7 +8,7 @@ dependencies = ["snakemake-interface-common (>=1.17.4,<2.0.0)", "snakemake-inter
 repository = "https://github.com/your/plugin"
 documentation = "https://snakemake.github.io/snakemake-plugin-catalog/plugins/report/metadat4ing.html"
 [[project.authors]]
-name = "M-Jafarkhani"
+name = "Mahdi Jafarkhani"
 email = "mahdi.jafarkhani@gmail.com"
 
 [build-system]
