@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
+from fileinput import filename
 from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
@@ -17,6 +18,7 @@ from rocrate.model.softwareapplication import SoftwareApplication
 import mimetypes
 import shlex
 import os
+import hashlib
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -45,6 +47,7 @@ class Reporter(ReporterBase):
         self.tool_counter = 0
         self.tools_dict = {}
         self.crate = ROCrate()
+        self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
         self.provenance_ttl_filename = "provenance.ttl"
 
@@ -52,21 +55,23 @@ class Reporter(ReporterBase):
             "@context": self.context_data.get("@context", {}),
             "@graph": [],
         }
-        jsonld["@context"]["local"] = "https://local-domain.org/"
         jsonld["@context"]["units"] = "http://qudt.org/vocab/unit/"
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
-        main_steps = {job.rule for job in self.jobs}
         job_nodes, step_nodes, file_nodes, field_nodes = {}, {}, {}, {}
         file_counter = 0
-
-        for i, step in enumerate(main_steps):
-            step_nodes[step] = {
-                "@id": f"local:main_processing_step_{i}",
-                "@type": "processing step",
-                "label": step,
-            }
-
+        
+        toposorted = self.dag.toposorted()
+        
+        for i, steps in enumerate(toposorted):
+            for step in steps:
+                step_nodes[f"{step}"] = {
+                    "@id": f"local:{step}",
+                    "@type": "processing step",
+                    "label": f"{step}",
+                    "schema:position": i,
+                }
+        
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
             step_node = self._create_job_node(
@@ -88,9 +93,12 @@ class Reporter(ReporterBase):
         ):
             jsonld["@graph"].extend(d.values())
 
+        self.simulation_hash = self._random_hash_from_json(jsonld,16)
+        jsonld["@context"]["local"] = f"https://local-domain.org/{self.simulation_hash}/"
+            
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-
+        
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         # self._add_ro_crate_software()
@@ -98,7 +106,7 @@ class Reporter(ReporterBase):
         
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
-
+   
     def _create_job_node(
         self, job, main_steps_dict, files_dict, fields_dict, file_counter
     ):
@@ -329,11 +337,11 @@ class Reporter(ReporterBase):
     
     def _create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize(
-            "provenance.ttl", format="ttl", publicID="http://example.org/"
+            "provenance.ttl", format="ttl"
         )
 
     def _create_ro_crate_file(self):
-        self.crate.write_zip("ro-crate-metadata.zip")
+        self.crate.write_zip(f"ro_crate_{self.simulation_hash}.zip")
 
     def _load_param_extractor_obj(self):
         script_path = self.settings.paramscript
@@ -453,3 +461,10 @@ class Reporter(ReporterBase):
                 rel_path = os.path.relpath(os.path.join(current_dir, file))
                 return (file, rel_path)
         return None
+    
+    def _random_hash_from_json(self, json_content: dict, length=8) -> str:
+        json_str = json.dumps(json_content, sort_keys=True)
+        salt = os.urandom(8)
+        combined = salt + json_str.encode('utf-8')
+        hash_value = hashlib.sha256(combined).hexdigest()
+        return hash_value[:length]

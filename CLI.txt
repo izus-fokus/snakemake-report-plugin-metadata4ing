@@ -5,8 +5,7 @@ RUN SIMULATION
 ============================================================
 conda create -n fenicsx-env -c conda-forge fenics-dolfinx mpich
 conda activate fenicsx-env
-pip install pint
-pip install gmsh
+pip install pint gmsh snakemake
 snakemake --cores 1 --force
 
 ============================================================
