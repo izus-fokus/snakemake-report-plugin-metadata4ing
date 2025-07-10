@@ -341,7 +341,7 @@ class Reporter(ReporterBase):
         )
 
     def _create_ro_crate_file(self):
-        self.crate.write_zip(f"ro_crate_{self.simulation_hash}.zip")
+        self.crate.write_zip(f"ro-crate-metadata-{self.simulation_hash}.zip")
 
     def _load_param_extractor_obj(self):
         script_path = self.settings.paramscript
