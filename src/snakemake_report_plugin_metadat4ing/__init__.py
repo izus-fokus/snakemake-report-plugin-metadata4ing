@@ -463,8 +463,6 @@ class Reporter(ReporterBase):
         return None
     
     def _random_hash_from_json(self, json_content: dict, length=8) -> str:
-        json_str = json.dumps(json_content, sort_keys=True)
-        salt = os.urandom(8)
-        combined = salt + json_str.encode('utf-8')
-        hash_value = hashlib.sha256(combined).hexdigest()
+        json_str = json.dumps(json_content, sort_keys=True).encode('utf-8')
+        hash_value = hashlib.sha256(json_str).hexdigest()
         return hash_value[:length]

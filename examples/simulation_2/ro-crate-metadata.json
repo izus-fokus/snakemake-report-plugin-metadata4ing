@@ -1,0 +1,125 @@
+{
+    "@context": "https://w3id.org/ro/crate/1.1/context",
+    "@graph": [
+        {
+            "@id": "./",
+            "@type": "Dataset",
+            "datePublished": "2025-07-14T16:08:03+00:00",
+            "hasPart": [
+                {
+                    "@id": "create_input_files.py"
+                },
+                {
+                    "@id": "Snakefile"
+                },
+                {
+                    "@id": "run_simulation.py"
+                },
+                {
+                    "@id": "provenance.jsonld"
+                },
+                {
+                    "@id": "provenance.ttl"
+                },
+                {
+                    "@id": "experiment.json"
+                },
+                {
+                    "@id": "parameters_0125.json"
+                },
+                {
+                    "@id": "data/input_0125.json"
+                },
+                {
+                    "@id": "data/mesh_0125.msh"
+                },
+                {
+                    "@id": "data/output_0125.vtk"
+                },
+                {
+                    "@id": "summary_0125.json"
+                }
+            ]
+        },
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "about": {
+                "@id": "./"
+            },
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            }
+        },
+        {
+            "@id": "create_input_files.py",
+            "@type": "File",
+            "encodingFormat": "text/x-python",
+            "name": "create_input_files.py"
+        },
+        {
+            "@id": "Snakefile",
+            "@type": "File",
+            "encodingFormat": "text/plain",
+            "name": "Snakefile"
+        },
+        {
+            "@id": "run_simulation.py",
+            "@type": "File",
+            "encodingFormat": "text/x-python",
+            "name": "run_simulation.py"
+        },
+        {
+            "@id": "provenance.jsonld",
+            "@type": "File",
+            "conformsTo": [
+                "https://w3id.org/ro/crate/1.1",
+                "https://w3id.org/nfdi4ing/metadata4ing/1.3.1"
+            ],
+            "encodingFormat": "application/ld+json",
+            "name": "provenance.jsonld"
+        },
+        {
+            "@id": "provenance.ttl",
+            "@type": "File",
+            "encodingFormat": "text/turtle",
+            "name": "provenance.ttl"
+        },
+        {
+            "@id": "experiment.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "experiment.json"
+        },
+        {
+            "@id": "parameters_0125.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "parameters_0125.json"
+        },
+        {
+            "@id": "data/input_0125.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "data/input_0125.json"
+        },
+        {
+            "@id": "data/mesh_0125.msh",
+            "@type": "File",
+            "encodingFormat": "model/mesh",
+            "name": "data/mesh_0125.msh"
+        },
+        {
+            "@id": "data/output_0125.vtk",
+            "@type": "File",
+            "encodingFormat": "application/octet-stream",
+            "name": "data/output_0125.vtk"
+        },
+        {
+            "@id": "summary_0125.json",
+            "@type": "File",
+            "encodingFormat": "application/json",
+            "name": "summary_0125.json"
+        }
+    ]
+}

@@ -1,0 +1,68 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mahdis-MacBook-Air.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                     count
+--------------------  -------
+all                         1
+generate_input_files        1
+run_simulation              1
+summary                     1
+total                       4
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Jul 14 18:06:14 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_003125.json
+    output: data/input_003125.json, data/mesh_003125.msh
+    jobid: 3
+    reason: Missing output files: data/input_003125.json, data/mesh_003125.msh
+    wildcards: name=003125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Mon Jul 14 18:06:16 2025]
+Finished jobid: 3 (Rule: generate_input_files)
+1 of 4 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Jul 14 18:06:16 2025]
+localrule run_simulation:
+    input: data/input_003125.json, data/mesh_003125.msh
+    output: data/output_003125.vtk
+    jobid: 2
+    reason: Missing output files: data/output_003125.vtk; Input files updated by another job: data/input_003125.json, data/mesh_003125.msh
+    wildcards: name=003125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Mon Jul 14 18:06:23 2025]
+Finished jobid: 2 (Rule: run_simulation)
+2 of 4 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Jul 14 18:06:23 2025]
+localrule summary:
+    input: data/output_003125.vtk, data/input_003125.json, data/mesh_003125.msh, parameters_003125.json
+    output: summary_003125.json
+    jobid: 1
+    reason: Missing output files: summary_003125.json; Input files updated by another job: data/input_003125.json, data/output_003125.vtk, data/mesh_003125.msh
+    wildcards: name=003125
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Mon Jul 14 18:06:25 2025]
+Finished jobid: 1 (Rule: summary)
+3 of 4 steps (75%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon Jul 14 18:06:25 2025]
+localrule all:
+    input: summary_003125.json
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Mon Jul 14 18:06:25 2025]
+Finished jobid: 0 (Rule: all)
+4 of 4 steps (100%) done
+Complete log(s): /Users/mahdi/Documents/GitHub/snakemake-report-plugin-metadata4ing/examples/simulation_1/.snakemake/log/2025-07-14T180614.816424.snakemake.log
