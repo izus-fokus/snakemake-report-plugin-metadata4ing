@@ -1,0 +1,107 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: Mahdis-MacBook-Air.local
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                     count
+--------------------  -------
+all                         1
+generate_input_files        2
+run_simulation              2
+summary                     2
+total                       7
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Jul 15 19:19:05 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_1.json
+    output: data/input_1.json, data/mesh_1.msh
+    jobid: 6
+    reason: Missing output files: data/input_1.json, data/mesh_1.msh
+    wildcards: name=1
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+Select jobs to execute...
+[Tue Jul 15 19:19:06 2025]
+Finished jobid: 6 (Rule: generate_input_files)
+1 of 7 steps (14%) done
+Execute 1 jobs...
+[Tue Jul 15 19:19:06 2025]
+localrule run_simulation:
+    input: data/input_1.json, data/mesh_1.msh
+    output: data/output_1.vtk
+    jobid: 5
+    reason: Missing output files: data/output_1.vtk; Input files updated by another job: data/mesh_1.msh, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+Select jobs to execute...
+[Tue Jul 15 19:19:13 2025]
+Finished jobid: 5 (Rule: run_simulation)
+2 of 7 steps (29%) done
+Execute 1 jobs...
+[Tue Jul 15 19:19:13 2025]
+localrule summary:
+    input: data/output_1.vtk, data/input_1.json, data/mesh_1.msh, parameters_1.json
+    output: summary_1.json
+    jobid: 4
+    reason: Missing output files: summary_1.json; Input files updated by another job: data/input_1.json, data/mesh_1.msh, data/output_1.vtk
+    wildcards: name=1
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+Select jobs to execute...
+[Tue Jul 15 19:19:14 2025]
+Finished jobid: 4 (Rule: summary)
+3 of 7 steps (43%) done
+Execute 1 jobs...
+[Tue Jul 15 19:19:14 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_025.json
+    output: data/input_025.json, data/mesh_025.msh
+    jobid: 3
+    reason: Missing output files: data/input_025.json, data/mesh_025.msh
+    wildcards: name=025
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Tue Jul 15 19:19:14 2025]
+Finished jobid: 3 (Rule: generate_input_files)
+4 of 7 steps (57%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Jul 15 19:19:14 2025]
+localrule run_simulation:
+    input: data/input_025.json, data/mesh_025.msh
+    output: data/output_025.vtk
+    jobid: 2
+    reason: Missing output files: data/output_025.vtk; Input files updated by another job: data/input_025.json, data/mesh_025.msh
+    wildcards: name=025
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Tue Jul 15 19:19:15 2025]
+Finished jobid: 2 (Rule: run_simulation)
+5 of 7 steps (71%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Jul 15 19:19:15 2025]
+localrule summary:
+    input: data/output_025.vtk, data/input_025.json, data/mesh_025.msh, parameters_025.json
+    output: summary_025.json
+    jobid: 1
+    reason: Missing output files: summary_025.json; Input files updated by another job: data/input_025.json, data/mesh_025.msh, data/output_025.vtk
+    wildcards: name=025
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Tue Jul 15 19:19:16 2025]
+Finished jobid: 1 (Rule: summary)
+6 of 7 steps (86%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue Jul 15 19:19:16 2025]
+localrule all:
+    input: summary_025.json, summary_1.json
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/var/folders/0x/76vhfzhn0txf5wnfxfwzyl400000gn/T
+[Tue Jul 15 19:19:16 2025]
+Finished jobid: 0 (Rule: all)
+7 of 7 steps (100%) done
+Complete log(s): /Users/mahdi/Documents/GitHub/snakemake-report-plugin-metadata4ing/examples/simulation_3/.snakemake/log/2025-07-15T191904.427874.snakemake.log
