@@ -8,6 +8,8 @@ conda activate fenicsx-env
 pip install pint gmsh snakemake pyvista
 snakemake --cores 1 --force
 
+
+conda create -n kratos -c conda-forge KratosMultiphysics-all
 ============================================================
 
 CREATE REPORTER
@@ -35,3 +37,6 @@ pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3
 snakemake --reporter metadat4ing --cores 1
 snakemake --reporter metadat4ing --report-metadat4ing-paramscript /Users/mahdi/Documents/GitHub/snakemake-report-plugin-metadata4ing/sample_extractor/my_extractor.py --cores 1
 unzip ro-crate-metadata.zip -d ro-crate-metadata
+
+
+pip install /Users/mahdi/Downloads/KratosMultiphysics-10.2.3-cp312-cp312-win_amd64.whl
