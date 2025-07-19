@@ -3,6 +3,5 @@ dist
 poetry.lock
 examples/_all
 sample_extractor/__pycache__/
-examples/simulation_1/.snakemake/log
-examples/simulation_2/.snakemake/log
-examples/simulation_3/.snakemake/log
+examples/benchmarks/FEniCS/.snakemake/log
+examples/benchmarks/Kratos/.snakemake/log
