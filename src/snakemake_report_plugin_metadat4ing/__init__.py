@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from fileinput import filename
 from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
@@ -33,7 +32,6 @@ class ReportSettings(ReportSettingsBase):
         },
     )
 
-
 class Reporter(ReporterBase):
     def __post_init__(self):
         self.context_data = {}
@@ -58,24 +56,13 @@ class Reporter(ReporterBase):
         jsonld["@context"]["units"] = "http://qudt.org/vocab/unit/"
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
-        job_nodes, step_nodes, file_nodes, field_nodes = {}, {}, {}, {}
+        job_nodes, file_nodes, field_nodes = {}, {}, {}
         file_counter = 0
-        
-        toposorted = self.dag.toposorted()
-        
-        for i, steps in enumerate(toposorted):
-            for step in steps:
-                step_nodes[f"{step}"] = {
-                    "@id": f"local:{step}",
-                    "@type": "processing step",
-                    "label": f"{step}",
-                    "schema:position": i,
-                }
         
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
             step_node = self._create_job_node(
-                job, step_nodes, file_nodes, field_nodes, file_counter
+                job, file_nodes, field_nodes, file_counter
             )
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
@@ -84,7 +71,6 @@ class Reporter(ReporterBase):
             value["@id"] = key
 
         for d in (
-            step_nodes,
             job_nodes,
             file_nodes,
             self.param_dict,
@@ -108,13 +94,12 @@ class Reporter(ReporterBase):
         os.remove(self.provenance_ttl_filename)
    
     def _create_job_node(
-        self, job, main_steps_dict, files_dict, fields_dict, file_counter
+        self, job, files_dict, fields_dict, file_counter
     ):
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
             "label": f"{job.rule}_{job.job.jobid}",
-            "part of": {"@id": main_steps_dict[job.rule]["@id"]},
             "start time": f"{datetime.fromtimestamp(job.starttime)}",
             "end time": f"{datetime.fromtimestamp(job.endtime)}",
             "has input": [],
@@ -161,7 +146,7 @@ class Reporter(ReporterBase):
                     node["has employed tool"].append({"@id": tool["@id"]})
 
         for file in input_files:
-            if not self.is_file(file):
+            if not self._is_file(file):
                 continue
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
@@ -176,7 +161,7 @@ class Reporter(ReporterBase):
                     node["has parameter"].append({"@id": param})
 
         for file in job.output:
-            if not self.is_file(file):
+            if not self._is_file(file):
                 continue
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
@@ -187,6 +172,7 @@ class Reporter(ReporterBase):
                     job.rule, file, file_node
                 )
                 fields_dict.update(field_nodes)
+        
         snakefile, snakepath = self._find_snakefile()
         
         if snakefile:
@@ -466,12 +452,9 @@ class Reporter(ReporterBase):
                 return (file, rel_path)
         return None
     
-    def is_file(self, file_name: str) -> bool:
-        return (
-            os.path.basename(file_name) == file_name and  # No path component
-            not os.path.isabs(file_name) and              # Not an absolute path
-            not any(sep in file_name for sep in ['/', '\\'])  # No separators
-        )
+    def _is_file(self, file_name: str) -> bool:
+        return os.path.isfile(file_name)
+
     def _random_hash_from_json(self, json_content: dict, length=8) -> str:
         json_str = json.dumps(json_content, sort_keys=True).encode('utf-8')
         hash_value = hashlib.sha256(json_str).hexdigest()
