@@ -1,0 +1,57 @@
+Building DAG of jobs...
+Creating report...
+Traceback (most recent call last):
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake/cli.py", line 2126, in args_to_api
+    dag_api.create_report(
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake/api.py", line 614, in _handle_no_exec
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake/api.py", line 654, in create_report
+    self.workflow_api._workflow.create_report(
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake/workflow.py", line 1058, in create_report
+    async_run(auto_report(self.dag, report_plugin, report_settings))
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake/common/__init__.py", line 99, in async_run
+    return asyncio.run(coroutine)
+           ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/asyncio/runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake/report/__init__.py", line 747, in auto_report
+    reporter.render()
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake_report_plugin_metadat4ing/__init__.py", line 105, in render
+    self._create_ro_crate_file()
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/snakemake_report_plugin_metadat4ing/__init__.py", line 345, in _create_ro_crate_file
+    self.crate.write_zip(f"ro-crate-metadata-{self.simulation_hash}.zip")
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/rocrate/rocrate.py", line 483, in write_zip
+    for chunk in self._stream_zip(out_path=out_path):
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/rocrate/rocrate.py", line 500, in _stream_zip
+    for path, chunk in writeable_entity.stream(chunk_size=chunk_size):
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/rocrate/model/file.py", line 156, in stream
+    yield from self._stream_from_file(path, chunk_size)
+
+  File "/opt/anaconda3/lib/python3.12/site-packages/rocrate/model/file.py", line 131, in _stream_from_file
+    with open(path, 'rb') as f:
+         ^^^^^^^^^^^^^^^^
+
+IsADirectoryError: [Errno 21] Is a directory: 'data/output_003125'
+

@@ -1,0 +1,302 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: codespaces-d9cb13
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job stats:
+job                     count
+--------------------  -------
+all                         1
+generate_input_files        7
+run_simulation              7
+summary                     7
+total                      22
+
+Select jobs to execute...
+Execute 1 jobs...
+[Sat Jul 19 10:39:08 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_003125.json
+    output: data/input_003125.json, data/mesh_003125.msh, data/mesh_003125.mdpa
+    jobid: 12
+    reason: Missing output files: data/input_003125.json, data/mesh_003125.mdpa
+    wildcards: name=003125
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:39:16 2025]
+Finished jobid: 12 (Rule: generate_input_files)
+1 of 22 steps (5%) done
+Execute 1 jobs...
+[Sat Jul 19 10:39:16 2025]
+localrule run_simulation:
+    input: data/input_003125.json, data/mesh_003125.mdpa
+    output: data/output_003125
+    jobid: 11
+    reason: Missing output files: data/output_003125; Input files updated by another job: data/input_003125.json, data/mesh_003125.mdpa
+    wildcards: name=003125
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:34 2025]
+Finished jobid: 11 (Rule: run_simulation)
+2 of 22 steps (9%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:34 2025]
+localrule summary:
+    input: data/output_003125, data/input_003125.json, data/mesh_003125.mdpa, parameters_003125.json
+    output: summary_003125.json
+    jobid: 10
+    reason: Missing output files: summary_003125.json; Input files updated by another job: data/input_003125.json, data/output_003125, data/mesh_003125.mdpa
+    wildcards: name=003125
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:38 2025]
+Finished jobid: 10 (Rule: summary)
+3 of 22 steps (14%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:38 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_00625.json
+    output: data/input_00625.json, data/mesh_00625.msh, data/mesh_00625.mdpa
+    jobid: 21
+    reason: Missing output files: data/mesh_00625.mdpa, data/input_00625.json
+    wildcards: name=00625
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:40 2025]
+Finished jobid: 21 (Rule: generate_input_files)
+4 of 22 steps (18%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:40 2025]
+localrule run_simulation:
+    input: data/input_00625.json, data/mesh_00625.mdpa
+    output: data/output_00625
+    jobid: 20
+    reason: Missing output files: data/output_00625; Input files updated by another job: data/mesh_00625.mdpa, data/input_00625.json
+    wildcards: name=00625
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:49 2025]
+Finished jobid: 20 (Rule: run_simulation)
+5 of 22 steps (23%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:49 2025]
+localrule summary:
+    input: data/output_00625, data/input_00625.json, data/mesh_00625.mdpa, parameters_00625.json
+    output: summary_00625.json
+    jobid: 19
+    reason: Missing output files: summary_00625.json; Input files updated by another job: data/output_00625, data/mesh_00625.mdpa, data/input_00625.json
+    wildcards: name=00625
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:51 2025]
+Finished jobid: 19 (Rule: summary)
+6 of 22 steps (27%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:51 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_0125.json
+    output: data/input_0125.json, data/mesh_0125.msh, data/mesh_0125.mdpa
+    jobid: 9
+    reason: Missing output files: data/mesh_0125.mdpa, data/input_0125.json
+    wildcards: name=0125
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:52 2025]
+Finished jobid: 9 (Rule: generate_input_files)
+7 of 22 steps (32%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:52 2025]
+localrule run_simulation:
+    input: data/input_0125.json, data/mesh_0125.mdpa
+    output: data/output_0125
+    jobid: 8
+    reason: Missing output files: data/output_0125; Input files updated by another job: data/mesh_0125.mdpa, data/input_0125.json
+    wildcards: name=0125
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:52 2025]
+Finished jobid: 8 (Rule: run_simulation)
+8 of 22 steps (36%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:52 2025]
+localrule summary:
+    input: data/output_0125, data/input_0125.json, data/mesh_0125.mdpa, parameters_0125.json
+    output: summary_0125.json
+    jobid: 7
+    reason: Missing output files: summary_0125.json; Input files updated by another job: data/input_0125.json, data/mesh_0125.mdpa, data/output_0125
+    wildcards: name=0125
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:54 2025]
+Finished jobid: 7 (Rule: summary)
+9 of 22 steps (41%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:54 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_025.json
+    output: data/input_025.json, data/mesh_025.msh, data/mesh_025.mdpa
+    jobid: 18
+    reason: Missing output files: data/input_025.json, data/mesh_025.mdpa
+    wildcards: name=025
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:55 2025]
+Finished jobid: 18 (Rule: generate_input_files)
+10 of 22 steps (45%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:55 2025]
+localrule run_simulation:
+    input: data/input_025.json, data/mesh_025.mdpa
+    output: data/output_025
+    jobid: 17
+    reason: Missing output files: data/output_025; Input files updated by another job: data/input_025.json, data/mesh_025.mdpa
+    wildcards: name=025
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:55 2025]
+Finished jobid: 17 (Rule: run_simulation)
+11 of 22 steps (50%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:55 2025]
+localrule summary:
+    input: data/output_025, data/input_025.json, data/mesh_025.mdpa, parameters_025.json
+    output: summary_025.json
+    jobid: 16
+    reason: Missing output files: summary_025.json; Input files updated by another job: data/output_025, data/input_025.json, data/mesh_025.mdpa
+    wildcards: name=025
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:57 2025]
+Finished jobid: 16 (Rule: summary)
+12 of 22 steps (55%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:57 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_geo2fun2.json
+    output: data/input_geo2fun2.json, data/mesh_geo2fun2.msh, data/mesh_geo2fun2.mdpa
+    jobid: 15
+    reason: Missing output files: data/input_geo2fun2.json, data/mesh_geo2fun2.mdpa
+    wildcards: name=geo2fun2
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:57 2025]
+Finished jobid: 15 (Rule: generate_input_files)
+13 of 22 steps (59%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:57 2025]
+localrule run_simulation:
+    input: data/input_geo2fun2.json, data/mesh_geo2fun2.mdpa
+    output: data/output_geo2fun2
+    jobid: 14
+    reason: Missing output files: data/output_geo2fun2; Input files updated by another job: data/input_geo2fun2.json, data/mesh_geo2fun2.mdpa
+    wildcards: name=geo2fun2
+    resources: tmpdir=/tmp
+[Sat Jul 19 10:41:57 2025]
+Finished jobid: 14 (Rule: run_simulation)
+14 of 22 steps (64%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Sat Jul 19 10:41:57 2025]
+localrule summary:
+    input: data/output_geo2fun2, data/input_geo2fun2.json, data/mesh_geo2fun2.mdpa, parameters_geo2fun2.json
+    output: summary_geo2fun2.json
+    jobid: 13
+    reason: Missing output files: summary_geo2fun2.json; Input files updated by another job: data/output_geo2fun2, data/input_geo2fun2.json, data/mesh_geo2fun2.mdpa
+    wildcards: name=geo2fun2
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:59 2025]
+Finished jobid: 13 (Rule: summary)
+15 of 22 steps (68%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:59 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_05.json
+    output: data/input_05.json, data/mesh_05.msh, data/mesh_05.mdpa
+    jobid: 3
+    reason: Missing output files: data/input_05.json, data/mesh_05.mdpa
+    wildcards: name=05
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:59 2025]
+Finished jobid: 3 (Rule: generate_input_files)
+16 of 22 steps (73%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:59 2025]
+localrule run_simulation:
+    input: data/input_05.json, data/mesh_05.mdpa
+    output: data/output_05
+    jobid: 2
+    reason: Missing output files: data/output_05; Input files updated by another job: data/input_05.json, data/mesh_05.mdpa
+    wildcards: name=05
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:41:59 2025]
+Finished jobid: 2 (Rule: run_simulation)
+17 of 22 steps (77%) done
+Execute 1 jobs...
+[Sat Jul 19 10:41:59 2025]
+localrule summary:
+    input: data/output_05, data/input_05.json, data/mesh_05.mdpa, parameters_05.json
+    output: summary_05.json
+    jobid: 1
+    reason: Missing output files: summary_05.json; Input files updated by another job: data/input_05.json, data/output_05, data/mesh_05.mdpa
+    wildcards: name=05
+    resources: tmpdir=/tmp
+Select jobs to execute...
+[Sat Jul 19 10:42:01 2025]
+Finished jobid: 1 (Rule: summary)
+18 of 22 steps (82%) done
+Execute 1 jobs...
+[Sat Jul 19 10:42:01 2025]
+localrule generate_input_files:
+    input: experiment.json, parameters_1.json
+    output: data/input_1.json, data/mesh_1.msh, data/mesh_1.mdpa
+    jobid: 6
+    reason: Missing output files: data/mesh_1.mdpa, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/tmp
+[Sat Jul 19 10:42:01 2025]
+Finished jobid: 6 (Rule: generate_input_files)
+19 of 22 steps (86%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Sat Jul 19 10:42:01 2025]
+localrule run_simulation:
+    input: data/input_1.json, data/mesh_1.mdpa
+    output: data/output_1
+    jobid: 5
+    reason: Missing output files: data/output_1; Input files updated by another job: data/mesh_1.mdpa, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/tmp
+[Sat Jul 19 10:42:01 2025]
+Finished jobid: 5 (Rule: run_simulation)
+20 of 22 steps (91%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Sat Jul 19 10:42:01 2025]
+localrule summary:
+    input: data/output_1, data/input_1.json, data/mesh_1.mdpa, parameters_1.json
+    output: summary_1.json
+    jobid: 4
+    reason: Missing output files: summary_1.json; Input files updated by another job: data/output_1, data/mesh_1.mdpa, data/input_1.json
+    wildcards: name=1
+    resources: tmpdir=/tmp
+[Sat Jul 19 10:42:03 2025]
+Finished jobid: 4 (Rule: summary)
+21 of 22 steps (95%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Sat Jul 19 10:42:03 2025]
+localrule all:
+    input: summary_05.json, summary_1.json, summary_0125.json, summary_003125.json, summary_geo2fun2.json, summary_025.json, summary_00625.json
+    jobid: 0
+    reason: Forced execution
+    resources: tmpdir=/tmp
+[Sat Jul 19 10:42:03 2025]
+Finished jobid: 0 (Rule: all)
+22 of 22 steps (100%) done
+Complete log(s): /workspaces/snakemake-report-plugin-metadata4ing/examples/benchmarks/Kratos/.snakemake/log/2025-07-19T103907.996279.snakemake.log

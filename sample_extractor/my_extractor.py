@@ -53,11 +53,28 @@ class ParameterExtractor(ParameterExtractorInterface):
         dependencies = parsed.get("dependencies", [])
 
         for dep in dependencies:
-            match = re.match(r'^([a-zA-Z0-9_\-]+)([=<>!].*)?$', dep)
-            if match:
-                name, version = match.groups()
-                results[name] = version if version else None
-        return results
+           if isinstance(dep, str):
+               match = re.match(r'^([a-zA-Z0-9_\-]+)([=<>!].*)?$', dep)
+               if match:
+                   name, version = match.groups()
+                   results[name] = version if version else None
+           elif isinstance(dep, dict):
+               for _, pkgs in dep.items():
+                   for pkg in pkgs:
+                       match = re.match(r'^([a-zA-Z0-9_\-]+)([=<>!].*)?$', pkg)
+                       if match:
+                           name, version = match.groups()
+                           results[name] = version if version else None
+        rename_map = {
+            "fenics-dolfinx": "FEniCS",
+            "KratosMultiphysics-all": "Kratos Multiphysics"
+        }
+
+        filtered_results = {
+            rename_map[k]: v for k, v in results.items() if k in rename_map
+        }
+        
+        return filtered_results
 
     def _get_unit(self, name: str):
         return {

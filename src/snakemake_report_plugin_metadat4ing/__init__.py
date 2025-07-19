@@ -161,6 +161,8 @@ class Reporter(ReporterBase):
                     node["has employed tool"].append({"@id": tool["@id"]})
 
         for file in input_files:
+            if not self.is_file(file):
+                continue
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
             )
@@ -174,6 +176,8 @@ class Reporter(ReporterBase):
                     node["has parameter"].append({"@id": param})
 
         for file in job.output:
+            if not self.is_file(file):
+                continue
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
             )
@@ -462,6 +466,12 @@ class Reporter(ReporterBase):
                 return (file, rel_path)
         return None
     
+    def is_file(self, file_name: str) -> bool:
+        return (
+            os.path.basename(file_name) == file_name and  # No path component
+            not os.path.isabs(file_name) and              # Not an absolute path
+            not any(sep in file_name for sep in ['/', '\\'])  # No separators
+        )
     def _random_hash_from_json(self, json_content: dict, length=8) -> str:
         json_str = json.dumps(json_content, sort_keys=True).encode('utf-8')
         hash_value = hashlib.sha256(json_str).hexdigest()
