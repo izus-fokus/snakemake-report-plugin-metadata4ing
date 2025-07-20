@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
-from rdflib import Graph
+from rdflib import Graph, Namespace
 import requests
 import json
 import importlib.util
@@ -81,6 +81,7 @@ class Reporter(ReporterBase):
 
         self.simulation_hash = self._random_hash_from_json(jsonld,16)
         jsonld["@context"]["local"] = f"https://local-domain.org/{self.simulation_hash}/"
+        jsonld = self._add_precedes_relations(jsonld)
             
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
@@ -451,6 +452,56 @@ class Reporter(ReporterBase):
                 rel_path = os.path.relpath(os.path.join(current_dir, file))
                 return (file, rel_path)
         return None
+    
+    def _add_precedes_relations(self, jsonld_data: dict) -> dict:
+        g = Graph()
+        g.parse(data=json.dumps(jsonld_data), format="json-ld")
+
+        SCHEMA = Namespace("https://schema.org/")
+
+        new_relations = []
+        for a, _, f1 in g.triples((None, SCHEMA.result, None)):
+            for b, _, f2 in g.triples((None, SCHEMA.object, None)):
+                if f1 == f2:
+                    local_a = self._get_local_id(str(a))
+                    local_b = self._get_local_id(str(b))
+                    if local_a != local_b:
+                        new_relations.append((local_a, local_b))
+
+        # Map from @id to node in @graph
+        graph_nodes = jsonld_data.get("@graph", [])
+        id_to_node = {self._get_local_id(node["@id"]): node for node in graph_nodes if "@id" in node}
+
+        # Add inferred relations to JSON-LD
+        for source_id, target_id in new_relations:
+            source_node = id_to_node.get(source_id)
+            if not source_node:
+                continue
+            key = "precedes"
+            existing = source_node.get(key)
+            new_link = {"@id": target_id}
+            if not existing:
+                source_node[key] = [new_link]
+            else:
+                if isinstance(existing, dict):
+                    existing = [existing]
+                    source_node[key] = existing
+                elif not isinstance(existing, list):
+                    existing = [existing]
+                    source_node[key] = existing
+
+                if new_link not in existing:
+                    existing.append(new_link)
+
+        return jsonld_data
+        
+    def _get_local_id(self, iri: str) -> str:
+        """Extract the local ID from a full IRI (e.g., the last part after '/' or '#'),
+        and remove 'local:' prefix if present."""
+        local = iri.rsplit('/', 1)[-1].rsplit('#', 1)[-1]
+        if local.startswith("local:"):
+            local = local.replace("local:", "")
+        return local
     
     def _is_file(self, file_name: str) -> bool:
         return os.path.isfile(file_name)
