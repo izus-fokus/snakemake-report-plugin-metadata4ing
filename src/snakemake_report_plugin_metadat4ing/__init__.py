@@ -479,7 +479,7 @@ class Reporter(ReporterBase):
                 continue
             key = "precedes"
             existing = source_node.get(key)
-            new_link = {"@id": target_id}
+            new_link = {"@id": f"local:{target_id}"}
             if not existing:
                 source_node[key] = [new_link]
             else:
