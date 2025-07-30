@@ -34,9 +34,10 @@ CODE
 
 poetry build
 pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3-none-any.whl
-snakemake --reporter metadat4ing --cores 1
+snakemake --reporter metadat4ing --cores 1 ./paper.pdf
 snakemake --reporter metadat4ing --report-metadat4ing-paramscript /Users/mahdi/Documents/GitHub/snakemake-report-plugin-metadata4ing/sample_extractor/my_extractor.py --cores 1
 unzip ro-crate-metadata.zip -d ro-crate-metadata
 
 
-pip install /Users/mahdi/Downloads/KratosMultiphysics-10.2.3-cp312-cp312-win_amd64.whl
+ snakemake --reporter metadat4ing --cores 1 --use-conda ./paper.pdf
+

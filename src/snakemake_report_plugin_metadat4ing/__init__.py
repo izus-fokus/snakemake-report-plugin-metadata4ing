@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
 from rdflib import Graph, Namespace
@@ -18,6 +18,7 @@ import mimetypes
 import shlex
 import os
 import hashlib
+import shutil
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -58,7 +59,7 @@ class Reporter(ReporterBase):
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         job_nodes, file_nodes, field_nodes = {}, {}, {}
         file_counter = 0
-        
+                
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
             step_node = self._create_job_node(
@@ -93,7 +94,7 @@ class Reporter(ReporterBase):
         
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
-   
+                
     def _create_job_node(
         self, job, files_dict, fields_dict, file_counter
     ):
@@ -125,14 +126,15 @@ class Reporter(ReporterBase):
         ]
         
         for shell_cmd_file in shell_cmds:
-            shell_file = self._extract_script(shell_cmd_file)
-            if shell_file:
+            script_file, _ = self._extract_script_and_files(shell_cmd_file)
+            if script_file:
+                resolve_shell_path = self._copy_external_relative_files(script_file)
                 _ = self.crate.add_file(
-                    shell_file,
-                    dest_path=shell_file,
+                    resolve_shell_path,
+                    dest_path=resolve_shell_path,
                     properties={
-                        "name": shell_file,
-                        "encodingFormat": self._get_mime_type(shell_file),
+                        "name": resolve_shell_path,
+                        "encodingFormat": self._get_mime_type(resolve_shell_path),
                     },
             )
             
@@ -189,14 +191,15 @@ class Reporter(ReporterBase):
         return node
 
     def _add_file(self, file_path, file_dict, counter):
-        if file_path not in file_dict:
-            file_dict[file_path] = {
-                "@id": file_path,
+        resolved_path = self._copy_external_relative_files(file_path)
+        if resolved_path not in file_dict:
+            file_dict[resolved_path] = {
+                "@id": resolved_path,
                 "@type": "cr:FileObject",
-                "label": file_path,
+                "label": resolved_path,
             }
             counter += 1
-        return file_dict[file_path], counter
+        return file_dict[resolved_path], counter
 
     def _extract_parameters(self, rule, file, file_node):
         param_id_list = []
@@ -411,39 +414,53 @@ class Reporter(ReporterBase):
         mime_type, _ = mimetypes.guess_type(file_name, strict=False)
         return mime_type or "application/octet-stream"
 
-    def _extract_script(self, cmd: str) -> str | None:
-       """
-       Return the script filename from a shell‑command string, or None
-       if no plausible script can be identified.
-       """
-       _INTERPRETERS = {
+    def _extract_script_and_files(self, cmd: str) -> tuple[Optional[str], list[str]]:
+        """
+        Returns:
+            - The script name from the shell command (or None).
+            - A list of file paths used in the command (excluding script).
+        """
+        _INTERPRETERS = {
             "python", "python3", "python2",
             "pypy", "pypy3",
             "ruby", "perl", "node", "deno", "php", "lua",
             "Rscript", "R", "bash", "sh", "zsh", "ksh", "fish"
         }
-       
-       try:
-           tokens = shlex.split(cmd, posix=True)
-       except ValueError: 
-           return None
+        
+        try:
+            tokens = shlex.split(cmd, posix=True)
+        except ValueError:
+            return None, []
 
-       if not tokens:
-           return None
+        if not tokens:
+            return None, []
 
-       if Path(tokens[0]).name in _INTERPRETERS:
-           for tok in tokens[1:]:
-               if tok.startswith("-"):
-                   continue
-               return Path(tok).name 
-           return None
+        script_path = None
+        file_paths = []
 
-       first = Path(tokens[0])
-       
-       if first.suffix and first.suffix not in {".exe", ".bat", ".cmd"}:
-           return first.name
+        # Determine if the first token is an interpreter
+        if Path(tokens[0]).name in _INTERPRETERS:
+            # Find the first non-option token as the script
+            for i, tok in enumerate(tokens[1:], start=1):
+                if tok.startswith("-"):
+                    continue
+                script_path = tok  # ✅ keep full relative/absolute path
+                break
+            start_idx = i + 1 if script_path else 1
+        else:
+            first = Path(tokens[0])
+            if first.suffix and first.suffix not in {".exe", ".bat", ".cmd"}:
+                script_path = str(first)
+            start_idx = 1
 
-       return None
+        # Collect potential file paths (excluding the script itself)
+        for tok in tokens[start_idx:]:
+            if tok.startswith("-") or tok in {">", "2>&1"} or tok.isnumeric():
+                continue
+            if Path(tok).suffix or "/" in tok or tok.startswith(".."):
+                file_paths.append(tok)
+
+        return script_path, file_paths
    
     def _find_snakefile(self):
         current_dir = os.getcwd()
@@ -510,3 +527,26 @@ class Reporter(ReporterBase):
         json_str = json.dumps(json_content, sort_keys=True).encode('utf-8')
         hash_value = hashlib.sha256(json_str).hexdigest()
         return hash_value[:length]
+
+    def _copy_external_relative_files(self, path_str, target_dir="_EXTERNAL") -> str:
+        if os.path.exists(target_dir):
+            shutil.rmtree(target_dir)
+        os.makedirs(target_dir)
+    
+        original_path = Path(path_str).resolve()
+        current_dir = Path.cwd().resolve()
+
+        try:
+            _ = original_path.relative_to(current_dir)
+            return str(path_str)
+        except ValueError:
+            pass
+
+        common_root = os.path.commonpath([str(current_dir), str(original_path)])
+        relative_structure = Path(original_path).relative_to(common_root)
+        target_path = Path(target_dir) / relative_structure
+
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(original_path, target_path)
+        
+        return str(target_path)
