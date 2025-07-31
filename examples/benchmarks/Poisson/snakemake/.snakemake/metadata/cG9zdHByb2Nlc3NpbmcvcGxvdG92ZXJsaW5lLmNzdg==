@@ -1,0 +1,31 @@
+{
+    "record_format_version": 6,
+    "code": "python {input.py} {input.vtu0} {output} > {log} 2>&1",
+    "rule": "postprocessing",
+    "input": [
+        "../source/postprocessing.py",
+        "solvePoisson/poisson.h5",
+        "solvePoisson/poisson.vtu",
+        "solvePoisson/poisson.xdmf",
+        "solvePoisson/poisson_p0_000000.vtu"
+    ],
+    "log": [
+        "logs/postprocessing.log"
+    ],
+    "params": [],
+    "shellcmd": "python ../source/postprocessing.py solvePoisson/poisson_p0_000000.vtu postprocessing/plotoverline.csv > logs/postprocessing.log 2>&1",
+    "incomplete": false,
+    "starttime": 1753889373.1718602,
+    "endtime": 1753889376.3708599,
+    "job_hash": 7719216786223,
+    "conda_env": "bmFtZTogcG9zdHByb2Nlc3NpbmcKCmNoYW5uZWxzOgogIC0gY29uZGEtZm9yZ2UKICAtIGJpb2NvbmRhCgpjaGFubmVsX3ByaW9yaXR5OiBzdHJpY3QKCmRlcGVuZGVuY2llczoKIC0gcHl0aG9uPTMuMTIKIC0gdnRrPTkuMwogLSBudW1weQogLSB0ZWN0b25pYwoKCg==",
+    "software_stack_hash": "8024aefed900a52e3f1073653e8bc8c6",
+    "container_img_url": null,
+    "input_checksums": {
+        "../source/postprocessing.py": "7409da7d9f3decf31003d05bd72635c8d2503ecd1dac77831fa348bcb9fbe3f8",
+        "solvePoisson/poisson.xdmf": "e4f4aa830285c1e7d3066a2cc42a217cbe77123c395662faf857334ac144e358",
+        "solvePoisson/poisson.h5": "b6786c51a400e2002163d0d53c0a24b974a3714eaf248ffc245dbb3c7d75ffd8",
+        "solvePoisson/poisson.vtu": "45f74768c544902a286461147c70f236a098783420f603d197e52afbe0f68a24",
+        "solvePoisson/poisson_p0_000000.vtu": "5e125e5988d5f5e826a894ca5b149dfc48cf02b40c037fcda7c66cdf73d61f46"
+    }
+}

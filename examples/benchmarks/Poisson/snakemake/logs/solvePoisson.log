@@ -1,0 +1,4 @@
+Number of dofs used: 357
+xdmf_filename solvePoisson/poisson.xdmf
+Opened XDMF file for writing at: /workspaces/NFDI4IngScientificWorkflowRequirements/exemplary_workflow/snakemake/solvePoisson/poisson.xdmf
+Current working directory: /workspaces/NFDI4IngScientificWorkflowRequirements/exemplary_workflow/snakemake

@@ -1,0 +1,25 @@
+{
+    "record_format_version": 6,
+    "code": "cp {input.paper} {output.tex} && tectonic {output.tex} > {log} 2>&1",
+    "rule": "compile_paper",
+    "input": [
+        "../source/paper.tex",
+        "macros.tex"
+    ],
+    "log": [
+        "logs/tectonic.log"
+    ],
+    "params": [],
+    "shellcmd": "cp ../source/paper.tex paper.tex && tectonic paper.tex > logs/tectonic.log 2>&1",
+    "incomplete": false,
+    "starttime": 1753889379.7118597,
+    "endtime": 1753889389.525859,
+    "job_hash": 7719216785773,
+    "conda_env": "bmFtZTogcG9zdHByb2Nlc3NpbmcKCmNoYW5uZWxzOgogIC0gY29uZGEtZm9yZ2UKICAtIGJpb2NvbmRhCgpjaGFubmVsX3ByaW9yaXR5OiBzdHJpY3QKCmRlcGVuZGVuY2llczoKIC0gcHl0aG9uPTMuMTIKIC0gdnRrPTkuMwogLSBudW1weQogLSB0ZWN0b25pYwoKCg==",
+    "software_stack_hash": "8024aefed900a52e3f1073653e8bc8c6",
+    "container_img_url": null,
+    "input_checksums": {
+        "../source/paper.tex": "3a74ef941d08c6dcd3028ed63722668d92fa0a4faf68aea5eb0cbc187ded0888",
+        "macros.tex": "24db72142d5c97c4a20705c6bed2be4f8f165ff9911072d48b79111001f6249d"
+    }
+}

@@ -1,0 +1,106 @@
+configfile: "./config.yaml"
+
+
+# NOTE
+# $ snakemake --use-conda --cores 1 --config domain_size=4.0
+# does not re-execute the job generated from rule 'generate_mesh'
+# if it was executed before with e.g. the default value 2.0
+# It seems one has to force the execution of 'somerule' in this case
+# $ snakemake -R somerule
+rule generate_mesh:
+    input:
+        "../source/unit_square.geo",
+    output:
+        "preprocessing/square.msh",
+    conda:
+        "../source/envs/preprocessing.yaml"
+    log:
+        "logs/gmsh.log",
+    shell:
+        "gmsh -2 -setnumber domain_size {config[domain_size]} {input} -o {output} > {log} 2>&1"
+
+
+rule convert_to_xdmf:
+    input:
+        rules.generate_mesh.output,
+    output:
+        "preprocessing/square.xdmf",
+    conda:
+        "../source/envs/preprocessing.yaml"
+    log:
+        "logs/meshio.log",
+    shell:
+        "meshio convert {input} {output} > {log} 2>&1"
+
+
+rule solvePoisson:
+    input:
+        py="../source/poisson.py",
+        xdmf=rules.convert_to_xdmf.output,
+    output:
+        xdmf="solvePoisson/poisson.xdmf",
+        h5="solvePoisson/poisson.h5",
+        vtu="solvePoisson/poisson.vtu",
+        vtu0="solvePoisson/poisson_p0_000000.vtu",
+        txt="solvePoisson/numdofs.txt",
+    conda:
+        "../source/envs/processing.yaml"
+    log:
+        "logs/solvePoisson.log",
+    shell:
+        "python {input.py} --mesh {input.xdmf} --degree 2 --outputfile {output.xdmf} --num-dofs {output.txt} > {log} 2>&1"
+
+
+rule postprocessing:
+    input:
+        py="../source/postprocessing.py",
+        xdmf=rules.solvePoisson.output.xdmf,
+        h5=rules.solvePoisson.output.h5,
+        vtu=rules.solvePoisson.output.vtu,
+        vtu0=rules.solvePoisson.output.vtu0,
+    output:
+        "postprocessing/plotoverline.csv",
+    conda:
+        "../source/envs/postprocessing.yaml"
+    log:
+        "logs/postprocessing.log",
+    shell:
+        "python {input.py} {input.vtu0} {output} > {log} 2>&1"
+
+
+rule substitute_macros:
+    input:
+        py="../source/prepare_paper_macros.py",
+        template="../source/macros.tex.template",
+        data=rules.postprocessing.output,
+        ndofs=rules.solvePoisson.output.txt,
+    output:
+        "macros.tex",
+    log:
+        "logs/macros.log",
+    run:
+        with open(input.ndofs, "r") as instream:
+            ndofs = int(instream.read())
+        shell(
+            "python {input.py} --macro-template-file {input.template} \
+        --plot-data-path {input.data} \
+        --domain-size {config[domain_size]} \
+        --num-dofs %s \
+        --output-macro-file {output[0]}"
+            % (ndofs)
+        )
+
+
+rule compile_paper:
+    input:
+        paper="../source/paper.tex",
+        macros=rules.substitute_macros.output,
+    output:
+        tex="paper.tex",
+        pdf="paper.pdf",
+    conda:
+        "../source/envs/postprocessing.yaml"
+    log:
+        "logs/tectonic.log",
+    shell:
+        "cp {input.paper} {output.tex} && tectonic {output.tex} > {log} 2>&1"

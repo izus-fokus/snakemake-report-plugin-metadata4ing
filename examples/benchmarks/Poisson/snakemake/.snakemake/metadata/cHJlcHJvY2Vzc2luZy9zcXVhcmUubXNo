@@ -1,0 +1,23 @@
+{
+    "record_format_version": 6,
+    "code": "gmsh -2 -setnumber domain_size {config[domain_size]} {input} -o {output} > {log} 2>&1",
+    "rule": "generate_mesh",
+    "input": [
+        "../source/unit_square.geo"
+    ],
+    "log": [
+        "logs/gmsh.log"
+    ],
+    "params": [],
+    "shellcmd": "gmsh -2 -setnumber domain_size 2.0 ../source/unit_square.geo -o preprocessing/square.msh > logs/gmsh.log 2>&1",
+    "incomplete": false,
+    "starttime": 1753889366.6948605,
+    "endtime": 1753889367.1688604,
+    "job_hash": 7719216792043,
+    "conda_env":  "bmFtZTogcHJlcHJvY2Vzc2luZwpjaGFubmVsczoKICAtIGNvbmRhLWZvcmdlCmNoYW5uZWxfcHJpb3JpdHk6IHN0cmljdApkZXBlbmRlbmNpZXM6CiAgLSBweXRob249My4xMgogIC0gZ21zaAogIC0gbWVzaGlvCg==",
+    "software_stack_hash": "821cc8e8e5dc62fd439c8e29bf790406",
+    "container_img_url": null,
+    "input_checksums": {
+        "../source/unit_square.geo": "0a91fde09bbaa459fc2e718c22d33cd78f01cfb2e62f9245081350f217c9bf0e"
+    }
+}

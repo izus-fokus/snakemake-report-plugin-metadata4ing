@@ -38,7 +38,6 @@ class Reporter(ReporterBase):
         self.context_data = {}
 
     def render(self):
-        self._get_context()
         self.param_counter = 0
         self.field_counter = 0
         self.param_dict = {}
@@ -49,7 +48,11 @@ class Reporter(ReporterBase):
         self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
         self.provenance_ttl_filename = "provenance.ttl"
-
+        self.external_directory_name ="_EXTERNAL"
+        
+        self._get_context()
+        self._create_external_directory()
+        
         jsonld = {
             "@context": self.context_data.get("@context", {}),
             "@graph": [],
@@ -91,9 +94,7 @@ class Reporter(ReporterBase):
         self._add_ro_crate_file_nodes(file_nodes)
         # self._add_ro_crate_software()
         self._create_ro_crate_file()
-        
-        os.remove(self.provenance_filename)
-        os.remove(self.provenance_ttl_filename)
+        self._clean_data()
                 
     def _create_job_node(
         self, job, files_dict, fields_dict, file_counter
@@ -116,7 +117,7 @@ class Reporter(ReporterBase):
             if j.jobid == job.job.jobid
             for f in j.input
         ]
-
+        
         conda_files = [
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
@@ -528,11 +529,7 @@ class Reporter(ReporterBase):
         hash_value = hashlib.sha256(json_str).hexdigest()
         return hash_value[:length]
 
-    def _copy_external_relative_files(self, path_str, target_dir="_EXTERNAL") -> str:
-        if os.path.exists(target_dir):
-            shutil.rmtree(target_dir)
-        os.makedirs(target_dir)
-    
+    def _copy_external_relative_files(self, path_str) -> str:
         original_path = Path(path_str).resolve()
         current_dir = Path.cwd().resolve()
 
@@ -544,9 +541,22 @@ class Reporter(ReporterBase):
 
         common_root = os.path.commonpath([str(current_dir), str(original_path)])
         relative_structure = Path(original_path).relative_to(common_root)
-        target_path = Path(target_dir) / relative_structure
+        target_path = Path(self.external_directory_name) / relative_structure
 
         target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(original_path, target_path)
         
         return str(target_path)
+
+    def _create_external_directory(self):
+        target_dir = Path(self.external_directory_name)
+        if target_dir.exists():
+            shutil.rmtree(target_dir)
+        target_dir.mkdir(parents=True, exist_ok=True)
+        
+    def _clean_data(self):
+        target_dir = Path(self.external_directory_name)
+        if target_dir.exists():
+            shutil.rmtree(target_dir)
+        os.remove(self.provenance_filename)
+        os.remove(self.provenance_ttl_filename)

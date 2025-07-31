@@ -1,0 +1,25 @@
+{
+    "record_format_version": 6,
+    "code": "python {input.py} --mesh {input.xdmf} --degree 2 --outputfile {output.xdmf} --num-dofs {output.txt} > {log} 2>&1",
+    "rule": "solvePoisson",
+    "input": [
+        "../source/poisson.py",
+        "preprocessing/square.xdmf"
+    ],
+    "log": [
+        "logs/solvePoisson.log"
+    ],
+    "params": [],
+    "shellcmd": "python ../source/poisson.py --mesh preprocessing/square.xdmf --degree 2 --outputfile solvePoisson/poisson.xdmf --num-dofs solvePoisson/numdofs.txt > logs/solvePoisson.log 2>&1",
+    "incomplete": false,
+    "starttime": 1753889369.1438603,
+    "endtime": 1753889373.1658602,
+    "job_hash": 7719216791629,
+    "conda_env": "bmFtZTogcHJvY2Vzc2luZyAKCmNoYW5uZWxzOgogIC0gY29uZGEtZm9yZ2UKCmNoYW5uZWxfcHJpb3JpdHk6IHN0cmljdAoKZGVwZW5kZW5jaWVzOgogIC0gcHl0aG9uPTMuMTIKICAtIGZlbmljcy1kb2xmaW54PTAuOS4qCiAgLSBtZXNoaW8K",
+    "software_stack_hash": "36a6f923ff6b97e0eefc3e3a8d331d52",
+    "container_img_url": null,
+    "input_checksums": {
+        "../source/poisson.py": "cc66d6a6eecd580e45f44315fe4ca7798cd1fe90b9706aa932d8d4bc45ce3f71",
+        "preprocessing/square.xdmf": "bc20fcd95954bbbb1e93864726299833847ab6111b99a6ba31e7abdaa8465885"
+    }
+}

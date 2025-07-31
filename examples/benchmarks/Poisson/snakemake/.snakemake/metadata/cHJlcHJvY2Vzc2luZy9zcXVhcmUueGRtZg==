@@ -1,0 +1,23 @@
+{
+    "record_format_version": 6,
+    "code": "meshio convert {input} {output} > {log} 2>&1",
+    "rule": "convert_to_xdmf",
+    "input": [
+        "preprocessing/square.msh"
+    ],
+    "log": [
+        "logs/meshio.log"
+    ],
+    "params": [],
+    "shellcmd": "meshio convert preprocessing/square.msh preprocessing/square.xdmf > logs/meshio.log 2>&1",
+    "incomplete": false,
+    "starttime": 1753889367.1818604,
+    "endtime": 1753889369.1398604,
+    "job_hash": 7719216791611,
+    "conda_env": "bmFtZTogcHJlcHJvY2Vzc2luZwpjaGFubmVsczoKICAtIGNvbmRhLWZvcmdlCmNoYW5uZWxfcHJpb3JpdHk6IHN0cmljdApkZXBlbmRlbmNpZXM6CiAgLSBweXRob249My4xMgogIC0gZ21zaAogIC0gbWVzaGlvCg==",
+    "software_stack_hash": "821cc8e8e5dc62fd439c8e29bf790406",
+    "container_img_url": null,
+    "input_checksums": {
+        "preprocessing/square.msh": "a8f10f80fd35afd2a14cf246ef1fee53e0cd485f33a417d16038381495bb3127"
+    }
+}

@@ -1,0 +1,19 @@
+Info    : Running 'gmsh -2 -setnumber domain_size 2.0 ../source/unit_square.geo -o preprocessing/square.msh' [Gmsh 4.13.1, 1 node, max. 1 thread]
+Info    : Started on Wed Jul 30 15:29:27 2025
+Info    : Reading '../source/unit_square.geo'...
+Used domain size: 2.000000
+Used mesh size: 0.500000
+Info    : Done reading '../source/unit_square.geo'
+Info    : Meshing 1D...
+Info    : [  0%] Meshing curve 1 (Line)
+Info    : [ 30%] Meshing curve 2 (Line)
+Info    : [ 60%] Meshing curve 3 (Line)
+Info    : [ 80%] Meshing curve 4 (Line)
+Info    : Done meshing 1D (Wall 0.000437125s, CPU 0.000303s)
+Info    : Meshing 2D...
+Info    : Meshing surface 1 (Plane, Frontal-Delaunay)
+Info    : Done meshing 2D (Wall 0.00507637s, CPU 0.004959s)
+Info    : 98 nodes 198 elements
+Info    : Writing 'preprocessing/square.msh'...
+Info    : Done writing 'preprocessing/square.msh'
+Info    : Stopped on Wed Jul 30 15:29:27 2025 (From start: Wall 0.00911616s, CPU 0.049337s)

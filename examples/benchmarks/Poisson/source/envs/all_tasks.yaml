@@ -1,0 +1,14 @@
+name: all_tasks
+
+channels:
+  - conda-forge
+  - bioconda
+
+dependencies:
+  - python=3.12
+  - fenics-dolfinx=0.9.*
+  - gmsh
+  - meshio
+  - tectonic
+  - vtk=9.3
+

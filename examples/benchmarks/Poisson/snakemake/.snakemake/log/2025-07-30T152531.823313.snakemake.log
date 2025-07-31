@@ -1,0 +1,115 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: codespaces-0f6a07
+Building DAG of jobs...
+Your conda installation is not configured to use strict channel priorities. This is however important for having robust and correct environments (for details, see https://conda-forge.org/docs/user/tipsandtricks.html). Please consider to configure strict priorities by executing 'conda config --set channel_priority strict'.
+Creating conda environment ../source/envs/postprocessing.yaml...
+Downloading and installing remote packages.
+Cleaning up conda package tarballs.
+Environment for /workspaces/NFDI4IngScientificWorkflowRequirements/exemplary_workflow/snakemake/../source/envs/postprocessing.yaml created (location: .snakemake/conda/373ab44dca0ff1ff0157ee032e172ce0_)
+Creating conda environment ../source/envs/processing.yaml...
+Downloading and installing remote packages.
+Cleaning up conda package tarballs.
+Environment for /workspaces/NFDI4IngScientificWorkflowRequirements/exemplary_workflow/snakemake/../source/envs/processing.yaml created (location: .snakemake/conda/6f9a6384e2aa65442155f4bd3a1e3236_)
+Creating conda environment ../source/envs/preprocessing.yaml...
+Downloading and installing remote packages.
+Cleaning up conda package tarballs.
+Environment for /workspaces/NFDI4IngScientificWorkflowRequirements/exemplary_workflow/snakemake/../source/envs/preprocessing.yaml created (location: .snakemake/conda/b854a3bb4b0ac770c7f090a994124cb0_)
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+compile_paper            1
+convert_to_xdmf          1
+generate_mesh            1
+postprocessing           1
+solvePoisson             1
+substitute_macros        1
+total                    6
+
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jul 30 15:29:26 2025]
+localrule generate_mesh:
+    input: ../source/unit_square.geo
+    output: preprocessing/square.msh
+    log: logs/gmsh.log
+    jobid: 5
+    reason: Missing output files: preprocessing/square.msh
+    resources: tmpdir=/tmp
+Activating conda environment: .snakemake/conda/b854a3bb4b0ac770c7f090a994124cb0_
+[Wed Jul 30 15:29:27 2025]
+Finished jobid: 5 (Rule: generate_mesh)
+1 of 6 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jul 30 15:29:27 2025]
+localrule convert_to_xdmf:
+    input: preprocessing/square.msh
+    output: preprocessing/square.xdmf
+    log: logs/meshio.log
+    jobid: 4
+    reason: Missing output files: preprocessing/square.xdmf; Input files updated by another job: preprocessing/square.msh
+    resources: tmpdir=/tmp
+Activating conda environment: .snakemake/conda/b854a3bb4b0ac770c7f090a994124cb0_
+[Wed Jul 30 15:29:29 2025]
+Finished jobid: 4 (Rule: convert_to_xdmf)
+2 of 6 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jul 30 15:29:29 2025]
+localrule solvePoisson:
+    input: ../source/poisson.py, preprocessing/square.xdmf
+    output: solvePoisson/poisson.xdmf, solvePoisson/poisson.h5, solvePoisson/poisson.vtu, solvePoisson/poisson_p0_000000.vtu, solvePoisson/numdofs.txt
+    log: logs/solvePoisson.log
+    jobid: 3
+    reason: Missing output files: solvePoisson/poisson_p0_000000.vtu, solvePoisson/numdofs.txt, solvePoisson/poisson.vtu, solvePoisson/poisson.xdmf, solvePoisson/poisson.h5; Input files updated by another job: preprocessing/square.xdmf
+    resources: tmpdir=/tmp
+Activating conda environment: .snakemake/conda/6f9a6384e2aa65442155f4bd3a1e3236_
+[Wed Jul 30 15:29:33 2025]
+Finished jobid: 3 (Rule: solvePoisson)
+3 of 6 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jul 30 15:29:33 2025]
+localrule postprocessing:
+    input: ../source/postprocessing.py, solvePoisson/poisson.xdmf, solvePoisson/poisson.h5, solvePoisson/poisson.vtu, solvePoisson/poisson_p0_000000.vtu
+    output: postprocessing/plotoverline.csv
+    log: logs/postprocessing.log
+    jobid: 2
+    reason: Missing output files: postprocessing/plotoverline.csv; Input files updated by another job: solvePoisson/poisson.xdmf, solvePoisson/poisson.vtu, solvePoisson/poisson_p0_000000.vtu, solvePoisson/poisson.h5
+    resources: tmpdir=/tmp
+Activating conda environment: .snakemake/conda/373ab44dca0ff1ff0157ee032e172ce0_
+[Wed Jul 30 15:29:36 2025]
+Finished jobid: 2 (Rule: postprocessing)
+4 of 6 steps (67%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jul 30 15:29:36 2025]
+localrule substitute_macros:
+    input: ../source/prepare_paper_macros.py, ../source/macros.tex.template, postprocessing/plotoverline.csv, solvePoisson/numdofs.txt
+    output: macros.tex
+    log: logs/macros.log
+    jobid: 1
+    reason: Missing output files: macros.tex; Input files updated by another job: postprocessing/plotoverline.csv, solvePoisson/numdofs.txt
+    resources: tmpdir=/tmp
+[Wed Jul 30 15:29:39 2025]
+Finished jobid: 1 (Rule: substitute_macros)
+5 of 6 steps (83%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Wed Jul 30 15:29:39 2025]
+localrule compile_paper:
+    input: ../source/paper.tex, macros.tex
+    output: paper.tex, paper.pdf
+    log: logs/tectonic.log
+    jobid: 0
+    reason: Missing output files: paper.pdf; Input files updated by another job: macros.tex
+    resources: tmpdir=/tmp
+Activating conda environment: .snakemake/conda/373ab44dca0ff1ff0157ee032e172ce0_
+[Wed Jul 30 15:29:49 2025]
+Finished jobid: 0 (Rule: compile_paper)
+6 of 6 steps (100%) done
+Complete log(s): /workspaces/NFDI4IngScientificWorkflowRequirements/exemplary_workflow/snakemake/.snakemake/log/2025-07-30T152531.823313.snakemake.log

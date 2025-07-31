@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="Grid" GridType="Uniform">
+      <Topology TopologyType="Triangle" NumberOfElements="162" NodesPerElement="3">
+        <DataItem Dimensions="162 3" NumberType="Int" Format="HDF">poisson.h5:/Mesh/Grid/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem Dimensions="98 3" Format="HDF">poisson.h5:/Mesh/Grid/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="u" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="u" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0" />
+        <Attribute Name="u" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="98 1" Format="HDF">poisson.h5:/Function/u/0</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>

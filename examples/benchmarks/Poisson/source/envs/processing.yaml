@@ -1,0 +1,11 @@
+name: processing 
+
+channels:
+  - conda-forge
+
+channel_priority: strict
+
+dependencies:
+  - python=3.12
+  - fenics-dolfinx=0.9.*
+  - meshio
