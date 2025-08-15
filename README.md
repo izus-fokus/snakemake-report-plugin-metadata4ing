@@ -1,6 +1,6 @@
 # Metadata4ing reporter for snakemake
 
-This project is based on the Snakemake [reporter plugin](https://github.com/snakemake/snakemake-interface-report-plugins). It provides a custom reporter plugin for [Metadat4ing ontology](https://nfdi4ing.pages.rwth-aachen.de/metadata4ing/metadata4ing/1.2.1/index.html) , which can be used to extract and report metadata from Snakemake pipelines.
+This project is based on the Snakemake [reporter plugin](https://github.com/snakemake/snakemake-interface-report-plugins). It provides a custom reporter plugin for [metadata4ing ontology](https://nfdi4ing.pages.rwth-aachen.de/metadata4ing/metadata4ing/1.2.1/index.html) , which can be used to extract and report metadata from Snakemake pipelines.
 
 ## Installation
 
@@ -11,11 +11,11 @@ python -m pip install git+https://github.com/izus-fokus/snakemake-report-plugin-
 or from the source code:
 ```
 poetry build
-pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3-none-any.whl
+pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-0.1.0-py3-none-any.whl
 ```
 Then, use it as the reporter in your Snakemake workflow:
 ```
-snakemake --reporter metadat4ing ...
+snakemake --reporter metadata4ing ...
 ```
 ## Output Format
 
@@ -25,7 +25,7 @@ The reporter creates 2 files, `reporter.jsonld` and `reporter.ttl` in the same d
 It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
 
 ```
-snakemake --reporter metadat4ing --report-metadat4ing-paramscript /Path_to_Extractor/my_extractor.py ...
+snakemake --reporter metadata4ing --report-metadata4ing-paramscript /Path_to_Extractor/my_extractor.py ...
 ```
 
 Please note that, your extractor should implement the `ParameterExtractorInterface`.

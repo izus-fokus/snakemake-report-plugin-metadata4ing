@@ -21,8 +21,8 @@ conda activate poetry
 pip install poetry
 
 poetry self add poetry-snakemake-plugin
-poetry new snakemake-report-plugin-metadat4ing
-cd snakemake-report-plugin-metadat4ing
+poetry new snakemake-report-plugin-metadata4ing
+cd snakemake-report-plugin-metadata4ing
 
 poetry scaffold-snakemake-report-plugin
 
@@ -33,11 +33,11 @@ CODE
 ============================================================
 
 poetry build
-pip install --force-reinstall dist/snakemake_report_plugin_metadat4ing-0.1.0-py3-none-any.whl
-snakemake --reporter metadat4ing --cores 1 ./paper.pdf
-snakemake --reporter metadat4ing --report-metadat4ing-paramscript /Users/mahdi/Documents/GitHub/snakemake-report-plugin-metadata4ing/sample_extractor/my_extractor.py --cores 1
+pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-0.1.0-py3-none-any.whl
+snakemake --reporter metadata4ing --cores 1 ./paper.pdf
 unzip ro-crate-metadata.zip -d ro-crate-metadata
 
 
-snakemake --reporter metadat4ing --cores 1 --use-conda ./paper.pdf
+snakemake --reporter metadata4ing --cores 1 --use-conda ./paper.pdf
 
+snakemake --reporter metadata4ing --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py --cores 1

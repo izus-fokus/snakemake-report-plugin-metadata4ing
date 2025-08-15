@@ -1,6 +1,6 @@
 import json
 import os
-from snakemake_report_plugin_metadat4ing.interfaces import (
+from snakemake_report_plugin_metadata4ing.interfaces import (
     ParameterExtractorInterface,
 )
 import yaml

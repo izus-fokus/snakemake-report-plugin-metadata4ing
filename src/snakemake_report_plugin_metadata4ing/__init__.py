@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
 from rdflib import Graph, Namespace
@@ -9,7 +9,7 @@ import requests
 import json
 import importlib.util
 import inspect
-from snakemake_report_plugin_metadat4ing.interfaces import (
+from snakemake_report_plugin_metadata4ing.interfaces import (
     ParameterExtractorInterface,
 )
 from rocrate.rocrate import ROCrate
@@ -339,16 +339,17 @@ class Reporter(ReporterBase):
         self.crate.write_zip(f"ro-crate-metadata-{self.simulation_hash}.zip")
 
     def _load_param_extractor_obj(self):
-        script_path = self.settings.paramscript
-        if not script_path or not script_path.exists():
+        script_path = Path(self.settings.paramscript).expanduser().resolve()
+        if not script_path.exists():
             raise FileNotFoundError(f"Script not found: {script_path}")
+        module_path = str(script_path)
 
-        spec = importlib.util.spec_from_file_location(
-            "extractor_module", script_path
-        )
+        # Load module dynamically
+        spec = importlib.util.spec_from_file_location("extractor_module", module_path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
+        # Find subclass of ParameterExtractorInterface
         extractor_class = None
         for _, obj in inspect.getmembers(module, inspect.isclass):
             if (
@@ -357,6 +358,7 @@ class Reporter(ReporterBase):
             ):
                 extractor_class = obj
                 break
+
         if extractor_class is None:
             raise ImportError(
                 "No subclass of ParameterExtractorInterface found in script"
