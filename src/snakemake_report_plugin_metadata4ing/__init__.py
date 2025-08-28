@@ -65,7 +65,7 @@ class Reporter(ReporterBase):
                 
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node = self._create_job_node(
+            step_node, child_nodes = self._create_job_node(
                 job, file_nodes, field_nodes, file_counter
             )
             job_nodes[job_label] = step_node
@@ -92,13 +92,13 @@ class Reporter(ReporterBase):
         
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
-        # self._add_ro_crate_software()
         self._create_ro_crate_file()
         self._clean_data()
                 
     def _create_job_node(
         self, job, files_dict, fields_dict, file_counter
     ):
+        child_nodes = []
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -108,7 +108,8 @@ class Reporter(ReporterBase):
             "has input": [],
             "has output": [],
             "has parameter": [],
-            "has employed tool": [],
+            "investigates": [],
+            "has employed tool": []
         }
 
         input_files = [
@@ -157,13 +158,30 @@ class Reporter(ReporterBase):
             )
             node["has input"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                param_id_list, field_nodes = self._extract_parameters(
+                metadata, field_nodes = self._extract_parameters(
                     job.rule, file, file_node
                 )
                 fields_dict.update(field_nodes)
-                for param in param_id_list:
-                    node["has parameter"].append({"@id": param})
-
+                if job.rule in metadata:
+                    for key in ["has parameter"]:
+                        if key in metadata[job.rule]:
+                            node[key].append(metadata[job.rule][key])
+                    else:
+                        child_node = {
+                            "@id": f"local:processing_step_{job.job.jobid}_{key}",
+                            "@type": "processing step",
+                            "label": f"{job.rule}_{job.job.jobid}_{key}",
+                            "start time": f"{datetime.fromtimestamp(job.starttime)}",
+                            "end time": f"{datetime.fromtimestamp(job.endtime)}",
+                            "has input": [],
+                            "has output": [],
+                            "has parameter": [metadata[job.rule]["has parameter"]],
+                            "investigates": [],
+                            "has employed tool": [],
+                            "part of": {"@id": f"local:processing_step_{job.job.jobid}"},
+                        }
+                        child_nodes.append(child_node)
+                
         for file in job.output:
             if not self._is_file(file):
                 continue
@@ -172,11 +190,30 @@ class Reporter(ReporterBase):
             )
             node["has output"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                param_id_list, field_nodes = self._extract_parameters(
+                metadata, field_nodes = self._extract_parameters(
                     job.rule, file, file_node
                 )
                 fields_dict.update(field_nodes)
-        
+                if job.rule in metadata:
+                    for key in ["investigates"]:
+                        if key in metadata[job.rule]:
+                            node[key].append(metadata[job.rule][key])
+                    else:
+                        child_node = {
+                            "@id": f"local:processing_step_{job.job.jobid}_{key}",
+                            "@type": "processing step",
+                            "label": f"{job.rule}_{job.job.jobid}_{key}",
+                            "start time": f"{datetime.fromtimestamp(job.starttime)}",
+                            "end time": f"{datetime.fromtimestamp(job.endtime)}",
+                            "has input": [],
+                            "has output": [],
+                            "has parameter": [],
+                            "investigates": [metadata[job.rule]["investigates"]],
+                            "has employed tool": [],
+                            "part of": {"@id": f"local:processing_step_{job.job.jobid}"},
+                        }
+                        child_nodes.append(child_node)
+                
         snakefile, snakepath = self._find_snakefile()
         
         if snakefile:
@@ -189,7 +226,7 @@ class Reporter(ReporterBase):
                     },
             )
             
-        return node
+        return node, child_nodes
 
     def _add_file(self, file_path, file_dict, counter):
         resolved_path = self._copy_external_relative_files(file_path)
@@ -203,57 +240,62 @@ class Reporter(ReporterBase):
         return file_dict[resolved_path], counter
 
     def _extract_parameters(self, rule, file, file_node):
-        param_id_list = []
+        metadata = {}
         field_dict = {}
         extract_params_obj = self._load_param_extractor_obj()
         params = extract_params_obj.extract_params(rule, file)
         if params:
             params = self._validate_extract_param_output(params)
-            for name, data in params.items():
-                name = name.replace("-", "_")
-                param_id = ""
-                param = {
-                    "@type": (
-                        "text variable"
-                        if data["data-type"] == "schema:Text"
-                        else "numerical variable"
-                    ),
-                    "label": name,
-                }
-                if data["data-type"] == "schema:Text":
-                    param["has string value"] = data["value"]
-                else:
-                    param["has numerical value"] = data["value"]
-                    if data["unit"]:
-                        param["has unit"] = {"@id": data["unit"]}
+            for processing_step_name, processing_step_data in params.items():
+                metadata.setdefault(processing_step_name, {})
+                for parameter_type in ["has parameter", "investigates"]:
+                    if parameter_type in processing_step_data:
+                        metadata[processing_step_name].setdefault(parameter_type, [])
+                        for entry in processing_step_data[parameter_type]:
+                            for name, data in entry.items(): 
+                                name = name.replace("-", "_")
+                                param_id = ""
+                                param = {
+                                    "@type": (
+                                        "text variable"
+                                        if data["data-type"] == "schema:Text"
+                                        else "numerical variable"
+                                    ),
+                                    "label": name,
+                                }
+                                if data["data-type"] == "schema:Text":
+                                    param["has string value"] = data["value"]
+                                else:
+                                    param["has numerical value"] = data["value"]
+                                    if data["unit"]:
+                                        param["has unit"] = {"@id": data["unit"]}
 
-                if param in self.param_dict.values():
-                    param_id = next(
-                        (k for k, v in self.param_dict.items() if v == param),
-                        None,
-                    )
-                    param_id_list.append(param_id)
-                else:
-                    param_id = f"local:variable_{name}_{self.param_counter}"
-                    self.param_dict[param_id] = param
-                    self.param_counter += 1
-
-                field_dict[f"{name}_{self.field_counter}"] = {
-                    "@id": f"local:field_{name}_{self.field_counter}",
-                    "@type": "Field",
-                    "represents": {"@id": param_id},
-                    "source": {
-                        "file object": {"@id": file_node["@id"]},
-                        "cr:extract": {"cr:jsonPath": data["json-path"]},
-                    },
-                    **(
-                        {"cr:dataType": data["data-type"]}
-                        if data["data-type"]
-                        else {}
-                    ),
-                }
-                self.field_counter += 1
-        return param_id_list, field_dict
+                                if param in self.param_dict.values():
+                                    param_id = next(
+                                        (k for k, v in self.param_dict.items() if v == param),
+                                        None,
+                                    )
+                                else:
+                                    param_id = f"local:variable_{name}_{self.param_counter}"
+                                    self.param_dict[param_id] = param
+                                    self.param_counter += 1
+                                metadata[processing_step_name][parameter_type].append({"@id": param_id})
+                                field_dict[f"{name}_{self.field_counter}"] = {
+                                    "@id": f"local:field_{name}_{self.field_counter}",
+                                    "@type": "Field",
+                                    "represents": {"@id": param_id},
+                                    "source": {
+                                        "file object": {"@id": file_node["@id"]},
+                                        "cr:extract": {"cr:jsonPath": data["json-path"]},
+                                    },
+                                    **(
+                                        {"cr:dataType": data["data-type"]}
+                                        if data["data-type"]
+                                        else {}
+                                    ),
+                                }
+                                self.field_counter += 1
+        return metadata, field_dict
 
     def _extract_tools(self, rule, file):
         tools_list = []
@@ -369,23 +411,56 @@ class Reporter(ReporterBase):
     def _validate_extract_param_output(self, result):
         if not isinstance(result, dict):
             raise TypeError("Function output must be a dictionary.")
-        for key, value in result.items():
-            if not isinstance(key, str):
-                raise TypeError(f"Key '{key}' must be a string.")
-            if not isinstance(value, dict):
-                raise TypeError(f"Value for key '{key}' must be a dictionary.")
+
+        def _validate_entry(entry_key, entry_value):
+            """Validate the innermost dictionary with value/unit/json-path/data-type."""
+            if not isinstance(entry_key, str):
+                raise TypeError(f"Key '{entry_key}' must be a string.")
+            if not isinstance(entry_value, dict):
+                raise TypeError(f"Value for key '{entry_key}' must be a dictionary.")
+
             required_keys = ["value", "unit", "json-path", "data-type"]
             for rk in required_keys:
-                if rk not in value:
+                if rk not in entry_value:
+                    raise ValueError(f"Missing key '{rk}' in value for '{entry_key}'.")
+
+            if entry_value["unit"] and not isinstance(entry_value["unit"], str):
+                raise TypeError(f"'unit' for '{entry_key}' must be a string.")
+            if not isinstance(entry_value["json-path"], str):
+                raise TypeError(f"'json-path' for '{entry_key}' must be a string.")
+            if not isinstance(entry_value["data-type"], str):
+                raise TypeError(f"'data-type' for '{entry_key}' must be a string.")
+
+        def _validate_section(section_name, section_content):
+            """Validate a section like 'parameters' or 'investigates'."""
+            if not isinstance(section_content, list):
+                raise TypeError(f"'{section_name}' must be a list.")
+            for idx, item in enumerate(section_content):
+                if not isinstance(item, dict):
+                    raise TypeError(f"Each item in '{section_name}' must be a dictionary.")
+                if len(item) != 1:
                     raise ValueError(
-                        f"Missing key '{rk}' in value for '{key}'."
+                        f"Each item in '{section_name}' must have exactly one key, found {len(item)}."
                     )
-            if value["unit"] and not isinstance(value["unit"], str):
-                raise TypeError(f"'unit' for '{key}' must be a string.")
-            if not isinstance(value["json-path"], str):
-                raise TypeError(f"'json-path' for '{key}' must be a string.")
-            if not isinstance(value["data-type"], str):
-                raise TypeError(f"'data-type' for '{key}' must be a string.")
+                inner_key, inner_value = next(iter(item.items()))
+                _validate_entry(inner_key, inner_value)
+
+        for root_key, root_value in result.items():
+            if not isinstance(root_key, str):
+                raise TypeError(f"Root key '{root_key}' must be a string.")
+            if not isinstance(root_value, dict):
+                raise TypeError(f"Root value for '{root_key}' must be a dictionary.")
+
+            # Ensure at least one of parameters or investigates exists
+            if not any(k in root_value for k in ["has parameter", "investigates"]):
+                raise ValueError(
+                    f"Root key '{root_key}' must contain at least 'has parameter' or 'investigates'."
+                )
+
+            for section in ["has parameter", "investigates"]:
+                if section in root_value:
+                    _validate_section(section, root_value[section])
+
         return result
 
     def _validate_extract_tools_output(self, result):

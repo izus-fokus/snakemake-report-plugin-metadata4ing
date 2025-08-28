@@ -14,37 +14,39 @@ class ParameterExtractor(ParameterExtractorInterface):
             file_name.startswith("parameters_")
             and rule_name == "generate_input_files"
         ):
+            results.setdefault("generate_input_files", {}).setdefault("has parameter", [])
             with open(file_path) as f:
                 data = json.load(f)
             for key, val in data.items():
                 if isinstance(val, dict):
-                    results[key] = {
+                    results["generate_input_files"]["has parameter"].append({key: {
                         "value": val["value"],
                         "unit": self._get_unit(key),
                         "json-path": f"/{key}/value",
                         "data-type": self._get_type(val["value"]),
-                    }
+                    }})
                 else:
-                    results[key] = {
+                    results["generate_input_files"]["has parameter"].append({key: {
                         "value": val,
                         "unit": None,
                         "json-path": f"/{key}",
                         "data-type": self._get_type(val),
-                    }
+                    }})
         elif (
             file_name.startswith("summary_")
             and rule_name == "summary"
         ):
+            results.setdefault("summary", {}).setdefault("investigates", [])
             with open(file_path) as f:
                 data = json.load(f)
             for key, val in data.items():
                 if key == "max_mises_stress":
-                    results[key] = {
+                    results["summary"]["investigates"].append({key: {
                         "value": val,
                         "unit": None,
                         "json-path": f"/{key}",
                         "data-type": "schema:Float",
-                    }
+                    }})
         return results
 
     def extract_tools(self, rule_name: str, env_file_content: str,) -> dict:
