@@ -44,6 +44,7 @@ class Reporter(ReporterBase):
         self.conda_envs_dict = {}
         self.tool_counter = 0
         self.tools_dict = {}
+        self.child_nodes = {}
         self.crate = ROCrate()
         self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
@@ -65,7 +66,7 @@ class Reporter(ReporterBase):
                 
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node, child_nodes = self._create_job_node(
+            step_node = self._create_job_node(
                 job, file_nodes, field_nodes, file_counter
             )
             job_nodes[job_label] = step_node
@@ -80,6 +81,7 @@ class Reporter(ReporterBase):
             self.param_dict,
             field_nodes,
             self.tools_dict,
+            self.child_nodes
         ):
             jsonld["@graph"].extend(d.values())
 
@@ -89,7 +91,7 @@ class Reporter(ReporterBase):
             
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-        
+        print(self.child_nodes)
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         self._create_ro_crate_file()
@@ -98,7 +100,6 @@ class Reporter(ReporterBase):
     def _create_job_node(
         self, job, files_dict, fields_dict, file_counter
     ):
-        child_nodes = []
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -163,24 +164,25 @@ class Reporter(ReporterBase):
                 )
                 fields_dict.update(field_nodes)
                 if job.rule in metadata:
-                    for key in ["has parameter"]:
+                    for key in ["has parameter", "investigates"]:
                         if key in metadata[job.rule]:
                             node[key].append(metadata[job.rule][key])
-                    else:
-                        child_node = {
-                            "@id": f"local:processing_step_{job.job.jobid}_{key}",
+                else:
+                    for key, _ in metadata.items():
+                        new_child_node_id = f"local:processing_step_{job.job.jobid}_{key}"
+                        self.child_nodes[new_child_node_id] = {
+                            "@id": new_child_node_id,
                             "@type": "processing step",
                             "label": f"{job.rule}_{job.job.jobid}_{key}",
                             "start time": f"{datetime.fromtimestamp(job.starttime)}",
                             "end time": f"{datetime.fromtimestamp(job.endtime)}",
                             "has input": [],
                             "has output": [],
-                            "has parameter": [metadata[job.rule]["has parameter"]],
-                            "investigates": [],
+                            "has parameter": [metadata[key]["has parameter"]],
+                            "investigates": [metadata[key]["investigates"]],
                             "has employed tool": [],
                             "part of": {"@id": f"local:processing_step_{job.job.jobid}"},
                         }
-                        child_nodes.append(child_node)
                 
         for file in job.output:
             if not self._is_file(file):
@@ -195,24 +197,25 @@ class Reporter(ReporterBase):
                 )
                 fields_dict.update(field_nodes)
                 if job.rule in metadata:
-                    for key in ["investigates"]:
+                    for key in ["has parameter", "investigates"]:
                         if key in metadata[job.rule]:
                             node[key].append(metadata[job.rule][key])
-                    else:
-                        child_node = {
-                            "@id": f"local:processing_step_{job.job.jobid}_{key}",
+                else:
+                    for key, _ in metadata.items():
+                        new_child_node_id = f"local:processing_step_{job.job.jobid}_{key}"
+                        self.child_nodes[new_child_node_id] = {
+                            "@id": new_child_node_id,
                             "@type": "processing step",
                             "label": f"{job.rule}_{job.job.jobid}_{key}",
                             "start time": f"{datetime.fromtimestamp(job.starttime)}",
                             "end time": f"{datetime.fromtimestamp(job.endtime)}",
                             "has input": [],
                             "has output": [],
-                            "has parameter": [],
-                            "investigates": [metadata[job.rule]["investigates"]],
+                            "has parameter": [metadata[key]["has parameter"]],
+                            "investigates": [metadata[key]["investigates"]],
                             "has employed tool": [],
                             "part of": {"@id": f"local:processing_step_{job.job.jobid}"},
                         }
-                        child_nodes.append(child_node)
                 
         snakefile, snakepath = self._find_snakefile()
         
@@ -226,7 +229,7 @@ class Reporter(ReporterBase):
                     },
             )
             
-        return node, child_nodes
+        return node
 
     def _add_file(self, file_path, file_dict, counter):
         resolved_path = self._copy_external_relative_files(file_path)
