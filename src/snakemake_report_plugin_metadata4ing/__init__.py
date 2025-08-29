@@ -91,7 +91,7 @@ class Reporter(ReporterBase):
             
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-        print(self.child_nodes)
+        
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         self._create_ro_crate_file()
