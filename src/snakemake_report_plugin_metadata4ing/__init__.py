@@ -104,8 +104,8 @@ class Reporter(ReporterBase):
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
             "label": f"{job.rule}_{job.job.jobid}",
-            "start time": f"{datetime.fromtimestamp(job.starttime)}",
-            "end time": f"{datetime.fromtimestamp(job.endtime)}",
+            "start time": self._get_time_str(job.starttime),
+            "end time": self._get_time_str(job.endtime),
             "has input": [],
             "has output": [],
             "has parameter": [],
@@ -174,8 +174,8 @@ class Reporter(ReporterBase):
                             "@id": new_child_node_id,
                             "@type": "processing step",
                             "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "start time": f"{datetime.fromtimestamp(job.starttime)}",
-                            "end time": f"{datetime.fromtimestamp(job.endtime)}",
+                            "start time": self._get_time_str(job.starttime),
+                            "end time": self._get_time_str(job.endtime),
                             "has input": [],
                             "has output": [],
                             "has parameter": [metadata[key]["has parameter"]],
@@ -207,8 +207,8 @@ class Reporter(ReporterBase):
                             "@id": new_child_node_id,
                             "@type": "processing step",
                             "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "start time": f"{datetime.fromtimestamp(job.starttime)}",
-                            "end time": f"{datetime.fromtimestamp(job.endtime)}",
+                            "start time": self._get_time_str(job.starttime),
+                            "end time": self._get_time_str(job.endtime),
                             "has input": [],
                             "has output": [],
                             "has parameter": [metadata[key]["has parameter"]],
@@ -633,7 +633,13 @@ class Reporter(ReporterBase):
         if target_dir.exists():
             shutil.rmtree(target_dir)
         target_dir.mkdir(parents=True, exist_ok=True)
-        
+    
+    def _get_time_str(self, timestamp) -> str:
+        try:
+            return f"{datetime.fromtimestamp(timestamp)}"
+        except Exception:
+            return ""
+    
     def _clean_data(self):
         target_dir = Path(self.external_directory_name)
         if target_dir.exists():
