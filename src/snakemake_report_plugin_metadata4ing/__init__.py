@@ -283,21 +283,9 @@ class Reporter(ReporterBase):
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
                                 metadata[processing_step_name][parameter_type].append({"@id": param_id})
-                                field_dict[f"{name}_{self.field_counter}"] = {
-                                    "@id": f"local:field_{name}_{self.field_counter}",
-                                    "@type": "Field",
-                                    "represents": {"@id": param_id},
-                                    "source": {
-                                        "file object": {"@id": file_node["@id"]},
-                                        "cr:extract": {"cr:jsonPath": data["json-path"]},
-                                    },
-                                    **(
-                                        {"cr:dataType": data["data-type"]}
-                                        if data["data-type"]
-                                        else {}
-                                    ),
-                                }
-                                self.field_counter += 1
+                                field_dict = self._add_unique_field(
+                                    field_dict, name, param_id, file_node, data
+                                )
         return metadata, field_dict
 
     def _extract_tools(self, rule, file):
@@ -408,6 +396,27 @@ class Reporter(ReporterBase):
 
         return extractor_class()
 
+    def _add_unique_field(self, field_dict, name, param_id, file_node, data):
+        new_field = {
+            "@type": "Field",
+            "represents": {"@id": param_id},
+            "source": {
+                "file object": {"@id": file_node["@id"]},
+                "cr:extract": {"cr:jsonPath": data["json-path"]},
+            },
+            **({"cr:dataType": data["data-type"]} if data.get("data-type") else {}),
+        }
+
+        for existing in field_dict.values():
+            existing_no_id = {k: v for k, v in existing.items() if k != "@id"}
+            if existing_no_id == new_field:
+                return field_dict
+
+        key = f"{name}_{self.field_counter}"
+        field_dict[key] = {"@id": f"local:field_{name}_{self.field_counter}", **new_field}
+        self.field_counter += 1
+        return field_dict
+    
     def _validate_extract_param_output(self, result):
         if not isinstance(result, dict):
             raise TypeError("Function output must be a dictionary.")
