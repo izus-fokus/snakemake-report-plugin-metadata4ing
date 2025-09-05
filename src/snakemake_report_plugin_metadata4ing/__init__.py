@@ -41,6 +41,7 @@ class Reporter(ReporterBase):
         self.param_counter = 0
         self.field_counter = 0
         self.param_dict = {}
+        self.field_dict = {}
         self.conda_envs_dict = {}
         self.tool_counter = 0
         self.tools_dict = {}
@@ -61,13 +62,13 @@ class Reporter(ReporterBase):
         jsonld["@context"]["units"] = "http://qudt.org/vocab/unit/"
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
-        job_nodes, file_nodes, field_nodes = {}, {}, {}
+        job_nodes, file_nodes = {}, {}
         file_counter = 0
                 
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
             step_node = self._create_job_node(
-                job, file_nodes, field_nodes, file_counter
+                job, file_nodes, file_counter
             )
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
@@ -79,7 +80,7 @@ class Reporter(ReporterBase):
             job_nodes,
             file_nodes,
             self.param_dict,
-            field_nodes,
+            self.field_dict,
             self.tools_dict,
             self.child_nodes
         ):
@@ -98,7 +99,7 @@ class Reporter(ReporterBase):
         self._clean_data()
                 
     def _create_job_node(
-        self, job, files_dict, fields_dict, file_counter
+        self, job, files_dict, file_counter
     ):
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
@@ -159,10 +160,9 @@ class Reporter(ReporterBase):
             )
             node["has input"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                metadata, field_nodes = self._extract_parameters(
+                metadata = self._extract_parameters(
                     job.rule, file, file_node
                 )
-                fields_dict.update(field_nodes)
                 if job.rule in metadata:
                     for key in ["has parameter", "investigates"]:
                         if key in metadata[job.rule]:
@@ -192,10 +192,9 @@ class Reporter(ReporterBase):
             )
             node["has output"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                metadata, field_nodes = self._extract_parameters(
+                metadata = self._extract_parameters(
                     job.rule, file, file_node
                 )
-                fields_dict.update(field_nodes)
                 if job.rule in metadata:
                     for key in ["has parameter", "investigates"]:
                         if key in metadata[job.rule]:
@@ -244,7 +243,6 @@ class Reporter(ReporterBase):
 
     def _extract_parameters(self, rule, file, file_node):
         metadata = {}
-        field_dict = {}
         extract_params_obj = self._load_param_extractor_obj()
         params = extract_params_obj.extract_params(rule, file)
         if params:
@@ -283,10 +281,8 @@ class Reporter(ReporterBase):
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
                                 metadata[processing_step_name][parameter_type].append({"@id": param_id})
-                                field_dict = self._add_unique_field(
-                                    field_dict, name, param_id, file_node, data
-                                )
-        return metadata, field_dict
+                                self._add_unique_field(name, param_id, file_node, data)
+        return metadata
 
     def _extract_tools(self, rule, file):
         tools_list = []
@@ -396,7 +392,7 @@ class Reporter(ReporterBase):
 
         return extractor_class()
 
-    def _add_unique_field(self, field_dict, name, param_id, file_node, data):
+    def _add_unique_field(self, name, param_id, file_node, data):
         new_field = {
             "@type": "Field",
             "represents": {"@id": param_id},
@@ -407,15 +403,14 @@ class Reporter(ReporterBase):
             **({"cr:dataType": data["data-type"]} if data.get("data-type") else {}),
         }
 
-        for existing in field_dict.values():
+        for existing in self.field_dict.values():
             existing_no_id = {k: v for k, v in existing.items() if k != "@id"}
             if existing_no_id == new_field:
-                return field_dict
+                return
 
         key = f"{name}_{self.field_counter}"
-        field_dict[key] = {"@id": f"local:field_{name}_{self.field_counter}", **new_field}
+        self.field_dict[key] = {"@id": f"local:field_{name}_{self.field_counter}", **new_field}
         self.field_counter += 1
-        return field_dict
     
     def _validate_extract_param_output(self, result):
         if not isinstance(result, dict):
