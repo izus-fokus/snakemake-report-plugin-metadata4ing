@@ -326,7 +326,6 @@ class Reporter(ReporterBase):
         return tools_list
 
     def _get_context(self):
-        # url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i_context.jsonld"
         url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i2rocrate_context.jsonld"
         response = requests.get(url)
         if response.ok:
@@ -389,12 +388,10 @@ class Reporter(ReporterBase):
             raise FileNotFoundError(f"Script not found: {script_path}")
         module_path = str(script_path)
 
-        # Load module dynamically
         spec = importlib.util.spec_from_file_location("extractor_module", module_path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        # Find subclass of ParameterExtractorInterface
         extractor_class = None
         for _, obj in inspect.getmembers(module, inspect.isclass):
             if (
@@ -454,7 +451,6 @@ class Reporter(ReporterBase):
             if not isinstance(root_value, dict):
                 raise TypeError(f"Root value for '{root_key}' must be a dictionary.")
 
-            # Ensure at least one of parameters or investigates exists
             if not any(k in root_value for k in ["has parameter", "investigates"]):
                 raise ValueError(
                     f"Root key '{root_key}' must contain at least 'has parameter' or 'investigates'."
@@ -475,32 +471,11 @@ class Reporter(ReporterBase):
         return result
 
     def _get_mime_type(self, file_name: str) -> str:
-        """
-        Return the MIME type that corresponds to a file’s extension.
-
-        Parameters
-        ----------
-        file_name : str
-            A file name (or full path) that includes an extension, e.g. 'report.pdf'.
-
-        Returns
-        -------
-        str
-            The detected MIME type, e.g. 'application/pdf'.
-            Falls back to 'application/octet-stream' if the type is unknown.
-        """
-        # Ensure we’re only passing the name, not a PosixPath object, to mimetypes.
         file_name = Path(file_name).name
-
         mime_type, _ = mimetypes.guess_type(file_name, strict=False)
         return mime_type or "application/octet-stream"
 
     def _extract_script_and_files(self, cmd: str) -> tuple[Optional[str], list[str]]:
-        """
-        Returns:
-            - The script name from the shell command (or None).
-            - A list of file paths used in the command (excluding script).
-        """
         _INTERPRETERS = {
             "python", "python3", "python2",
             "pypy", "pypy3",
@@ -519,13 +494,11 @@ class Reporter(ReporterBase):
         script_path = None
         file_paths = []
 
-        # Determine if the first token is an interpreter
         if Path(tokens[0]).name in _INTERPRETERS:
-            # Find the first non-option token as the script
             for i, tok in enumerate(tokens[1:], start=1):
                 if tok.startswith("-"):
                     continue
-                script_path = tok  # ✅ keep full relative/absolute path
+                script_path = tok 
                 break
             start_idx = i + 1 if script_path else 1
         else:
@@ -534,7 +507,6 @@ class Reporter(ReporterBase):
                 script_path = str(first)
             start_idx = 1
 
-        # Collect potential file paths (excluding the script itself)
         for tok in tokens[start_idx:]:
             if tok.startswith("-") or tok in {">", "2>&1"} or tok.isnumeric():
                 continue
@@ -554,9 +526,7 @@ class Reporter(ReporterBase):
     def _add_precedes_relations(self, jsonld_data: dict) -> dict:
         g = Graph()
         g.parse(data=json.dumps(jsonld_data), format="json-ld")
-
         SCHEMA = Namespace("https://schema.org/")
-
         new_relations = []
         for a, _, f1 in g.triples((None, SCHEMA.result, None)):
             for b, _, f2 in g.triples((None, SCHEMA.object, None)):
@@ -566,11 +536,9 @@ class Reporter(ReporterBase):
                     if local_a != local_b:
                         new_relations.append((local_a, local_b))
 
-        # Map from @id to node in @graph
         graph_nodes = jsonld_data.get("@graph", [])
         id_to_node = {self._get_local_id(node["@id"]): node for node in graph_nodes if "@id" in node}
 
-        # Add inferred relations to JSON-LD
         for source_id, target_id in new_relations:
             source_node = id_to_node.get(source_id)
             if not source_node:
@@ -594,8 +562,6 @@ class Reporter(ReporterBase):
         return jsonld_data
         
     def _get_local_id(self, iri: str) -> str:
-        """Extract the local ID from a full IRI (e.g., the last part after '/' or '#'),
-        and remove 'local:' prefix if present."""
         local = iri.rsplit('/', 1)[-1].rsplit('#', 1)[-1]
         if local.startswith("local:"):
             local = local.replace("local:", "")
