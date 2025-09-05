@@ -1,12 +1,12 @@
 [project]
 name = "snakemake-report-plugin-metadata4ing"
-version = "0.1.0"
-description = ""
+version = "1.0.0"
+description = "Snakemake reporter plugin to extract metadata accoriding to MetaData4Ing ontology"
 readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = ["snakemake-interface-common (>=1.17.4,<2.0.0)", "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)", "rdflib", "requests", "rocrate"]
-repository = "https://github.com/your/plugin"
-documentation = "https://snakemake.github.io/snakemake-plugin-catalog/plugins/report/metadata4ing.html"
+repository = "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
+documentation = "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
 [[project.authors]]
 name = "Mahdi Jafarkhani"
 email = "mahdi.jafarkhani@tik.uni-stuttgart.de"
