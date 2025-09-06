@@ -13,7 +13,6 @@ from snakemake_report_plugin_metadata4ing.interfaces import (
     ParameterExtractorInterface,
 )
 from rocrate.rocrate import ROCrate
-from rocrate.model.softwareapplication import SoftwareApplication
 import mimetypes
 import shlex
 import os
@@ -351,12 +350,6 @@ class Reporter(ReporterBase):
                     "encodingFormat": self._get_mime_type(file),
                 },
             )
-
-    def _add_ro_crate_software(self):
-        self.crate.add(SoftwareApplication(self.crate, "Snakemake", {
-            "name": "Snakemake",
-            "url": "https://snakemake.readthedocs.io/"
-        }))
     
     def _create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize(
