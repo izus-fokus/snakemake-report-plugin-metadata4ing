@@ -4,7 +4,7 @@ from snakemake_report_plugin_metadata4ing.interfaces import (
     ParameterExtractorInterface,
 )
 import yaml
-import re
+import subprocess
 
 class ParameterExtractor(ParameterExtractorInterface):
     def extract_params(self, rule_name: str, file_path: str) -> dict:
@@ -49,34 +49,40 @@ class ParameterExtractor(ParameterExtractorInterface):
                     }})
         return results
 
-    def extract_tools(self, rule_name: str, env_file_content: str,) -> dict:
+    def extract_tools(self, rule_name: str, env_file_content: str) -> dict:
+        targets = {"fenics-dolfinx", "KratosMultiphysics-all"}
         results = {}
+        found_targets = set()
+
         parsed = yaml.safe_load(env_file_content)
         dependencies = parsed.get("dependencies", [])
-
-        for dep in dependencies:
-           if isinstance(dep, str):
-               match = re.match(r'^([a-zA-Z0-9_\-]+)([=<>!].*)?$', dep)
-               if match:
-                   name, version = match.groups()
-                   results[name] = version if version else None
-           elif isinstance(dep, dict):
-               for _, pkgs in dep.items():
-                   for pkg in pkgs:
-                       match = re.match(r'^([a-zA-Z0-9_\-]+)([=<>!].*)?$', pkg)
-                       if match:
-                           name, version = match.groups()
-                           results[name] = version if version else None
-        rename_map = {
-            "fenics-dolfinx": "FEniCS",
-            "KratosMultiphysics-all": "Kratos Multiphysics"
-        }
-
-        filtered_results = {
-            rename_map[k]: v for k, v in results.items() if k in rename_map
-        }
         
-        return filtered_results
+        for dep in dependencies:
+            if isinstance(dep, str):
+                for target in targets:
+                    if dep.strip().lower().startswith(target.lower()):
+                        found_targets.add(target)
+            elif isinstance(dep, dict):
+                for _, pkgs in dep.items():
+                    for pkg in pkgs:
+                        for target in targets:
+                            if pkg.strip().lower().startswith(target.lower()):
+                                found_targets.add(target)
+
+        envs = self._list_conda_envs()
+
+        for env_name, env_path in envs.items():
+            try:
+                pkgs = self._get_packages(env_path, found_targets)
+            except Exception as e:
+                print(f"[Warning] Could not get packages for {env_name}: {e}")
+                continue
+
+            found = found_targets.intersection(pkgs.keys())
+            for pkg in found:
+                results[pkg] = pkgs[pkg]
+
+        return results
 
     def _get_type(self, val):
         if isinstance(val, float):
@@ -86,3 +92,21 @@ class ParameterExtractor(ParameterExtractorInterface):
         elif isinstance(val, str):
             return "schema:Text"
         return None
+    
+    def _list_conda_envs(self):
+        """Return a dict {env_name: env_path} of all conda environments."""
+        result = subprocess.run(
+            ["conda", "env", "list", "--json"],
+            capture_output=True, text=True, check=True
+        )
+        envs_info = json.loads(result.stdout)
+        return {path.split("/")[-1]: path for path in envs_info["envs"]}
+
+    def _get_packages(self, env_path, targets):
+        """Return dict {package: version} for given env path."""
+        result = subprocess.run(
+            ["conda", "list", "--prefix", env_path, "--json"],
+            capture_output=True, text=True, check=True
+        )
+        all_packages = json.loads(result.stdout)
+        return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"] in targets}

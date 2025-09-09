@@ -45,6 +45,7 @@ class Reporter(ReporterBase):
         self.tool_counter = 0
         self.tools_dict = {}
         self.child_nodes = {}
+        self._conda_tools_cache = {}
         self.crate = ROCrate()
         self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
@@ -147,7 +148,11 @@ class Reporter(ReporterBase):
                 and conda_file
                 and conda_file not in self.conda_envs_dict
             ):
-                tools = self._extract_tools(job.rule, conda_file.content)
+                if conda_file in self._conda_tools_cache:
+                    tools = self._conda_tools_cache[conda_file]
+                else:
+                    tools = self._extract_tools(job.rule, conda_file.content)
+                    self._conda_tools_cache[conda_file] = tools
                 for tool in tools:
                     node["has employed tool"].append({"@id": tool["@id"]})
 
