@@ -18,7 +18,6 @@ import shlex
 import os
 import hashlib
 import shutil
-import subprocess
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -64,7 +63,7 @@ class Reporter(ReporterBase):
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         job_nodes, file_nodes = {}, {}
         file_counter = 0
-        self._print_conda_envs()
+        
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
             step_node = self._create_job_node(
@@ -610,38 +609,3 @@ class Reporter(ReporterBase):
             shutil.rmtree(target_dir)
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
-    
-    def _list_conda_envs(self):
-        """Return a dict {env_name: env_path} of all conda environments."""
-        result = subprocess.run(
-            ["conda", "env", "list", "--json"],
-            capture_output=True, text=True, check=True
-        )
-        envs_info = json.loads(result.stdout)
-        return {path.split("/")[-1]: path for path in envs_info["envs"]}
-
-    def _get_packages(self,env_path):
-        """Return dict {package: version} for given env path."""
-        result = subprocess.run(
-            ["conda", "list", "--prefix", env_path, "--json"],
-            capture_output=True, text=True, check=True
-        )
-        return {pkg["name"]: pkg["version"] for pkg in json.loads(result.stdout)}
-    
-    def _print_conda_envs(self):
-        targets = {"kratosmultiphysics-all", "fenics-dolfinx"}
-        envs = self._list_conda_envs()
-        print("\n🔍 Checking conda environments for target packages...")
-        for env_name, env_path in envs.items():
-            try:
-                pkgs = self._get_packages(env_path)
-            except Exception as e:
-                print(f"⚠️ Could not read packages for {env_name}: {e}")
-                continue
-
-            found = targets.intersection(pkgs.keys())
-            if found:
-                print(f"\nEnvironment: {env_name}")
-                for pkg in found:
-                    print(f"  {pkg}=={pkgs[pkg]}")
-        print("\n🔍 End Checking conda environments for target packages...")
