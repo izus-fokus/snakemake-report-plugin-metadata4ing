@@ -611,7 +611,7 @@ class Reporter(ReporterBase):
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
     
-    def list_conda_envs(self):
+    def _list_conda_envs(self):
         """Return a dict {env_name: env_path} of all conda environments."""
         result = subprocess.run(
             ["conda", "env", "list", "--json"],
@@ -620,14 +620,13 @@ class Reporter(ReporterBase):
         envs_info = json.loads(result.stdout)
         return {path.split("/")[-1]: path for path in envs_info["envs"]}
 
-    def get_packages(self,env_path):
+    def _get_packages(self,env_path):
         """Return dict {package: version} for given env path."""
         result = subprocess.run(
             ["conda", "list", "--prefix", env_path, "--json"],
             capture_output=True, text=True, check=True
         )
         return {pkg["name"]: pkg["version"] for pkg in json.loads(result.stdout)}
-
     
     def _print_conda_envs(self):
         targets = {"kratosmultiphysics-all", "fenics-dolfinx"}
