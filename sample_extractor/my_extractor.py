@@ -49,11 +49,11 @@ class ParameterExtractor(ParameterExtractorInterface):
                     }})
         return results
 
-    def extract_tools(self, rule_name: str, env_file_content: str) -> dict:
+    def extract_tools(self, rule_name: str, env_file_content: str,) -> dict:
         targets = {"fenics-dolfinx", "KratosMultiphysics-all"}
         results = {}
         found_targets = set()
-
+        
         parsed = yaml.safe_load(env_file_content)
         dependencies = parsed.get("dependencies", [])
         
@@ -61,27 +61,26 @@ class ParameterExtractor(ParameterExtractorInterface):
             if isinstance(dep, str):
                 for target in targets:
                     if dep.strip().lower().startswith(target.lower()):
-                        found_targets.add(target)
+                        found_targets.add(target.lower())
             elif isinstance(dep, dict):
                 for _, pkgs in dep.items():
                     for pkg in pkgs:
                         for target in targets:
                             if pkg.strip().lower().startswith(target.lower()):
-                                found_targets.add(target)
-
+                                found_targets.add(target.lower())
+        
         envs = self._list_conda_envs()
-
-        for env_name, env_path in envs.items():
+        
+        for _, env_path in envs.items():
             try:
                 pkgs = self._get_packages(env_path, found_targets)
             except Exception as e:
-                print(f"[Warning] Could not get packages for {env_name}: {e}")
                 continue
 
             found = found_targets.intersection(pkgs.keys())
             for pkg in found:
                 results[pkg] = pkgs[pkg]
-
+        
         return results
 
     def _get_type(self, val):
@@ -109,4 +108,4 @@ class ParameterExtractor(ParameterExtractorInterface):
             capture_output=True, text=True, check=True
         )
         all_packages = json.loads(result.stdout)
-        return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"] in targets}
+        return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"].lower() in targets}
