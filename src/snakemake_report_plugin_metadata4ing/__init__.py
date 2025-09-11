@@ -44,11 +44,10 @@ class Reporter(ReporterBase):
         self.field_counter = 0
         self.param_dict = {}
         self.field_dict = {}
-        self.conda_envs_dict = {}
         self.tool_counter = 0
         self.tools_dict = {}
         self.child_nodes = {}
-        self._conda_tools_cache = {}
+        self.conda_tools_cache = {}
         self.crate = ROCrate()
         self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
@@ -146,15 +145,12 @@ class Reporter(ReporterBase):
             )
             
         for conda_file in conda_files:
-            if (
-                conda_file
-                and conda_file not in self.conda_envs_dict
-            ):
-                if conda_file in self._conda_tools_cache:
-                    tools = self._conda_tools_cache[conda_file]
+            if conda_file:
+                if conda_file in self.conda_tools_cache:
+                    tools = self.conda_tools_cache[conda_file]
                 else:
                     tools = self._add_tools(conda_file.content)
-                    self._conda_tools_cache[conda_file] = tools
+                    self.conda_tools_cache[conda_file] = tools
                 for tool in tools:
                     node["has employed tool"].append({"@id": tool["@id"]})
 
@@ -359,6 +355,7 @@ class Reporter(ReporterBase):
             ["conda", "env", "list", "--json"],
             capture_output=True, text=True, check=True
         )
+        print(f"Conda env list output: {result.stdout}")
         envs_info = json.loads(result.stdout)
         return {path.split("/")[-1]: path for path in envs_info["envs"]}
 
