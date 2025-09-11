@@ -96,13 +96,8 @@ class Reporter(ReporterBase):
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
         
-        print('##### ENV PRINT ########')
-        for key,val in self.dag.conda_envs.items():
-            print(f" {key.__hash__()} ### {val.name} ++++ {val.dir} ")
-        print('##### ++++++ ########')    
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
-        self._add_snakemake_metadata()
         self._create_ro_crate_file()
         self._clean_data()
                 
@@ -305,6 +300,7 @@ class Reporter(ReporterBase):
 
         version_pattern = re.compile(r"([a-zA-Z0-9_.\-]+)([=><!~]+.*)?")
 
+        # Parse YAML dependencies
         for dep in dependencies:
             if isinstance(dep, str):
                 match = version_pattern.match(dep.strip())
@@ -313,27 +309,35 @@ class Reporter(ReporterBase):
                     version = match.group(2).lstrip("=") if match.group(2) else None
                     results[pkg_name] = version
                     found_targets.add(pkg_name)
-            elif isinstance(dep, dict): 
+            elif isinstance(dep, dict):
                 for _, pkgs in dep.items():
                     for pkg in pkgs:
                         match = version_pattern.match(pkg.strip())
                         if match:
                             pkg_name = match.group(1).lower()
                             version = match.group(2).lstrip("=") if match.group(2) else None
-                            results[pkg_name] = version 
+                            results[pkg_name] = version
                             found_targets.add(pkg_name)
 
-        envs = self._list_conda_envs(env_file_content)
+        envs = self._list_conda_envs()
 
+        # Find the first env that contains all target packages
+        selected_env_pkgs = None
         for _, env_path in envs.items():
             try:
                 pkgs = self._get_packages(env_path, found_targets)
             except Exception:
                 continue
 
+            if all(pkg in pkgs for pkg in found_targets):
+                selected_env_pkgs = pkgs
+                break  # Stop at the first matching environment
+
+        # Fill in missing versions from the selected environment
+        if selected_env_pkgs:
             for pkg in found_targets:
-                if results.get(pkg) is None and pkg in pkgs:
-                    results[pkg] = pkgs[pkg]
+                if results.get(pkg) is None and pkg in selected_env_pkgs:
+                    results[pkg] = selected_env_pkgs[pkg]
 
         return results
     
@@ -360,16 +364,12 @@ class Reporter(ReporterBase):
                     tools_list.append(self.tools_dict[name])
         return tools_list
 
-    def _list_conda_envs(self, env_file_content):
+    def _list_conda_envs(self):
         """Return a dict {env_name: env_path} of all conda environments."""
         result = subprocess.run(
             ["conda", "env", "list", "--json"],
             capture_output=True, text=True, check=True
         )
-        print("-----")
-        print(f"Conda env list output: {result.stdout}")
-        print(f"Base64 is {self.string_to_base64(env_file_content)}")
-        print("###")
         envs_info = json.loads(result.stdout)
         return {path.split("/")[-1]: path for path in envs_info["envs"]}
 
@@ -675,28 +675,3 @@ class Reporter(ReporterBase):
             shutil.rmtree(target_dir)
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
-        
-        
-    def _add_snakemake_metadata(self):
-        cwd = os.getcwd()
-        self.crate.add_dataset(f"{cwd}/.snakemake/metadata")
-
-    def string_to_base64(self,input_string):
-      """
-      Converts a string to a Base64 encoded string.
-
-      Args:
-        input_string: The string to be encoded.
-
-      Returns:
-        The Base64 encoded string.
-      """
-      # Encode the input string to bytes
-    
-      # Encode the bytes to Base64
-      base64_bytes = base64.b64encode(input_string)
-    
-      # Decode the Base64 bytes to a string for printing
-      base64_string = base64_bytes.decode('utf-8')
-    
-      return base64_string
