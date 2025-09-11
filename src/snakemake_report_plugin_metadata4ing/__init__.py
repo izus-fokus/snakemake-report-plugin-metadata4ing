@@ -125,6 +125,13 @@ class Reporter(ReporterBase):
             for f in j.input
         ]
         
+        logs = [
+            f
+            for j in self.dag.jobs
+            if j.jobid == job.job.jobid
+            for f in j.log
+        ]
+        print(f"Logs for job {job.job.jobid}: {logs}")
         conda_files = [
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
