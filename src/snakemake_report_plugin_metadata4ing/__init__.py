@@ -21,6 +21,7 @@ import shutil
 import yaml
 import subprocess
 import re
+import base64
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -312,7 +313,7 @@ class Reporter(ReporterBase):
                             results[pkg_name] = version 
                             found_targets.add(pkg_name)
 
-        envs = self._list_conda_envs()
+        envs = self._list_conda_envs(env_file_content)
 
         for _, env_path in envs.items():
             try:
@@ -349,13 +350,16 @@ class Reporter(ReporterBase):
                     tools_list.append(self.tools_dict[name])
         return tools_list
 
-    def _list_conda_envs(self):
+    def _list_conda_envs(self, env_file_content):
         """Return a dict {env_name: env_path} of all conda environments."""
         result = subprocess.run(
             ["conda", "env", "list", "--json"],
             capture_output=True, text=True, check=True
         )
+        print("-----")
         print(f"Conda env list output: {result.stdout}")
+        print(f"Base64 is {self.string_to_base64(env_file_content)}")
+        print("###")
         envs_info = json.loads(result.stdout)
         return {path.split("/")[-1]: path for path in envs_info["envs"]}
 
@@ -661,3 +665,26 @@ class Reporter(ReporterBase):
             shutil.rmtree(target_dir)
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
+        
+        
+        
+
+    def string_to_base64(self,input_string):
+      """
+      Converts a string to a Base64 encoded string.
+
+      Args:
+        input_string: The string to be encoded.
+
+      Returns:
+        The Base64 encoded string.
+      """
+      # Encode the input string to bytes
+    
+      # Encode the bytes to Base64
+      base64_bytes = base64.b64encode(input_string)
+    
+      # Decode the Base64 bytes to a string for printing
+      base64_string = base64_bytes.decode('utf-8')
+    
+      return base64_string
