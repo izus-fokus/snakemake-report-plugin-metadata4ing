@@ -18,6 +18,9 @@ import shlex
 import os
 import hashlib
 import shutil
+import yaml
+import subprocess
+import re
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -144,14 +147,13 @@ class Reporter(ReporterBase):
             
         for conda_file in conda_files:
             if (
-                self.settings.paramscript
-                and conda_file
+                conda_file
                 and conda_file not in self.conda_envs_dict
             ):
                 if conda_file in self._conda_tools_cache:
                     tools = self._conda_tools_cache[conda_file]
                 else:
-                    tools = self._extract_tools(job.rule, conda_file.content)
+                    tools = self._add_tools(conda_file.content)
                     self._conda_tools_cache[conda_file] = tools
                 for tool in tools:
                     node["has employed tool"].append({"@id": tool["@id"]})
@@ -288,12 +290,50 @@ class Reporter(ReporterBase):
                                 self._add_unique_field(name, param_id, file_node, data)
         return metadata
 
-    def _extract_tools(self, rule, file):
+    def _extract_tools_from_yaml(self, env_file_content: str) -> dict:
+        results = {}
+        found_targets = set()
+        parsed = yaml.safe_load(env_file_content)
+        dependencies = parsed.get("dependencies", [])
+
+        version_pattern = re.compile(r"([a-zA-Z0-9_.\-]+)([=><!~]+.*)?")
+
+        for dep in dependencies:
+            if isinstance(dep, str):
+                match = version_pattern.match(dep.strip())
+                if match:
+                    pkg_name = match.group(1).lower()
+                    version = match.group(2).lstrip("=") if match.group(2) else None
+                    results[pkg_name] = version
+                    found_targets.add(pkg_name)
+            elif isinstance(dep, dict): 
+                for _, pkgs in dep.items():
+                    for pkg in pkgs:
+                        match = version_pattern.match(pkg.strip())
+                        if match:
+                            pkg_name = match.group(1).lower()
+                            version = match.group(2).lstrip("=") if match.group(2) else None
+                            results[pkg_name] = version 
+                            found_targets.add(pkg_name)
+
+        envs = self._list_conda_envs()
+
+        for _, env_path in envs.items():
+            try:
+                pkgs = self._get_packages(env_path, found_targets)
+            except Exception:
+                continue
+
+            for pkg in found_targets:
+                if results.get(pkg) is None and pkg in pkgs:
+                    results[pkg] = pkgs[pkg]
+
+        return results
+    
+    def _add_tools(self, env_file_content: str) -> list:
         tools_list = []
-        extract_params_obj = self._load_param_extractor_obj()
-        tools = extract_params_obj.extract_tools(rule, file)
+        tools = self._extract_tools_from_yaml(env_file_content)
         if tools:
-            tools = self._validate_extract_tools_output(tools)
             for name, version in tools.items():
                 if name not in self.tools_dict:
                     item = {
@@ -313,6 +353,24 @@ class Reporter(ReporterBase):
                     tools_list.append(self.tools_dict[name])
         return tools_list
 
+    def _list_conda_envs(self):
+        """Return a dict {env_name: env_path} of all conda environments."""
+        result = subprocess.run(
+            ["conda", "env", "list", "--json"],
+            capture_output=True, text=True, check=True
+        )
+        envs_info = json.loads(result.stdout)
+        return {path.split("/")[-1]: path for path in envs_info["envs"]}
+
+    def _get_packages(self, env_path, targets):
+        """Return dict {package: version} for given env path."""
+        result = subprocess.run(
+            ["conda", "list", "--prefix", env_path, "--json"],
+            capture_output=True, text=True, check=True
+        )
+        all_packages = json.loads(result.stdout)
+        return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"].lower() in targets}
+    
     def _get_context(self):
         url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i2rocrate_context.jsonld"
         response = requests.get(url)
@@ -462,14 +520,6 @@ class Reporter(ReporterBase):
                 if section in root_value:
                     _validate_section(section, root_value[section])
 
-        return result
-
-    def _validate_extract_tools_output(self, result):
-        if not isinstance(result, dict):
-            raise TypeError("Function output must be a dictionary.")
-        for key, value in result.items():
-            if not isinstance(key, str):
-                raise TypeError(f"Key '{key}' must be a string.")
         return result
 
     def _get_mime_type(self, file_name: str) -> str:
