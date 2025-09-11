@@ -95,10 +95,10 @@ class Reporter(ReporterBase):
             
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-        cwd = os.getcwd()
-        self.crate.add_dataset(f"{cwd}/.snakemake")
+        
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
+        self._add_snakemake_metadata()
         self._create_ro_crate_file()
         self._clean_data()
                 
@@ -668,7 +668,9 @@ class Reporter(ReporterBase):
         os.remove(self.provenance_ttl_filename)
         
         
-        
+    def _add_snakemake_metadata(self):
+        cwd = os.getcwd()
+        self.crate.add_dataset(f"{cwd}/.snakemake/metadata")
 
     def string_to_base64(self,input_string):
       """
