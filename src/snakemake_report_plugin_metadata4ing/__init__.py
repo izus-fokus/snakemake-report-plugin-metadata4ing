@@ -96,6 +96,10 @@ class Reporter(ReporterBase):
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
         
+        print('##### ENV PRINT ########')
+        for key,val in self.dag.conda_envs.items():
+            print(f" {key.__hash__()} ### {val.name} ++++ {val.dir} ")
+        print('##### ++++++ ########')    
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         self._add_snakemake_metadata()
@@ -125,13 +129,11 @@ class Reporter(ReporterBase):
             for f in j.input
         ]
         
-        logs = [
-            f
-            for j in self.dag.jobs
-            if j.jobid == job.job.jobid
-            for f in j.log
-        ]
-        print(f"Logs for job {job.job.jobid}: {logs}")
+        # logs = [j.conda_env_spec
+        #     for j in self.dag.jobs
+        #     if j.jobid == job.job.jobid]
+        
+        
         conda_files = [
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
