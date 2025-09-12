@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
-from rdflib import Graph, Namespace
+from rdflib import Graph, Namespace, RDF, URIRef
 import requests
 import json
 import importlib.util
@@ -21,7 +21,6 @@ import shutil
 import yaml
 import subprocess
 import re
-import base64
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -54,15 +53,22 @@ class Reporter(ReporterBase):
         self.provenance_filename = "provenance.jsonld"
         self.provenance_ttl_filename = "provenance.ttl"
         self.external_directory_name ="_EXTERNAL"
+        self.unit_graph = Graph()
+        self.qudt_mapping_dict = {}
+        self.qudt_url = "http://qudt.org/schema/qudt/"
+        self.unit_url = "http://qudt.org/vocab/unit/"
+        self.QUDT_NS = Namespace(self.qudt_url)
+        self.UNIT_NS = Namespace(self.unit_url)
         
         self._get_context()
+        self._get_qudt()
         self._create_external_directory()
         
         jsonld = {
             "@context": self.context_data.get("@context", {}),
             "@graph": [],
         }
-        jsonld["@context"]["units"] = "http://qudt.org/vocab/unit/"
+        jsonld["@context"]["unit"] = self.unit_url
 
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         job_nodes, file_nodes = {}, {}
@@ -123,11 +129,6 @@ class Reporter(ReporterBase):
             if j.jobid == job.job.jobid
             for f in j.input
         ]
-        
-        # logs = [j.conda_env_spec
-        #     for j in self.dag.jobs
-        #     if j.jobid == job.job.jobid]
-        
         
         conda_files = [
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
@@ -277,7 +278,16 @@ class Reporter(ReporterBase):
                                 else:
                                     param["has numerical value"] = data["value"]
                                     if data["unit"]:
-                                        param["has unit"] = {"@id": data["unit"]}
+                                        if data["unit"] in self.qudt_mapping_dict:
+                                            param["has unit"] = {"@id": self.qudt_mapping_dict[data["unit"]]}
+                                        else:
+                                            qudt_unit = self._get_qudt_unit_from_ucum(data["unit"])
+                                            self.qudt_mapping_dict[data["unit"]] = qudt_unit
+                                            if qudt_unit:
+                                                param["has unit"] = {"@id": qudt_unit}
+                                            else:
+                                                self.qudt_mapping_dict[data["unit"]] = data["unit"]
+                                                param["has unit"] = {"@id": data["unit"]}
 
                                 if param in self.param_dict.values():
                                     param_id = next(
@@ -392,6 +402,24 @@ class Reporter(ReporterBase):
                 f"Failed to fetch context data. Status code: {response.status_code}"
             )
 
+    def _get_qudt(self):
+        response = requests.get(self.unit_url)
+        if response.ok:
+            self.unit_graph.parse(data=response.content, format="ttl")
+        else:
+            print(
+                f"Failed to fetch QUDT data. Status code: {response.status_code}"
+            )
+    
+    def _get_qudt_unit_from_ucum(self, ucum_code: str) -> str | None:
+        for unit in self.unit_graph.subjects(RDF.type, self.QUDT_NS.Unit):
+            ucum = self.unit_graph.value(subject=unit, predicate=self.QUDT_NS.ucumCode)
+            if ucum and str(ucum) == ucum_code:
+                if str(unit).startswith(str(self.UNIT_NS)):
+                    return "unit:" + str(unit).split("/")[-1]
+                return str(unit)
+        return None
+    
     def _add_ro_crate_file_nodes(self, file_nodes):
         _ = self.crate.add_file(
             self.provenance_filename,
