@@ -1,10 +1,27 @@
-[tool.poetry]
+[project]
 name = "snakemake-report-plugin-metadata4ing"
 version = "1.0.0"
-description = "Snakemake reporter plugin to extract metadata according to MetaData4Ing ontology"
+description = "Snakemake reporter plugin to extract metadata accoriding to MetaData4Ing ontology"
 readme = "README.md"
-authors = ["Mahdi Jafarkhani <mahdi.jafarkhani@tik.uni-stuttgart.de>"]
-dependencies = ["snakemake-interface-common (>=1.17.4,<2.0.0)", "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)", "rdflib", "rocrate"]
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "snakemake-interface-common (>=1.17.4,<2.0.0)",
+    "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)",
+    "rdflib",
+    "rocrate"
+]
+repository = "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
+documentation = "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
+
+[[project.authors]]
+name = "Mahdi Jafarkhani"
+email = "mahdi.jafarkhani@tik.uni-stuttgart.de"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
 packages = [
     { include = "snakemake_report_plugin_metadata4ing", from = "src" }
 ]
@@ -17,7 +34,3 @@ ruff = "^0.11.8"
 coverage = "^7.8.0"
 pytest = "^8.3.5"
 snakemake = "^9.3.3"
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
