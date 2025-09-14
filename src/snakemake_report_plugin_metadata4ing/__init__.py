@@ -5,7 +5,6 @@ from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
 from rdflib import Graph, Namespace, RDF, URIRef
-import requests
 import json
 import importlib.util
 import inspect
@@ -21,6 +20,7 @@ import shutil
 import yaml
 import subprocess
 import re
+from importlib import resources
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
@@ -59,7 +59,8 @@ class Reporter(ReporterBase):
         self.unit_url = "http://qudt.org/vocab/unit/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
-        
+        self.ontologies_path = resources.files("snakemake_report_plugin_metadata4ing") / "ontologies"
+
         self._get_context()
         self._get_qudt()
         self._create_external_directory()
@@ -393,30 +394,13 @@ class Reporter(ReporterBase):
         return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"].lower() in targets}
     
     def _get_context(self):
-        file_path = Path("ontologies/metadata4ing.jsonld")
-        if not file_path.exists():
-            print(f"Context file not found: {file_path}")
-            self.context_data = None
-            return
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                self.context_data = json.load(f)
-        except Exception as e:
-            print(f"Failed to read context file: {e}")
-            self.context_data = None
+        with resources.files("snakemake_report_plugin_metadata4ing.ontologies").joinpath("metadata4ing.jsonld").open("r", encoding="utf-8") as f:
+            self.context_data = json.load(f)
 
     def _get_qudt(self):
-        file_path = Path("ontologies/qudt.ttl")
-        if not file_path.exists():
-            print(f"QUDT file not found: {file_path}")
-            return
-        try:
-            with open(file_path, "r", encoding="utf-8") as f:
-                qudt_data = f.read()
-        except Exception as e:
-            print(f"Failed to read QUDT file: {e}")
-            return
-        self.unit_graph.parse(data=qudt_data, format="ttl")
+        with resources.files("snakemake_report_plugin_metadata4ing.ontologies").joinpath("qudt.ttl").open("r", encoding="utf-8") as f:
+            qudt_data = f.read()
+            self.unit_graph.parse(data=qudt_data, format="ttl")
     
     def _get_qudt_unit_from_ucum(self, ucum_code: str) -> str | None:
         for unit in self.unit_graph.subjects(RDF.type, self.QUDT_NS.Unit):
