@@ -22,7 +22,7 @@ jobs:
         run: |
           curl -fSL \
             https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i2rocrate_context.jsonld \
-            -o ontologies/metadata4ing.ttl
+            -o ontologies/metadata4ing.jsonld
 
       - name: Download QUDT unit ontology
         run: |
