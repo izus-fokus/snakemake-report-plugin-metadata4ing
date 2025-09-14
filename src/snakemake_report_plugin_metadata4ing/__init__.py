@@ -393,23 +393,30 @@ class Reporter(ReporterBase):
         return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"].lower() in targets}
     
     def _get_context(self):
-        url = "https://git.rwth-aachen.de/nfdi4ing/metadata4ing/metadata4ing/-/raw/master/m4i2rocrate_context.jsonld"
-        response = requests.get(url)
-        if response.ok:
-            self.context_data = response.json()
-        else:
-            print(
-                f"Failed to fetch context data. Status code: {response.status_code}"
-            )
+        file_path = Path("ontologies/metadata4ing.jsonld")
+        if not file_path.exists():
+            print(f"Context file not found: {file_path}")
+            self.context_data = None
+            return
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                self.context_data = json.load(f)
+        except Exception as e:
+            print(f"Failed to read context file: {e}")
+            self.context_data = None
 
     def _get_qudt(self):
-        response = requests.get(self.unit_url)
-        if response.ok:
-            self.unit_graph.parse(data=response.content, format="ttl")
-        else:
-            print(
-                f"Failed to fetch QUDT data. Status code: {response.status_code}"
-            )
+        file_path = Path("ontologies/qudt.ttl")
+        if not file_path.exists():
+            print(f"QUDT file not found: {file_path}")
+            return
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                qudt_data = f.read()
+        except Exception as e:
+            print(f"Failed to read QUDT file: {e}")
+            return
+        self.unit_graph.parse(data=qudt_data, format="ttl")
     
     def _get_qudt_unit_from_ucum(self, ucum_code: str) -> str | None:
         for unit in self.unit_graph.subjects(RDF.type, self.QUDT_NS.Unit):
