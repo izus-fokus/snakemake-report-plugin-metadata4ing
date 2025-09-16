@@ -22,6 +22,7 @@ import subprocess
 import re
 from importlib import resources
 
+
 @dataclass
 class ReportSettings(ReportSettingsBase):
     paramscript: Optional[Path] = field(
@@ -34,6 +35,18 @@ class ReportSettings(ReportSettingsBase):
             "unparse_func": str,
         },
     )
+
+    filename: Optional[Path] = field(
+        default=None,
+        metadata={
+            "help": "Name of the file to be created for storing provenance.",
+            "env_var": False,
+            "required": False,
+            "parse_func": Path,
+            "unparse_func": str,
+        },
+    )
+
 
 class Reporter(ReporterBase):
     def __post_init__(self):
@@ -52,19 +65,25 @@ class Reporter(ReporterBase):
         self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
         self.provenance_ttl_filename = "provenance.ttl"
-        self.external_directory_name ="_EXTERNAL"
+        self.external_directory_name = "_EXTERNAL"
         self.unit_graph = Graph()
         self.qudt_mapping_dict = {}
         self.qudt_url = "http://qudt.org/schema/qudt/"
         self.unit_url = "http://qudt.org/vocab/unit/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
-        self.ontologies_path = resources.files("snakemake_report_plugin_metadata4ing") / "ontologies"
+        self.ontologies_path = (
+            resources.files("snakemake_report_plugin_metadata4ing")
+            / "ontologies"
+        )
+
+        if self.settings.filename:
+            self._validate_filename(str(self.settings.filename))
 
         self._get_context()
         self._get_qudt()
         self._create_external_directory()
-        
+
         jsonld = {
             "@context": self.context_data.get("@context", {}),
             "@graph": [],
@@ -74,12 +93,10 @@ class Reporter(ReporterBase):
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         job_nodes, file_nodes = {}, {}
         file_counter = 0
-        
+
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node = self._create_job_node(
-                job, file_nodes, file_counter
-            )
+            step_node = self._create_job_node(job, file_nodes, file_counter)
             job_nodes[job_label] = step_node
             file_counter = len(file_nodes)
 
@@ -92,25 +109,25 @@ class Reporter(ReporterBase):
             self.param_dict,
             self.field_dict,
             self.tools_dict,
-            self.child_nodes
+            self.child_nodes,
         ):
             jsonld["@graph"].extend(d.values())
 
-        self.simulation_hash = self._random_hash_from_json(jsonld,16)
-        jsonld["@context"]["local"] = f"https://local-domain.org/{self.simulation_hash}/"
+        self.simulation_hash = self._random_hash_from_json(jsonld, 16)
+        jsonld["@context"][
+            "local"
+        ] = f"https://local-domain.org/{self.simulation_hash}/"
         jsonld = self._add_precedes_relations(jsonld)
-            
+
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-        
+
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         self._create_ro_crate_file()
         self._clean_data()
-                
-    def _create_job_node(
-        self, job, files_dict, file_counter
-    ):
+
+    def _create_job_node(self, job, files_dict, file_counter):
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -121,7 +138,7 @@ class Reporter(ReporterBase):
             "has output": [],
             "has parameter": [],
             "investigates": [],
-            "has employed tool": []
+            "has employed tool": [],
         }
 
         input_files = [
@@ -130,28 +147,34 @@ class Reporter(ReporterBase):
             if j.jobid == job.job.jobid
             for f in j.input
         ]
-        
+
         conda_files = [
             j.conda_env for j in self.dag.jobs if j.jobid == job.job.jobid
         ]
-        
+
         shell_cmds = [
-            j.shellcmd for j in self.dag.jobs if j.jobid == job.job.jobid and j.shellcmd
+            j.shellcmd
+            for j in self.dag.jobs
+            if j.jobid == job.job.jobid and j.shellcmd
         ]
-        
+
         for shell_cmd_file in shell_cmds:
             script_file, _ = self._extract_script_and_files(shell_cmd_file)
             if script_file:
-                resolve_shell_path = self._copy_external_relative_files(script_file)
+                resolve_shell_path = self._copy_external_relative_files(
+                    script_file
+                )
                 _ = self.crate.add_file(
                     resolve_shell_path,
                     dest_path=resolve_shell_path,
                     properties={
                         "name": resolve_shell_path,
-                        "encodingFormat": self._get_mime_type(resolve_shell_path),
+                        "encodingFormat": self._get_mime_type(
+                            resolve_shell_path
+                        ),
                     },
-            )
-            
+                )
+
         for conda_file in conda_files:
             if conda_file:
                 if conda_file in self.conda_tools_cache:
@@ -170,16 +193,16 @@ class Reporter(ReporterBase):
             )
             node["has input"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                metadata = self._extract_parameters(
-                    job.rule, file, file_node
-                )
+                metadata = self._extract_parameters(job.rule, file, file_node)
                 if job.rule in metadata:
                     for key in ["has parameter", "investigates"]:
                         if key in metadata[job.rule]:
                             node[key].append(metadata[job.rule][key])
                 else:
                     for key, _ in metadata.items():
-                        new_child_node_id = f"local:processing_step_{job.job.jobid}_{key}"
+                        new_child_node_id = (
+                            f"local:processing_step_{job.job.jobid}_{key}"
+                        )
                         self.child_nodes[new_child_node_id] = {
                             "@id": new_child_node_id,
                             "@type": "processing step",
@@ -191,9 +214,11 @@ class Reporter(ReporterBase):
                             "has parameter": [metadata[key]["has parameter"]],
                             "investigates": [metadata[key]["investigates"]],
                             "has employed tool": [],
-                            "part of": {"@id": f"local:processing_step_{job.job.jobid}"},
+                            "part of": {
+                                "@id": f"local:processing_step_{job.job.jobid}"
+                            },
                         }
-                
+
         for file in job.output:
             if not self._is_file(file):
                 continue
@@ -202,16 +227,16 @@ class Reporter(ReporterBase):
             )
             node["has output"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                metadata = self._extract_parameters(
-                    job.rule, file, file_node
-                )
+                metadata = self._extract_parameters(job.rule, file, file_node)
                 if job.rule in metadata:
                     for key in ["has parameter", "investigates"]:
                         if key in metadata[job.rule]:
                             node[key].append(metadata[job.rule][key])
                 else:
                     for key, _ in metadata.items():
-                        new_child_node_id = f"local:processing_step_{job.job.jobid}_{key}"
+                        new_child_node_id = (
+                            f"local:processing_step_{job.job.jobid}_{key}"
+                        )
                         self.child_nodes[new_child_node_id] = {
                             "@id": new_child_node_id,
                             "@type": "processing step",
@@ -223,21 +248,23 @@ class Reporter(ReporterBase):
                             "has parameter": [metadata[key]["has parameter"]],
                             "investigates": [metadata[key]["investigates"]],
                             "has employed tool": [],
-                            "part of": {"@id": f"local:processing_step_{job.job.jobid}"},
+                            "part of": {
+                                "@id": f"local:processing_step_{job.job.jobid}"
+                            },
                         }
-                
+
         snakefile, snakepath = self._find_snakefile()
-        
+
         if snakefile:
             _ = self.crate.add_file(
-                    snakefile,
-                    dest_path=snakepath,
-                    properties={
-                        "name": snakefile,
-                        "encodingFormat": "text/plain",
-                    },
+                snakefile,
+                dest_path=snakepath,
+                properties={
+                    "name": snakefile,
+                    "encodingFormat": "text/plain",
+                },
             )
-            
+
         return node
 
     def _add_file(self, file_path, file_dict, counter):
@@ -261,9 +288,11 @@ class Reporter(ReporterBase):
                 metadata.setdefault(processing_step_name, {})
                 for parameter_type in ["has parameter", "investigates"]:
                     if parameter_type in processing_step_data:
-                        metadata[processing_step_name].setdefault(parameter_type, [])
+                        metadata[processing_step_name].setdefault(
+                            parameter_type, []
+                        )
                         for entry in processing_step_data[parameter_type]:
-                            for name, data in entry.items(): 
+                            for name, data in entry.items():
                                 name = name.replace("-", "_")
                                 param_id = ""
                                 param = {
@@ -279,28 +308,55 @@ class Reporter(ReporterBase):
                                 else:
                                     param["has numerical value"] = data["value"]
                                     if data["unit"]:
-                                        if data["unit"] in self.qudt_mapping_dict:
-                                            param["has unit"] = {"@id": self.qudt_mapping_dict[data["unit"]]}
+                                        if (
+                                            data["unit"]
+                                            in self.qudt_mapping_dict
+                                        ):
+                                            param["has unit"] = {
+                                                "@id": self.qudt_mapping_dict[
+                                                    data["unit"]
+                                                ]
+                                            }
                                         else:
-                                            qudt_unit = self._get_qudt_unit_from_ucum(data["unit"])
-                                            self.qudt_mapping_dict[data["unit"]] = qudt_unit
+                                            qudt_unit = (
+                                                self._get_qudt_unit_from_ucum(
+                                                    data["unit"]
+                                                )
+                                            )
+                                            self.qudt_mapping_dict[
+                                                data["unit"]
+                                            ] = qudt_unit
                                             if qudt_unit:
-                                                param["has unit"] = {"@id": qudt_unit}
+                                                param["has unit"] = {
+                                                    "@id": qudt_unit
+                                                }
                                             else:
-                                                self.qudt_mapping_dict[data["unit"]] = data["unit"]
-                                                param["has unit"] = {"@id": data["unit"]}
+                                                self.qudt_mapping_dict[
+                                                    data["unit"]
+                                                ] = data["unit"]
+                                                param["has unit"] = {
+                                                    "@id": data["unit"]
+                                                }
 
                                 if param in self.param_dict.values():
                                     param_id = next(
-                                        (k for k, v in self.param_dict.items() if v == param),
+                                        (
+                                            k
+                                            for k, v in self.param_dict.items()
+                                            if v == param
+                                        ),
                                         None,
                                     )
                                 else:
                                     param_id = f"local:variable_{name}_{self.param_counter}"
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
-                                metadata[processing_step_name][parameter_type].append({"@id": param_id})
-                                self._add_unique_field(name, param_id, file_node, data)
+                                metadata[processing_step_name][
+                                    parameter_type
+                                ].append({"@id": param_id})
+                                self._add_unique_field(
+                                    name, param_id, file_node, data
+                                )
         return metadata
 
     def _extract_tools_from_yaml(self, env_file_content: str) -> dict:
@@ -317,7 +373,9 @@ class Reporter(ReporterBase):
                 match = version_pattern.match(dep.strip())
                 if match:
                     pkg_name = match.group(1).lower()
-                    version = match.group(2).lstrip("=") if match.group(2) else None
+                    version = (
+                        match.group(2).lstrip("=") if match.group(2) else None
+                    )
                     results[pkg_name] = version
                     found_targets.add(pkg_name)
             elif isinstance(dep, dict):
@@ -326,7 +384,11 @@ class Reporter(ReporterBase):
                         match = version_pattern.match(pkg.strip())
                         if match:
                             pkg_name = match.group(1).lower()
-                            version = match.group(2).lstrip("=") if match.group(2) else None
+                            version = (
+                                match.group(2).lstrip("=")
+                                if match.group(2)
+                                else None
+                            )
                             results[pkg_name] = version
                             found_targets.add(pkg_name)
 
@@ -351,7 +413,7 @@ class Reporter(ReporterBase):
                     results[pkg] = selected_env_pkgs[pkg]
 
         return results
-    
+
     def _add_tools(self, env_file_content: str) -> list:
         tools_list = []
         tools = self._extract_tools_from_yaml(env_file_content)
@@ -379,7 +441,9 @@ class Reporter(ReporterBase):
         """Return a dict {env_name: env_path} of all conda environments."""
         result = subprocess.run(
             ["conda", "env", "list", "--json"],
-            capture_output=True, text=True, check=True
+            capture_output=True,
+            text=True,
+            check=True,
         )
         envs_info = json.loads(result.stdout)
         return {path.split("/")[-1]: path for path in envs_info["envs"]}
@@ -388,29 +452,41 @@ class Reporter(ReporterBase):
         """Return dict {package: version} for given env path."""
         result = subprocess.run(
             ["conda", "list", "--prefix", env_path, "--json"],
-            capture_output=True, text=True, check=True
+            capture_output=True,
+            text=True,
+            check=True,
         )
         all_packages = json.loads(result.stdout)
-        return {pkg["name"]: pkg["version"] for pkg in all_packages if pkg["name"].lower() in targets}
-    
+        return {
+            pkg["name"]: pkg["version"]
+            for pkg in all_packages
+            if pkg["name"].lower() in targets
+        }
+
     def _get_context(self):
-        with resources.files("snakemake_report_plugin_metadata4ing.ontologies").joinpath("metadata4ing.jsonld").open("r", encoding="utf-8") as f:
+        with resources.files(
+            "snakemake_report_plugin_metadata4ing.ontologies"
+        ).joinpath("metadata4ing.jsonld").open("r", encoding="utf-8") as f:
             self.context_data = json.load(f)
 
     def _get_qudt(self):
-        with resources.files("snakemake_report_plugin_metadata4ing.ontologies").joinpath("qudt.ttl").open("r", encoding="utf-8") as f:
+        with resources.files(
+            "snakemake_report_plugin_metadata4ing.ontologies"
+        ).joinpath("qudt.ttl").open("r", encoding="utf-8") as f:
             qudt_data = f.read()
             self.unit_graph.parse(data=qudt_data, format="ttl")
-    
+
     def _get_qudt_unit_from_ucum(self, ucum_code: str) -> str | None:
         for unit in self.unit_graph.subjects(RDF.type, self.QUDT_NS.Unit):
-            ucum = self.unit_graph.value(subject=unit, predicate=self.QUDT_NS.ucumCode)
+            ucum = self.unit_graph.value(
+                subject=unit, predicate=self.QUDT_NS.ucumCode
+            )
             if ucum and str(ucum) == ucum_code:
                 if str(unit).startswith(str(self.UNIT_NS)):
                     return "unit:" + str(unit).split("/")[-1]
                 return str(unit)
         return None
-    
+
     def _add_ro_crate_file_nodes(self, file_nodes):
         _ = self.crate.add_file(
             self.provenance_filename,
@@ -424,7 +500,7 @@ class Reporter(ReporterBase):
                 ],
             },
         )
-        
+
         _ = self.crate.add_file(
             self.provenance_ttl_filename,
             dest_path=self.provenance_ttl_filename,
@@ -433,7 +509,7 @@ class Reporter(ReporterBase):
                 "encodingFormat": "text/turtle",
             },
         )
-        
+
         for file in file_nodes.keys():
             _ = self.crate.add_file(
                 file,
@@ -443,14 +519,19 @@ class Reporter(ReporterBase):
                     "encodingFormat": self._get_mime_type(file),
                 },
             )
-    
+
     def _create_ttl_from_jsonld(self, data: dict):
         Graph().parse(data=data, format="json-ld").serialize(
             "provenance.ttl", format="ttl"
         )
 
     def _create_ro_crate_file(self):
-        self.crate.write_zip(f"ro-crate-metadata-{self.simulation_hash}.zip")
+        if self.settings.filename:
+            self.crate.write_zip(f"{self.settings.filename}.zip")
+        else:
+            self.crate.write_zip(
+                f"ro-crate-metadata-{self.simulation_hash}.zip"
+            )
 
     def _load_param_extractor_obj(self):
         script_path = Path(self.settings.paramscript).expanduser().resolve()
@@ -458,7 +539,9 @@ class Reporter(ReporterBase):
             raise FileNotFoundError(f"Script not found: {script_path}")
         module_path = str(script_path)
 
-        spec = importlib.util.spec_from_file_location("extractor_module", module_path)
+        spec = importlib.util.spec_from_file_location(
+            "extractor_module", module_path
+        )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
@@ -486,7 +569,11 @@ class Reporter(ReporterBase):
                 "file object": {"@id": file_node["@id"]},
                 "cr:extract": {"cr:jsonPath": data["json-path"]},
             },
-            **({"cr:dataType": data["data-type"]} if data.get("data-type") else {}),
+            **(
+                {"cr:dataType": data["data-type"]}
+                if data.get("data-type")
+                else {}
+            ),
         }
 
         for existing in self.field_dict.values():
@@ -495,9 +582,12 @@ class Reporter(ReporterBase):
                 return
 
         key = f"{name}_{self.field_counter}"
-        self.field_dict[key] = {"@id": f"local:field_{name}_{self.field_counter}", **new_field}
+        self.field_dict[key] = {
+            "@id": f"local:field_{name}_{self.field_counter}",
+            **new_field,
+        }
         self.field_counter += 1
-    
+
     def _validate_extract_param_output(self, result):
         if not isinstance(result, dict):
             raise TypeError("Function output must be a dictionary.")
@@ -507,19 +597,27 @@ class Reporter(ReporterBase):
             if not isinstance(entry_key, str):
                 raise TypeError(f"Key '{entry_key}' must be a string.")
             if not isinstance(entry_value, dict):
-                raise TypeError(f"Value for key '{entry_key}' must be a dictionary.")
+                raise TypeError(
+                    f"Value for key '{entry_key}' must be a dictionary."
+                )
 
             required_keys = ["value", "unit", "json-path", "data-type"]
             for rk in required_keys:
                 if rk not in entry_value:
-                    raise ValueError(f"Missing key '{rk}' in value for '{entry_key}'.")
+                    raise ValueError(
+                        f"Missing key '{rk}' in value for '{entry_key}'."
+                    )
 
             if entry_value["unit"] and not isinstance(entry_value["unit"], str):
                 raise TypeError(f"'unit' for '{entry_key}' must be a string.")
             if not isinstance(entry_value["json-path"], str):
-                raise TypeError(f"'json-path' for '{entry_key}' must be a string.")
+                raise TypeError(
+                    f"'json-path' for '{entry_key}' must be a string."
+                )
             if not isinstance(entry_value["data-type"], str):
-                raise TypeError(f"'data-type' for '{entry_key}' must be a string.")
+                raise TypeError(
+                    f"'data-type' for '{entry_key}' must be a string."
+                )
 
         def _validate_section(section_name, section_content):
             """Validate a section like 'parameters' or 'investigates'."""
@@ -527,7 +625,9 @@ class Reporter(ReporterBase):
                 raise TypeError(f"'{section_name}' must be a list.")
             for idx, item in enumerate(section_content):
                 if not isinstance(item, dict):
-                    raise TypeError(f"Each item in '{section_name}' must be a dictionary.")
+                    raise TypeError(
+                        f"Each item in '{section_name}' must be a dictionary."
+                    )
                 if len(item) != 1:
                     raise ValueError(
                         f"Each item in '{section_name}' must have exactly one key, found {len(item)}."
@@ -539,9 +639,13 @@ class Reporter(ReporterBase):
             if not isinstance(root_key, str):
                 raise TypeError(f"Root key '{root_key}' must be a string.")
             if not isinstance(root_value, dict):
-                raise TypeError(f"Root value for '{root_key}' must be a dictionary.")
+                raise TypeError(
+                    f"Root value for '{root_key}' must be a dictionary."
+                )
 
-            if not any(k in root_value for k in ["has parameter", "investigates"]):
+            if not any(
+                k in root_value for k in ["has parameter", "investigates"]
+            ):
                 raise ValueError(
                     f"Root key '{root_key}' must contain at least 'has parameter' or 'investigates'."
                 )
@@ -557,14 +661,30 @@ class Reporter(ReporterBase):
         mime_type, _ = mimetypes.guess_type(file_name, strict=False)
         return mime_type or "application/octet-stream"
 
-    def _extract_script_and_files(self, cmd: str) -> tuple[Optional[str], list[str]]:
+    def _extract_script_and_files(
+        self, cmd: str
+    ) -> tuple[Optional[str], list[str]]:
         _INTERPRETERS = {
-            "python", "python3", "python2",
-            "pypy", "pypy3",
-            "ruby", "perl", "node", "deno", "php", "lua",
-            "Rscript", "R", "bash", "sh", "zsh", "ksh", "fish"
+            "python",
+            "python3",
+            "python2",
+            "pypy",
+            "pypy3",
+            "ruby",
+            "perl",
+            "node",
+            "deno",
+            "php",
+            "lua",
+            "Rscript",
+            "R",
+            "bash",
+            "sh",
+            "zsh",
+            "ksh",
+            "fish",
         }
-        
+
         try:
             tokens = shlex.split(cmd, posix=True)
         except ValueError:
@@ -580,7 +700,7 @@ class Reporter(ReporterBase):
             for i, tok in enumerate(tokens[1:], start=1):
                 if tok.startswith("-"):
                     continue
-                script_path = tok 
+                script_path = tok
                 break
             start_idx = i + 1 if script_path else 1
         else:
@@ -596,7 +716,7 @@ class Reporter(ReporterBase):
                 file_paths.append(tok)
 
         return script_path, file_paths
-   
+
     def _find_snakefile(self):
         current_dir = os.getcwd()
         for file in os.listdir(current_dir):
@@ -604,7 +724,7 @@ class Reporter(ReporterBase):
                 rel_path = os.path.relpath(os.path.join(current_dir, file))
                 return (file, rel_path)
         return None
-    
+
     def _add_precedes_relations(self, jsonld_data: dict) -> dict:
         g = Graph()
         g.parse(data=json.dumps(jsonld_data), format="json-ld")
@@ -619,7 +739,11 @@ class Reporter(ReporterBase):
                         new_relations.append((local_a, local_b))
 
         graph_nodes = jsonld_data.get("@graph", [])
-        id_to_node = {self._get_local_id(node["@id"]): node for node in graph_nodes if "@id" in node}
+        id_to_node = {
+            self._get_local_id(node["@id"]): node
+            for node in graph_nodes
+            if "@id" in node
+        }
 
         for source_id, target_id in new_relations:
             source_node = id_to_node.get(source_id)
@@ -642,18 +766,18 @@ class Reporter(ReporterBase):
                     existing.append(new_link)
 
         return jsonld_data
-        
+
     def _get_local_id(self, iri: str) -> str:
-        local = iri.rsplit('/', 1)[-1].rsplit('#', 1)[-1]
+        local = iri.rsplit("/", 1)[-1].rsplit("#", 1)[-1]
         if local.startswith("local:"):
             local = local.replace("local:", "")
         return local
-    
+
     def _is_file(self, file_name: str) -> bool:
         return os.path.isfile(file_name)
 
     def _random_hash_from_json(self, json_content: dict, length=8) -> str:
-        json_str = json.dumps(json_content, sort_keys=True).encode('utf-8')
+        json_str = json.dumps(json_content, sort_keys=True).encode("utf-8")
         hash_value = hashlib.sha256(json_str).hexdigest()
         return hash_value[:length]
 
@@ -673,7 +797,7 @@ class Reporter(ReporterBase):
 
         target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(original_path, target_path)
-        
+
         return str(target_path)
 
     def _create_external_directory(self):
@@ -681,16 +805,43 @@ class Reporter(ReporterBase):
         if target_dir.exists():
             shutil.rmtree(target_dir)
         target_dir.mkdir(parents=True, exist_ok=True)
-    
+
     def _get_time_str(self, timestamp) -> str:
         try:
             return f"{datetime.fromtimestamp(timestamp)}"
         except Exception:
             return ""
-    
+
     def _clean_data(self):
         target_dir = Path(self.external_directory_name)
         if target_dir.exists():
             shutil.rmtree(target_dir)
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
+
+    def _validate_filename(self, filename: str) -> None:
+        if not filename or filename.strip() == "":
+            raise ValueError("Filename cannot be empty.")
+
+        illegal_pattern = r'[<>:"/\\|?*]'
+        if re.search(illegal_pattern, filename):
+            raise ValueError(
+                f"Filename '{filename}' contains illegal characters."
+            )
+
+        reserved_names = {
+            "CON",
+            "PRN",
+            "AUX",
+            "NUL",
+            *{f"COM{i}" for i in range(1, 10)},
+            *{f"LPT{i}" for i in range(1, 10)},
+        }
+
+        if filename.upper().split(".")[0] in reserved_names:
+            raise ValueError(f"Filename '{filename}' is reserved on Windows.")
+
+        if os.path.isdir(filename):
+            raise ValueError(f"'{filename}' is a directory, not a file.")
+
+        return None
