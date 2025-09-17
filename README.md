@@ -25,7 +25,8 @@ The reporter creates a zip file, which contains a RO-Crate zip file which contai
 -- `ro-crate-metadata.json`: [Research Object Crate](https://www.researchobject.org/ro-crate/) file describing the dataset. 
 
 ## Reporter Parameters
-- `paramscript`: It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
+### `paramscript`
+It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
 
 ```
 snakemake --reporter metadata4ing --report-metadata4ing-paramscript /Path_to_Extractor/my_extractor.py ...
@@ -167,16 +168,18 @@ local:processing_step_* a schema:Action ;
 
 local:processing_step_** a schema:Action ;
     rdfs:label "first_run" ;
-    schema:isPartOf: local:processing_step_* ;
+    schema:isPartOf local:processing_step_* ;
     .....
 
 local:processing_step_*** a schema:Action ;
     rdfs:label "second_run" ;
-    schema:isPartOf: local:processing_step_*    
+    schema:isPartOf local:processing_step_* ;   
     .....
     
 ```
-- `filename`: The name of the final ZIP file. If not provided, it defaults to `ro-crate-metadata-{simulation_hash}.zip`, where `simulation_hash` is a 16-character hash computed from the content of the graph.
+
+### `filename`
+The name of the final ZIP file. If not provided, it defaults to `ro-crate-metadata-{simulation_hash}.zip`, where `simulation_hash` is a 16-character hash computed from the content of the graph.
 
 ```
 snakemake --reporter metadata4ing --report-metadata4ing-filename MyFile ...
