@@ -25,7 +25,7 @@ The reporter creates a zip file, which contains a RO-Crate zip file which contai
 -- `ro-crate-metadata.json`: [Research Object Crate](https://www.researchobject.org/ro-crate/) file describing the dataset. 
 
 ## Reporter Parameters
-- **paramscript** It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
+- `paramscript`: It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
 
 ```
 snakemake --reporter metadata4ing --report-metadata4ing-paramscript /Path_to_Extractor/my_extractor.py ...
@@ -44,8 +44,8 @@ The `extract_params` method should return a dictionary where:
 - **Keys** are the name of the corresponding procssing step (or the `rule_name`).
 - **Values** another dictionary with two keys, `has parameter` and  `investigates`. These two keys resembele the input and output of that processing step, respectively. Each of these entries again should be a dictionary where the varaiable name is key and values as another dictionary with fixed key names:
 - **Values** are dictionaries with the following keys:
-  - `value`: the parameter value
-  - `unit`: the unit of the value (if applicable)
+  - `value`: parameter value
+  - `unit`: unit of the value (if applicable). It will be mapped to the neartest [QUDT](https://www.qudt.org/doc/DOC_VOCAB-UNITS.html) unit.
   - `json-path`: the path to this value in the output JSON
   - `data-type`: the data type of the value
 
@@ -71,6 +71,115 @@ For example, a simple dictionary could liek this:
         }
     }
 }
+```
+
+Please note that if you provide another name (or even multiple entries as the output), it adds new nodes (as processing steps) to the give rule. These new nodes would be add as a `m4i:part of` to the original processing step. This would be hepful if you have a single file as the summary where it summarizes all the simulation results (input and output parameters).
+
+For example, if the meothd is called with a rule_name like `run_simulation` and the returned dictionary is like:
+
+```json
+{
+    "run_simulation_1": {
+        "has parameter": {
+            "length": {
+                "value": 15,
+                "unit": "m",
+                "json-path": "/parameters.json/inputs",
+                "data-type": "float"
+            }
+        },
+        "investigates": {
+            "stress": {
+                "value": 1.0,
+                "unit": "MPa",
+                "json-path": "summary.json",
+                "data-type": "float"
+            }
+        }
+    },
+    "run_simulation_2": {
+        "has parameter": {
+            "length": {
+                "value": 10,
+                "unit": "m",
+                "json-path": "/parameters.json/inputs",
+                "data-type": "float"
+            }
+        },
+        "investigates": {
+            "stress": {
+                "value": 2.0,
+                "unit": "MPa",
+                "json-path": "summary.json",
+                "data-type": "float"
+            }
+        }
+    }
+}
+```
+```json
+{
+    "first_run": {
+        "has parameter": {
+            "length": {
+                "value": 15,
+                "unit": "m",
+                "json-path": "/parameters.json/inputs",
+                "data-type": "float"
+            }
+        },
+        "investigates": {
+            "stress": {
+                "value": 1.0,
+                "unit": "MPa",
+                "json-path": "summary.json",
+                "data-type": "float"
+            }
+        }
+    },
+    "second_run": {
+        "has parameter": {
+            "length": {
+                "value": 10,
+                "unit": "m",
+                "json-path": "/parameters.json/inputs",
+                "data-type": "float"
+            }
+        },
+        "investigates": {
+            "stress": {
+                "value": 2.0,
+                "unit": "MPa",
+                "json-path": "summary.json",
+                "data-type": "float"
+            }
+        }
+    }
+}
+```
+
+Then in the final graph we have:
+```ttl
+
+local:processing_step_* a schema:Action ;
+    rdfs:label "run_simualtion" ;
+    .....
+
+local:processing_step_** a schema:Action ;
+    rdfs:label "first_run" ;
+    schema:isPartOf: local:processing_step_* ;
+    .....
+
+local:processing_step_*** a schema:Action ;
+    rdfs:label "second_run" ;
+    schema:isPartOf: local:processing_step_*    
+    .....
+    
+```
+- `filename`: The name of the final ZIP file. If not provided, it defaults to `ro-crate-metadata-{simulation_hash}.zip`, where `simulation_hash` is a 16-character hash computed from the content of the graph.
+
+```
+snakemake --reporter metadata4ing --report-metadata4ing-filename MyFile ...
 ```
 
 A sample extractor is provided in `sample_extractor/my_extractor.py`.
