@@ -50,6 +50,8 @@ The `extract_params` method should return a dictionary where:
   - `json-path`: the path to this value in the output JSON
   - `data-type`: the data type of the value
 
+A sample extractor is provided [here](sample_extractor/my_extractor.py)``.
+
 For example, a simple dictionary could liek this:
 ```json
 {
@@ -185,4 +187,4 @@ The name of the final ZIP file. If not provided, it defaults to `ro-crate-metada
 snakemake --reporter metadata4ing --report-metadata4ing-filename MyFile ...
 ```
 
-A sample extractor is provided in `sample_extractor/my_extractor.py`.
+
