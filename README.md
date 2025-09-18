@@ -50,8 +50,6 @@ The `extract_params` method should return a dictionary where:
   - `json-path`: the path to this value in the output JSON
   - `data-type`: the data type of the value
 
-A sample extractor is provided [here](sample_extractor/my_extractor.py)``.
-
 For example, a simple dictionary could liek this:
 ```json
 {
@@ -179,6 +177,8 @@ local:processing_step_*** a schema:Action ;
     .....
     
 ```
+
+A sample extractor is provided [here](sample_extractor/my_extractor.py).
 
 ### `filename`
 The name of the final ZIP file. If not provided, it defaults to `ro-crate-metadata-{simulation_hash}.zip`, where `simulation_hash` is a 16-character hash computed from the content of the graph.
