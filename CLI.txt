@@ -31,7 +31,7 @@ poetry scaffold-snakemake-report-plugin
 CODE
 
 ============================================================
-/Users/mahdi/Documents/GitHub/snakemake-report-plugin-metadata4ing/dist/
+
 poetry build
 pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-1.0.0-py3-none-any.whl
 snakemake --reporter metadata4ing --cores 1 ./paper.pdf
@@ -40,4 +40,7 @@ unzip ro-crate-metadata.zip -d ro-crate-metadata
 
 snakemake --reporter metadata4ing --cores 1 --use-conda ./paper.pdf
 
-snakemake --reporter metadata4ing --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py --report-metadata4ing-filename ABC --cores 1
+snakemake --reporter metadata4ing \
+    --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
+    --report-metadata4ing-config metadata4ing.config \
+    --cores 1

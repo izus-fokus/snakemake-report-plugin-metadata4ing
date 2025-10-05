@@ -35,6 +35,17 @@ class ReportSettings(ReportSettingsBase):
             "unparse_func": str,
         },
     )
+    
+    config: Optional[Path] = field(
+        default=None,
+        metadata={
+            "help": "Config file in JSON format containing metadata about the research problem.",
+            "env_var": False,
+            "required": False,
+            "parse_func": Path,
+            "unparse_func": str,
+        },
+    )
 
     filename: Optional[Path] = field(
         default=None,
@@ -53,15 +64,21 @@ class Reporter(ReporterBase):
         self.context_data = {}
 
     def render(self):
+        self.processing_steps = {}
+        self.methods = {}
         self.param_counter = 0
         self.field_counter = 0
         self.param_dict = {}
         self.field_dict = {}
         self.tool_counter = 0
+        self.research_problem = {}
         self.tools_dict = {}
         self.child_nodes = {}
         self.conda_tools_cache = {}
         self.crate = ROCrate()
+        self.benchmark_processing_step_id = ""
+        self.research_problem_id = ""
+        self.method_id = ""
         self.simulation_hash = ""
         self.provenance_filename = "provenance.jsonld"
         self.provenance_ttl_filename = "provenance.ttl"
@@ -70,6 +87,7 @@ class Reporter(ReporterBase):
         self.qudt_mapping_dict = {}
         self.qudt_url = "http://qudt.org/schema/qudt/"
         self.unit_url = "http://qudt.org/vocab/unit/"
+        self.mardi4nfdi_url = "https://mardi4nfdi.de/mathmoddb#"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
         self.ontologies_path = (
@@ -89,27 +107,33 @@ class Reporter(ReporterBase):
             "@graph": [],
         }
         jsonld["@context"]["unit"] = self.unit_url
-
+        jsonld["@context"]["mardi4nfdi"] = self.mardi4nfdi_url
+        
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
-        job_nodes, file_nodes = {}, {}
+        file_nodes = {}
         file_counter = 0
 
+        self._add_research_problem()
+        self._add_benchmark_processing_step(sorted_jobs)
+        
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node = self._create_job_node(job, file_nodes, file_counter)
-            job_nodes[job_label] = step_node
+            step_node = self._create_processing_step_node(job, file_nodes, file_counter)
+            self.processing_steps[job_label] = step_node
             file_counter = len(file_nodes)
 
         for key, value in self.param_dict.items():
             value["@id"] = key
 
         for d in (
-            job_nodes,
+            self.processing_steps,
             file_nodes,
+            self.methods,
             self.param_dict,
             self.field_dict,
             self.tools_dict,
             self.child_nodes,
+            self.research_problem,
         ):
             jsonld["@graph"].extend(d.values())
 
@@ -127,7 +151,7 @@ class Reporter(ReporterBase):
         self._create_ro_crate_file()
         self._clean_data()
 
-    def _create_job_node(self, job, files_dict, file_counter):
+    def _create_processing_step_node(self, job, files_dict, file_counter):
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -136,9 +160,10 @@ class Reporter(ReporterBase):
             "end time": self._get_time_str(job.endtime),
             "has input": [],
             "has output": [],
-            "has parameter": [],
-            "investigates": [],
-            "has employed tool": [],
+            "realizes method": [],
+            "part of": {
+                "@id": self.benchmark_processing_step_id
+            }
         }
 
         input_files = [
@@ -175,6 +200,7 @@ class Reporter(ReporterBase):
                     },
                 )
 
+        tools = {}
         for conda_file in conda_files:
             if conda_file:
                 if conda_file in self.conda_tools_cache:
@@ -182,72 +208,56 @@ class Reporter(ReporterBase):
                 else:
                     tools = self._add_tools(conda_file.content)
                     self.conda_tools_cache[conda_file] = tools
-                for tool in tools:
-                    node["has employed tool"].append({"@id": tool["@id"]})
 
-        for file in input_files:
+        for file, source in [(f, 'input') for f in input_files] + [(f, 'output') for f in job.output]:
             if not self._is_file(file):
                 continue
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
             )
-            node["has input"].append({"@id": file_node["@id"]})
+            if source == 'input':
+                node["has input"].append({"@id": file_node["@id"]})
+            else:
+                node["has output"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
                 metadata = self._extract_parameters(job.rule, file, file_node)
                 if job.rule in metadata:
-                    for key in ["has parameter", "investigates"]:
-                        if key in metadata[job.rule]:
-                            node[key].append(metadata[job.rule][key])
+                    for param_type in ["has parameter", "investigates"]:
+                        if param_type in metadata[job.rule]:
+                            new_method_node_id = (f"local:method_{job.rule}_{job.job.jobid}")
+                            rule_data = metadata.get(job.rule, {})
+                            optional_fields = {k: [rule_data[k]] for k in ("has parameter", "investigates") if k in rule_data}
+                            if tools:
+                                optional_fields["implemented by"] = [{"@id": tool["@id"]} for tool in tools]
+                            self.methods[new_method_node_id] = {
+                                "@id": new_method_node_id,
+                                "@type": "m4i:method",
+                                "label": f"{job.rule}_{job.job.jobid}",
+                                **optional_fields
+                            }
+                            node["realizes method"] = {"@id": new_method_node_id}
                 else:
                     for key, _ in metadata.items():
+                        new_method_node_id = (f"local:method_{job.job.jobid}_{key}")
                         new_child_node_id = (
                             f"local:processing_step_{job.job.jobid}_{key}"
                         )
-                        self.child_nodes[new_child_node_id] = {
-                            "@id": new_child_node_id,
-                            "@type": "processing step",
+                        self.methods[new_method_node_id] = {
+                            "@id": new_method_node_id,
+                            "@type": "m4i:method",
                             "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "start time": self._get_time_str(job.starttime),
-                            "end time": self._get_time_str(job.endtime),
-                            "has input": [],
-                            "has output": [],
                             "has parameter": [metadata[key]["has parameter"]],
                             "investigates": [metadata[key]["investigates"]],
-                            "has employed tool": [],
-                            "part of": {
-                                "@id": f"local:processing_step_{job.job.jobid}"
-                            },
                         }
-
-        for file in job.output:
-            if not self._is_file(file):
-                continue
-            file_node, file_counter = self._add_file(
-                file, files_dict, file_counter
-            )
-            node["has output"].append({"@id": file_node["@id"]})
-            if self.settings.paramscript:
-                metadata = self._extract_parameters(job.rule, file, file_node)
-                if job.rule in metadata:
-                    for key in ["has parameter", "investigates"]:
-                        if key in metadata[job.rule]:
-                            node[key].append(metadata[job.rule][key])
-                else:
-                    for key, _ in metadata.items():
-                        new_child_node_id = (
-                            f"local:processing_step_{job.job.jobid}_{key}"
-                        )
                         self.child_nodes[new_child_node_id] = {
                             "@id": new_child_node_id,
                             "@type": "processing step",
                             "label": f"{job.rule}_{job.job.jobid}_{key}",
                             "start time": self._get_time_str(job.starttime),
                             "end time": self._get_time_str(job.endtime),
+                            "realizes method": {"@id": new_method_node_id},
                             "has input": [],
                             "has output": [],
-                            "has parameter": [metadata[key]["has parameter"]],
-                            "investigates": [metadata[key]["investigates"]],
-                            "has employed tool": [],
                             "part of": {
                                 "@id": f"local:processing_step_{job.job.jobid}"
                             },
@@ -278,6 +288,49 @@ class Reporter(ReporterBase):
             counter += 1
         return file_dict[resolved_path], counter
 
+    def _add_research_problem(self):
+        if not self.settings.config:
+            return None
+
+        config_path = Path(self.settings.config).expanduser().resolve()
+        if not config_path.exists():
+            raise FileNotFoundError(f"Config file not found: {config_path}")
+
+        with open(config_path, "r", encoding="utf-8") as f:
+            try:
+                config_data = json.load(f)
+            except json.JSONDecodeError as e:
+                raise ValueError(
+                    f"Error parsing JSON config file: {e}"
+                ) from e
+        if "Research Problem" in config_data:
+            self.research_problem_id = f"local:research_problem"
+            research_problem = {
+                "@id": self.research_problem_id,
+                "@type": "mardi4nfdi:ResearchProblem"
+            }
+            for key, value in config_data["Research Problem"].items():
+                property_key = f"{key.replace(' ', '_').lower()}"
+                research_problem[property_key] = value
+            self.research_problem[self.research_problem_id] = research_problem
+            
+    def _add_benchmark_processing_step(self, sorted_jobs):
+        self.benchmark_processing_step_id = f"local:processing_step_benchmark"
+        earliest_start = min(item.starttime for item in sorted_jobs)
+        latest_end = max(item.endtime for item in sorted_jobs)
+        benchmark_node = {
+            "@id": self.benchmark_processing_step_id,
+            "@type": "processing step",
+            "label": "benchmark",
+            "start time": self._get_time_str(earliest_start),
+            "end time": self._get_time_str(latest_end),
+            "has input": [],
+            "has output": [],
+            "has parameter": [],
+            "investigates": {"@id": self.research_problem_id} if self.research_problem_id else []
+        }
+        self.processing_steps[id] = benchmark_node
+        
     def _extract_parameters(self, rule, file, file_node):
         metadata = {}
         extract_params_obj = self._load_param_extractor_obj()
