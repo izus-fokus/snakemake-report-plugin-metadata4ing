@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
-from rdflib import Graph, Namespace, RDF, URIRef
+from rdflib import Graph, Namespace, RDF
 import json
 import importlib.util
 import inspect
@@ -21,6 +21,7 @@ import yaml
 import subprocess
 import re
 from importlib import resources
+from pint import UnitRegistry
 
 
 @dataclass
@@ -94,7 +95,8 @@ class Reporter(ReporterBase):
             resources.files("snakemake_report_plugin_metadata4ing")
             / "ontologies"
         )
-
+        self.ureg = UnitRegistry()
+        
         if self.settings.filename:
             self._validate_filename(str(self.settings.filename))
 
@@ -372,7 +374,7 @@ class Reporter(ReporterBase):
                                             }
                                         else:
                                             qudt_unit = (
-                                                self._get_qudt_unit_from_ucum(
+                                                self._get_qudt_unit_from_mapping(
                                                     data["unit"]
                                                 )
                                             )
@@ -529,16 +531,16 @@ class Reporter(ReporterBase):
             qudt_data = f.read()
             self.unit_graph.parse(data=qudt_data, format="ttl")
 
-    def _get_qudt_unit_from_ucum(self, ucum_code: str) -> str | None:
-        for unit in self.unit_graph.subjects(RDF.type, self.QUDT_NS.Unit):
-            ucum = self.unit_graph.value(
-                subject=unit, predicate=self.QUDT_NS.ucumCode
-            )
-            if ucum and str(ucum) == ucum_code:
-                if str(unit).startswith(str(self.UNIT_NS)):
-                    return "unit:" + str(unit).split("/")[-1]
-                return str(unit)
-        return None
+    def _get_qudt_unit_from_mapping(self, unit: str) -> str | None:
+        with resources.files(
+            "snakemake_report_plugin_metadata4ing.ontologies"
+        ).joinpath("qudt-mapping.json").open("r", encoding="utf-8") as f:
+            mapping = json.load(f)
+        pint_unit = self.ureg.parse_units(unit)
+        if str(pint_unit) in mapping:
+            print(f"unit:{mapping[str(pint_unit)]}")
+            return f"unit:{mapping[str(pint_unit)]}"
+        return unit
 
     def _add_ro_crate_file_nodes(self, file_nodes):
         _ = self.crate.add_file(

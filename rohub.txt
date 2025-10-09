@@ -1,0 +1,19 @@
+SELECT ?property (COUNT(*) AS ?usageCount)
+WHERE {
+  ?subject ?property ?object .
+}
+GROUP BY ?property
+ORDER BY DESC(?usageCount)
+
+
+
+
+
+SELECT DISTINCT ?created ?name
+WHERE {
+  ?instance <http://purl.org/dc/terms/created> ?created .
+  ?instance <http://purl.org/wf4ever/ro#name> ?name .
+  FILTER(STRSTARTS(STR(?created), "2025-10-07"))
+}
+
+
