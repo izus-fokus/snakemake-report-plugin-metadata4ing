@@ -111,6 +111,10 @@ class Reporter(ReporterBase):
         jsonld["@context"]["unit"] = self.unit_url
         jsonld["@context"]["mardi4nfdi"] = self.mardi4nfdi_url
         
+        self.crate.name = "NFDi4Ing Provenance" 
+        self.crate.description = "NFDi4Ing Provenance Description" 
+        self.crate.license = "https://spdx.org/licenses/MIT"
+        
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         file_nodes = {}
         file_counter = 0
@@ -147,7 +151,8 @@ class Reporter(ReporterBase):
 
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-
+        
+        self._add_provenance_nodes_to_crate(jsonld["@graph"])
         self._create_ttl_from_jsonld(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         self._create_ro_crate_file()
@@ -155,15 +160,15 @@ class Reporter(ReporterBase):
 
     def _create_processing_step_node(self, job, files_dict, file_counter):
         node = {
-            "@id": f"local:processing_step_{job.job.jobid}",
-            "@type": "processing step",
-            "label": f"{job.rule}_{job.job.jobid}",
-            "start time": self._get_time_str(job.starttime),
-            "end time": self._get_time_str(job.endtime),
-            "has input": [],
-            "has output": [],
-            "realizes method": [],
-            "part of": {
+            "@id": f"#processing_step_{job.job.jobid}",
+            "@type": "Action",
+            "rdfs:label": f"{job.rule}_{job.job.jobid}",
+            "schema:startTime": self._get_time_str(job.starttime),
+            "schema:endTime": self._get_time_str(job.endtime),
+            "schema:object": [],
+            "schema:result": [],
+            "http://w3id.org/nfdi4ing/metadata4ing#realizesMethod": [],
+            "schema:isPartOf": {
                 "@id": self.benchmark_processing_step_id
             }
         }
@@ -218,50 +223,54 @@ class Reporter(ReporterBase):
                 file, files_dict, file_counter
             )
             if source == 'input':
-                node["has input"].append({"@id": file_node["@id"]})
+                node["schema:object"].append({"@id": file_node["@id"]})
             else:
-                node["has output"].append({"@id": file_node["@id"]})
+                node["schema:result"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
                 metadata = self._extract_parameters(job.rule, file, file_node)
                 if job.rule in metadata:
                     for param_type in ["has parameter", "investigates"]:
                         if param_type in metadata[job.rule]:
-                            new_method_node_id = (f"local:method_{job.rule}_{job.job.jobid}")
+                            new_method_node_id = (f"#method_{job.rule}_{job.job.jobid}")
                             rule_data = metadata.get(job.rule, {})
-                            optional_fields = {k: [rule_data[k]] for k in ("has parameter", "investigates") if k in rule_data}
+                            mapping = {
+                                "has parameter": "http://w3id.org/nfdi4ing/metadata4ing#hasParameter", 
+                                "investigates": "http://w3id.org/nfdi4ing/metadata4ing#investigates"
+                            }
+                            optional_fields = {mapping[k]: [rule_data[k]] for k in ("has parameter", "investigates") if k in rule_data}
                             if tools:
                                 optional_fields["implemented by"] = [{"@id": tool["@id"]} for tool in tools]
                             self.methods[new_method_node_id] = {
                                 "@id": new_method_node_id,
-                                "@type": "m4i:method",
-                                "label": f"{job.rule}_{job.job.jobid}",
+                                "@type": "http://w3id.org/nfdi4ing/metadata4ing#method",
+                                "rdfs:label": f"{job.rule}_{job.job.jobid}",
                                 **optional_fields
                             }
-                            node["realizes method"] = {"@id": new_method_node_id}
+                            node["http://w3id.org/nfdi4ing/metadata4ing#realizesMethod"] = {"@id": new_method_node_id}
                 else:
                     for key, _ in metadata.items():
-                        new_method_node_id = (f"local:method_{job.job.jobid}_{key}")
+                        new_method_node_id = (f"#method_{job.job.jobid}_{key}")
                         new_child_node_id = (
-                            f"local:processing_step_{job.job.jobid}_{key}"
+                            f"#processing_step_{job.job.jobid}_{key}"
                         )
                         self.methods[new_method_node_id] = {
                             "@id": new_method_node_id,
-                            "@type": "m4i:method",
-                            "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "has parameter": [metadata[key]["has parameter"]],
-                            "investigates": [metadata[key]["investigates"]],
+                            "@type": "http://w3id.org/nfdi4ing/metadata4ing#method",
+                            "rdfs:label": f"{job.rule}_{job.job.jobid}_{key}",
+                            "http://w3id.org/nfdi4ing/metadata4ing#hasParameter": [metadata[key]["has parameter"]],
+                            "http://w3id.org/nfdi4ing/metadata4ing#investigates": [metadata[key]["investigates"]],
                         }
                         self.child_nodes[new_child_node_id] = {
                             "@id": new_child_node_id,
-                            "@type": "processing step",
-                            "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "start time": self._get_time_str(job.starttime),
-                            "end time": self._get_time_str(job.endtime),
-                            "realizes method": {"@id": new_method_node_id},
-                            "has input": [],
-                            "has output": [],
-                            "part of": {
-                                "@id": f"local:processing_step_{job.job.jobid}"
+                            "@type": "Action",
+                            "rdfs:label": f"{job.rule}_{job.job.jobid}_{key}",
+                            "schema:startTime": self._get_time_str(job.starttime),
+                            "schema:endTime": self._get_time_str(job.endtime),
+                            "http://w3id.org/nfdi4ing/metadata4ing#realizesMethod": {"@id": new_method_node_id},
+                            "schema:object": [],
+                            "schema:result": [],
+                            "schema:isPartOf": {
+                                "@id": f"#processing_step_{job.job.jobid}"
                             },
                         }
 
@@ -273,7 +282,7 @@ class Reporter(ReporterBase):
                 dest_path=snakepath,
                 properties={
                     "name": snakefile,
-                    "encodingFormat": "text/plain",
+                    "encodingFormat": "text/x-python",
                 },
             )
 
@@ -285,7 +294,7 @@ class Reporter(ReporterBase):
             file_dict[resolved_path] = {
                 "@id": resolved_path,
                 "@type": "cr:FileObject",
-                "label": resolved_path,
+                "rdfs:label": resolved_path,
             }
             counter += 1
         return file_dict[resolved_path], counter
@@ -306,7 +315,7 @@ class Reporter(ReporterBase):
                     f"Error parsing JSON config file: {e}"
                 ) from e
         if "Research Problem" in config_data:
-            self.research_problem_id = f"local:research_problem"
+            self.research_problem_id = f"#research_problem"
             research_problem = {
                 "@id": self.research_problem_id,
                 "@type": "mardi4nfdi:ResearchProblem"
@@ -317,19 +326,19 @@ class Reporter(ReporterBase):
             self.research_problem[self.research_problem_id] = research_problem
             
     def _add_benchmark_processing_step(self, sorted_jobs):
-        self.benchmark_processing_step_id = f"local:processing_step_benchmark"
+        self.benchmark_processing_step_id = f"#processing_step_benchmark"
         earliest_start = min(item.starttime for item in sorted_jobs)
         latest_end = max(item.endtime for item in sorted_jobs)
         benchmark_node = {
             "@id": self.benchmark_processing_step_id,
-            "@type": "processing step",
-            "label": "benchmark",
-            "start time": self._get_time_str(earliest_start),
-            "end time": self._get_time_str(latest_end),
-            "has input": [],
-            "has output": [],
-            "has parameter": [],
-            "investigates": {"@id": self.research_problem_id} if self.research_problem_id else []
+            "@type": "Action",
+            "rdfs:label": "benchmark",
+            "schema:startTime": self._get_time_str(earliest_start),
+            "schema:endTime": self._get_time_str(latest_end),
+            "schema:object": [],
+            "schema:result": [],
+            "http://w3id.org/nfdi4ing/metadata4ing#hasParameter": [],
+            "http://w3id.org/nfdi4ing/metadata4ing#investigates": {"@id": self.research_problem_id} if self.research_problem_id else []
         }
         self.processing_steps[id] = benchmark_node
         
@@ -354,20 +363,20 @@ class Reporter(ReporterBase):
                                     "@type": (
                                         "text variable"
                                         if data["data-type"] == "schema:Text"
-                                        else "numerical variable"
+                                        else "schema:PropertyValue"
                                     ),
-                                    "label": name,
+                                    "rdfs:label": name,
                                 }
                                 if data["data-type"] == "schema:Text":
-                                    param["has string value"] = data["value"]
+                                    param["schema:value"] = data["value"]
                                 else:
-                                    param["has numerical value"] = data["value"]
+                                    param["schema:value"] = data["value"]
                                     if data["unit"]:
                                         if (
                                             data["unit"]
                                             in self.qudt_mapping_dict
                                         ):
-                                            param["has unit"] = {
+                                            param["schema:unitCode"] = {
                                                 "@id": self.qudt_mapping_dict[
                                                     data["unit"]
                                                 ]
@@ -382,14 +391,14 @@ class Reporter(ReporterBase):
                                                 data["unit"]
                                             ] = qudt_unit
                                             if qudt_unit:
-                                                param["has unit"] = {
+                                                param["schema:unitCode"] = {
                                                     "@id": qudt_unit
                                                 }
                                             else:
                                                 self.qudt_mapping_dict[
                                                     data["unit"]
                                                 ] = data["unit"]
-                                                param["has unit"] = {
+                                                param["schema:unitCode"] = {
                                                     "@id": data["unit"]
                                                 }
 
@@ -403,7 +412,7 @@ class Reporter(ReporterBase):
                                         None,
                                     )
                                 else:
-                                    param_id = f"local:variable_{name}_{self.param_counter}"
+                                    param_id = f"#variable_{name}_{self.param_counter}"
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
                                 metadata[processing_step_name][
@@ -476,9 +485,9 @@ class Reporter(ReporterBase):
             for name, version in tools.items():
                 if name not in self.tools_dict:
                     item = {
-                        "@id": f"local:tool_{self.tool_counter}",
+                        "@id": f"#tool_{self.tool_counter}",
                         "@type": "schema:SoftwareApplication",
-                        "label": name,
+                        "rdfs:label": name,
                         **(
                             {"schema:softwareVersion": version}
                             if version
@@ -538,7 +547,6 @@ class Reporter(ReporterBase):
             mapping = json.load(f)
         pint_unit = self.ureg.parse_units(unit)
         if str(pint_unit) in mapping:
-            print(f"unit:{mapping[str(pint_unit)]}")
             return f"unit:{mapping[str(pint_unit)]}"
         return unit
 
@@ -638,7 +646,7 @@ class Reporter(ReporterBase):
 
         key = f"{name}_{self.field_counter}"
         self.field_dict[key] = {
-            "@id": f"local:field_{name}_{self.field_counter}",
+            "@id": f"#field_{name}_{self.field_counter}",
             **new_field,
         }
         self.field_counter += 1
@@ -804,9 +812,9 @@ class Reporter(ReporterBase):
             source_node = id_to_node.get(source_id)
             if not source_node:
                 continue
-            key = "precedes"
+            key = "http://purl.obolibrary.org/obo/BFO_0000063"
             existing = source_node.get(key)
-            new_link = {"@id": f"local:{target_id}"}
+            new_link = {"@id": f"#{target_id}"}
             if not existing:
                 source_node[key] = [new_link]
             else:
@@ -824,8 +832,8 @@ class Reporter(ReporterBase):
 
     def _get_local_id(self, iri: str) -> str:
         local = iri.rsplit("/", 1)[-1].rsplit("#", 1)[-1]
-        if local.startswith("local:"):
-            local = local.replace("local:", "")
+        if local.startswith("#"):
+            local = local.replace("#", "")
         return local
 
     def _is_file(self, file_name: str) -> bool:
@@ -874,6 +882,12 @@ class Reporter(ReporterBase):
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
 
+    def _add_provenance_nodes_to_crate(self, nodes: list[dict]) -> None:
+        for node in nodes:
+            if node.get("@type", "").startswith("Field"):
+                continue
+            self.crate.add_jsonld(node)
+            
     def _validate_filename(self, filename: str) -> None:
         if not filename or filename.strip() == "":
             raise ValueError("Filename cannot be empty.")
