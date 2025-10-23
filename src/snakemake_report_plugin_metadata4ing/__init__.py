@@ -900,6 +900,9 @@ class Reporter(ReporterBase):
         for node in nodes:
             if node.get("@type", "").startswith("Field"):
                 continue
+            entity_id = node["@id"]
+            if self.crate.get(entity_id):
+                continue
             self.crate.add_jsonld(node)
             
     def _validate_filename(self, filename: str) -> None:
