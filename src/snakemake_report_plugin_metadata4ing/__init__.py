@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
-from rdflib import Graph, Namespace, RDF
+from rdflib import Graph, Namespace
 import json
 import importlib.util
 import inspect
@@ -65,6 +65,7 @@ class Reporter(ReporterBase):
         self.context_data = {}
 
     def render(self):
+        self.config_data = {}
         self.processing_steps = {}
         self.methods = {}
         self.param_counter = 0
@@ -89,6 +90,8 @@ class Reporter(ReporterBase):
         self.qudt_url = "http://qudt.org/schema/qudt/"
         self.unit_url = "http://qudt.org/vocab/unit/"
         self.mardi4nfdi_url = "https://mardi4nfdi.de/mathmoddb#"
+        self.metadata4ing_url = "http://w3id.org/nfdi4ing/metadata4ing#"
+        self.obo_url = "http://purl.obolibrary.org/obo/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
         self.ontologies_path = (
@@ -99,7 +102,9 @@ class Reporter(ReporterBase):
         
         if self.settings.filename:
             self._validate_filename(str(self.settings.filename))
-
+        
+        self._extend_rocrate_context()
+        self._read_config()    
         self._get_context()
         self._get_qudt()
         self._create_external_directory()
@@ -111,15 +116,12 @@ class Reporter(ReporterBase):
         jsonld["@context"]["unit"] = self.unit_url
         jsonld["@context"]["mardi4nfdi"] = self.mardi4nfdi_url
         
-        self.crate.name = "NFDi4Ing Provenance" 
-        self.crate.description = "NFDi4Ing Provenance Description" 
-        self.crate.license = "https://spdx.org/licenses/MIT"
-        
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         file_nodes = {}
         file_counter = 0
 
         self._add_research_problem()
+        self._add_rocrate_config_data()
         self._add_benchmark_processing_step(sorted_jobs)
         
         for job in sorted_jobs:
@@ -158,6 +160,34 @@ class Reporter(ReporterBase):
         self._create_ro_crate_file()
         self._clean_data()
 
+    def _read_config(self):
+        if not self.settings.config:
+            return None
+
+        config_path = Path(self.settings.config).expanduser().resolve()
+        if not config_path.exists():
+            raise FileNotFoundError(f"Config file not found: {config_path}")
+
+        with open(config_path, "r", encoding="utf-8") as f:
+            try:
+                self.config_data = json.load(f)
+            except json.JSONDecodeError as e:
+                raise ValueError(
+                    f"Error parsing JSON config file: {e}"
+                ) from e
+    
+    def _extend_rocrate_context(self):
+        self.crate.metadata.extra_terms['m4i'] = self.metadata4ing_url
+        self.crate.metadata.extra_terms['obo'] = self.obo_url
+        self.crate.metadata.extra_terms['unit'] = self.unit_url
+        self.crate.metadata.extra_terms['mardi4nfdi'] = self.mardi4nfdi_url
+            
+    def _add_rocrate_config_data(self):
+        rocrate_info = self.config_data.get("rocrate", {})
+        self.crate.name = rocrate_info.get("name")
+        self.crate.description = rocrate_info.get("description")
+        self.crate.license = rocrate_info.get("license")
+
     def _create_processing_step_node(self, job, files_dict, file_counter):
         node = {
             "@id": f"#processing_step_{job.job.jobid}",
@@ -167,7 +197,7 @@ class Reporter(ReporterBase):
             "schema:endTime": self._get_time_str(job.endtime),
             "schema:object": [],
             "schema:result": [],
-            "http://w3id.org/nfdi4ing/metadata4ing#realizesMethod": [],
+            "m4i:realizesMethod": [],
             "schema:isPartOf": {
                 "@id": self.benchmark_processing_step_id
             }
@@ -234,19 +264,19 @@ class Reporter(ReporterBase):
                             new_method_node_id = (f"#method_{job.rule}_{job.job.jobid}")
                             rule_data = metadata.get(job.rule, {})
                             mapping = {
-                                "has parameter": "http://w3id.org/nfdi4ing/metadata4ing#hasParameter", 
-                                "investigates": "http://w3id.org/nfdi4ing/metadata4ing#investigates"
+                                "has parameter": "m4i:hasParameter", 
+                                "investigates": "m4i:investigates"
                             }
                             optional_fields = {mapping[k]: [rule_data[k]] for k in ("has parameter", "investigates") if k in rule_data}
                             if tools:
-                                optional_fields["implemented by"] = [{"@id": tool["@id"]} for tool in tools]
+                                optional_fields["m4i:implementedByTool"] = [{"@id": tool["@id"]} for tool in tools]
                             self.methods[new_method_node_id] = {
                                 "@id": new_method_node_id,
-                                "@type": "http://w3id.org/nfdi4ing/metadata4ing#method",
+                                "@type": "m4i:Method",
                                 "rdfs:label": f"{job.rule}_{job.job.jobid}",
                                 **optional_fields
                             }
-                            node["http://w3id.org/nfdi4ing/metadata4ing#realizesMethod"] = {"@id": new_method_node_id}
+                            node["m4i:realizesMethod"] = {"@id": new_method_node_id}
                 else:
                     for key, _ in metadata.items():
                         new_method_node_id = (f"#method_{job.job.jobid}_{key}")
@@ -255,10 +285,10 @@ class Reporter(ReporterBase):
                         )
                         self.methods[new_method_node_id] = {
                             "@id": new_method_node_id,
-                            "@type": "http://w3id.org/nfdi4ing/metadata4ing#method",
+                            "@type": "m4i:Method",
                             "rdfs:label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "http://w3id.org/nfdi4ing/metadata4ing#hasParameter": [metadata[key]["has parameter"]],
-                            "http://w3id.org/nfdi4ing/metadata4ing#investigates": [metadata[key]["investigates"]],
+                            "m4i:hasParameter": [metadata[key]["has parameter"]],
+                            "m4i:investigates": [metadata[key]["investigates"]],
                         }
                         self.child_nodes[new_child_node_id] = {
                             "@id": new_child_node_id,
@@ -266,7 +296,7 @@ class Reporter(ReporterBase):
                             "rdfs:label": f"{job.rule}_{job.job.jobid}_{key}",
                             "schema:startTime": self._get_time_str(job.starttime),
                             "schema:endTime": self._get_time_str(job.endtime),
-                            "http://w3id.org/nfdi4ing/metadata4ing#realizesMethod": {"@id": new_method_node_id},
+                            "m4i:realizesMethod": {"@id": new_method_node_id},
                             "schema:object": [],
                             "schema:result": [],
                             "schema:isPartOf": {
@@ -300,33 +330,20 @@ class Reporter(ReporterBase):
         return file_dict[resolved_path], counter
 
     def _add_research_problem(self):
-        if not self.settings.config:
-            return None
-
-        config_path = Path(self.settings.config).expanduser().resolve()
-        if not config_path.exists():
-            raise FileNotFoundError(f"Config file not found: {config_path}")
-
-        with open(config_path, "r", encoding="utf-8") as f:
-            try:
-                config_data = json.load(f)
-            except json.JSONDecodeError as e:
-                raise ValueError(
-                    f"Error parsing JSON config file: {e}"
-                ) from e
-        if "Research Problem" in config_data:
+        if "researchProblem" in self.config_data:
             self.research_problem_id = f"#research_problem"
             research_problem = {
                 "@id": self.research_problem_id,
                 "@type": "mardi4nfdi:ResearchProblem"
             }
-            for key, value in config_data["Research Problem"].items():
+            for key, value in self.config_data["researchProblem"].items():
                 property_key = f"{key.replace(' ', '_').lower()}"
                 research_problem[property_key] = value
             self.research_problem[self.research_problem_id] = research_problem
             
     def _add_benchmark_processing_step(self, sorted_jobs):
         self.benchmark_processing_step_id = f"#processing_step_benchmark"
+        self.crate.mainEntity = {"@id": self.benchmark_processing_step_id}
         earliest_start = min(item.starttime for item in sorted_jobs)
         latest_end = max(item.endtime for item in sorted_jobs)
         benchmark_node = {
@@ -337,8 +354,8 @@ class Reporter(ReporterBase):
             "schema:endTime": self._get_time_str(latest_end),
             "schema:object": [],
             "schema:result": [],
-            "http://w3id.org/nfdi4ing/metadata4ing#hasParameter": [],
-            "http://w3id.org/nfdi4ing/metadata4ing#investigates": {"@id": self.research_problem_id} if self.research_problem_id else []
+            "m4i:hasParameter": [],
+            "m4i:investigates": {"@id": self.research_problem_id} if self.research_problem_id else []
         }
         self.processing_steps[id] = benchmark_node
         
@@ -812,16 +829,13 @@ class Reporter(ReporterBase):
             source_node = id_to_node.get(source_id)
             if not source_node:
                 continue
-            key = "http://purl.obolibrary.org/obo/BFO_0000063"
+            key = "obo:BFO_0000063"
             existing = source_node.get(key)
             new_link = {"@id": f"#{target_id}"}
             if not existing:
                 source_node[key] = [new_link]
             else:
-                if isinstance(existing, dict):
-                    existing = [existing]
-                    source_node[key] = existing
-                elif not isinstance(existing, list):
+                if isinstance(existing, dict) or not isinstance(existing, list):
                     existing = [existing]
                     source_node[key] = existing
 
