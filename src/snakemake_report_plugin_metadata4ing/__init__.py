@@ -274,6 +274,7 @@ class Reporter(ReporterBase):
                         "rdfs:label": f"{job.rule}_{job.job.jobid}",
                         **optional_fields
                     }
+                    print(f"Extracted Metadata for {new_method_node_id}: {metadata}")
                     print(f"Optional fields for method {new_method_node_id}: {optional_fields}")
                     node["m4i:realizesMethod"] = {"@id": new_method_node_id}
                 else:
