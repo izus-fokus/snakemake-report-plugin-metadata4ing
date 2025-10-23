@@ -277,6 +277,7 @@ class Reporter(ReporterBase):
                                 "rdfs:label": f"{job.rule}_{job.job.jobid}",
                                 **optional_fields
                             }
+                            print(f"Optional fields for method {new_method_node_id}: {optional_fields}")
                             node["m4i:realizesMethod"] = {"@id": new_method_node_id}
                 else:
                     for key, _ in metadata.items():
@@ -701,7 +702,7 @@ class Reporter(ReporterBase):
                 )
 
         def _validate_section(section_name, section_content):
-            """Validate a section like 'parameters' or 'investigates'."""
+            """Validate a section like 'has parameter' or 'investigates'."""
             if not isinstance(section_content, list):
                 raise TypeError(f"'{section_name}' must be a list.")
             for idx, item in enumerate(section_content):
