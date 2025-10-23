@@ -236,7 +236,7 @@ class Reporter(ReporterBase):
                         ),
                     },
                 )
-
+        optional_fields = {}
         tools = {}
         for conda_file in conda_files:
             if conda_file:
@@ -246,6 +246,11 @@ class Reporter(ReporterBase):
                     tools = self._add_tools(conda_file.content)
                     self.conda_tools_cache[conda_file] = tools
 
+        new_method_node_id = (f"#method_{job.rule}_{job.job.jobid}")
+        
+        if tools:
+            optional_fields["m4i:implementedByTool"] = [{"@id": tool["@id"]} for tool in tools]
+        
         for file, source in [(f, 'input') for f in input_files] + [(f, 'output') for f in job.output]:
             if not self._is_file(file):
                 continue
@@ -258,52 +263,23 @@ class Reporter(ReporterBase):
                 node["schema:result"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
                 metadata = self._extract_parameters(job.rule, file, file_node)
-                if job.rule in metadata:
-                    new_method_node_id = (f"#method_{job.rule}_{job.job.jobid}")
-                    rule_data = metadata.get(job.rule, {})
-                    mapping = {
-                        "has parameter": "m4i:hasParameter", 
-                        "investigates": "m4i:investigates"
-                    }
-                    optional_fields = {mapping[k]: [rule_data[k]] for k in ("has parameter", "investigates") if k in rule_data}
-                    if tools:
-                        optional_fields["m4i:implementedByTool"] = [{"@id": tool["@id"]} for tool in tools]
-                    self.methods[new_method_node_id] = {
-                        "@id": new_method_node_id,
-                        "@type": "m4i:Method",
-                        "rdfs:label": f"{job.rule}_{job.job.jobid}",
-                        **optional_fields
-                    }
-                    print(f"Extracted Metadata for {new_method_node_id}: {metadata}")
-                    print(f"Optional fields for method {new_method_node_id}: {optional_fields}")
-                    node["m4i:realizesMethod"] = {"@id": new_method_node_id}
-                else:
-                    for key, _ in metadata.items():
-                        new_method_node_id = (f"#method_{job.job.jobid}_{key}")
-                        new_child_node_id = (
-                            f"#processing_step_{job.job.jobid}_{key}"
-                        )
-                        self.methods[new_method_node_id] = {
-                            "@id": new_method_node_id,
-                            "@type": "m4i:Method",
-                            "rdfs:label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "m4i:hasParameter": [metadata[key]["has parameter"]],
-                            "m4i:investigates": [metadata[key]["investigates"]],
-                        }
-                        self.child_nodes[new_child_node_id] = {
-                            "@id": new_child_node_id,
-                            "@type": "Action",
-                            "rdfs:label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "schema:startTime": self._get_time_str(job.starttime),
-                            "schema:endTime": self._get_time_str(job.endtime),
-                            "m4i:realizesMethod": {"@id": new_method_node_id},
-                            "schema:object": [],
-                            "schema:result": [],
-                            "schema:isPartOf": {
-                                "@id": f"#processing_step_{job.job.jobid}"
-                            },
-                        }
-
+                rule_data = metadata.get(job.rule, {})
+                mapping = {
+                    "has parameter": "m4i:hasParameter", 
+                    "investigates": "m4i:investigates"
+                }
+                for k in ("has parameter", "investigates"):
+                    if k in rule_data:
+                        optional_fields.setdefault(mapping[k], []).append(rule_data[k])
+                
+        self.methods[new_method_node_id] = {
+            "@id": new_method_node_id,
+            "@type": "m4i:Method",
+            "rdfs:label": f"{job.rule}_{job.job.jobid}",
+            **optional_fields
+        }
+        node["m4i:realizesMethod"] = {"@id": new_method_node_id}
+        
         snakefile, snakepath = self._find_snakefile()
 
         if snakefile:
