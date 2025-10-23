@@ -258,6 +258,7 @@ class Reporter(ReporterBase):
                 node["schema:result"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
                 metadata = self._extract_parameters(job.rule, file, file_node)
+                print(f"Extracted metadata for file {file} and rulename {job.rule}: {metadata}")
                 if job.rule in metadata:
                     for param_type in ["has parameter", "investigates"]:
                         if param_type in metadata[job.rule]:
