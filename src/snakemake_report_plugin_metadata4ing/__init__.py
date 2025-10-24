@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
-from rdflib import Graph, Namespace, RDF
+from rdflib import Graph, Namespace
 import json
 import importlib.util
 import inspect
@@ -65,6 +65,7 @@ class Reporter(ReporterBase):
         self.context_data = {}
 
     def render(self):
+        self.config_data = {}
         self.processing_steps = {}
         self.methods = {}
         self.param_counter = 0
@@ -89,6 +90,11 @@ class Reporter(ReporterBase):
         self.qudt_url = "http://qudt.org/schema/qudt/"
         self.unit_url = "http://qudt.org/vocab/unit/"
         self.mardi4nfdi_url = "https://mardi4nfdi.de/mathmoddb#"
+        self.metadata4ing_url = "http://w3id.org/nfdi4ing/metadata4ing#"
+        self.obo_url = "http://purl.obolibrary.org/obo/"
+        self.ssn_url = "http://www.w3.org/ns/ssn/"
+        self.cr_url = "http://mlcommons.org/croissant/"
+        self.dcterms_url = "http://purl.org/dc/terms/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
         self.ontologies_path = (
@@ -99,7 +105,9 @@ class Reporter(ReporterBase):
         
         if self.settings.filename:
             self._validate_filename(str(self.settings.filename))
-
+        
+        self._extend_rocrate_context()
+        self._read_config()
         self._get_context()
         self._get_qudt()
         self._create_external_directory()
@@ -116,6 +124,7 @@ class Reporter(ReporterBase):
         file_counter = 0
 
         self._add_research_problem()
+        self._add_rocrate_config_data()
         self._add_benchmark_processing_step(sorted_jobs)
         
         for job in sorted_jobs:
@@ -147,11 +156,43 @@ class Reporter(ReporterBase):
 
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-
+        
         self._create_ttl_from_jsonld(jsonld)
+        self._add_provenance_nodes_to_crate(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
         self._create_ro_crate_file()
         self._clean_data()
+
+    def _read_config(self):
+        if not self.settings.config:
+            return None
+
+        config_path = Path(self.settings.config).expanduser().resolve()
+        if not config_path.exists():
+            raise FileNotFoundError(f"Config file not found: {config_path}")
+
+        with open(config_path, "r", encoding="utf-8") as f:
+            try:
+                self.config_data = json.load(f)
+            except json.JSONDecodeError as e:
+                raise ValueError(
+                    f"Error parsing JSON config file: {e}"
+                ) from e
+    
+    def _extend_rocrate_context(self):
+        self.crate.metadata.extra_terms['m4i'] = self.metadata4ing_url
+        self.crate.metadata.extra_terms['obo'] = self.obo_url
+        self.crate.metadata.extra_terms['unit'] = self.unit_url
+        self.crate.metadata.extra_terms['mardi4nfdi'] = self.mardi4nfdi_url
+        self.crate.metadata.extra_terms['ssn'] = self.ssn_url
+        self.crate.metadata.extra_terms['cr'] = self.cr_url
+        self.crate.metadata.extra_terms['dcterms'] = self.dcterms_url
+
+    def _add_rocrate_config_data(self):
+        rocrate_info = self.config_data.get("rocrate", {})
+        self.crate.name = rocrate_info.get("name")
+        self.crate.description = rocrate_info.get("description")
+        self.crate.license = rocrate_info.get("license")
 
     def _create_processing_step_node(self, job, files_dict, file_counter):
         node = {
@@ -201,7 +242,7 @@ class Reporter(ReporterBase):
                         ),
                     },
                 )
-
+        optional_fields = {}
         tools = {}
         for conda_file in conda_files:
             if conda_file:
@@ -211,6 +252,11 @@ class Reporter(ReporterBase):
                     tools = self._add_tools(conda_file.content)
                     self.conda_tools_cache[conda_file] = tools
 
+        new_method_node_id = (f"local:method_{job.rule}_{job.job.jobid}")
+        
+        if tools:
+            optional_fields["implemented by"] = [{"@id": tool["@id"]} for tool in tools]
+        
         for file, source in [(f, 'input') for f in input_files] + [(f, 'output') for f in job.output]:
             if not self._is_file(file):
                 continue
@@ -223,48 +269,19 @@ class Reporter(ReporterBase):
                 node["has output"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
                 metadata = self._extract_parameters(job.rule, file, file_node)
-                if job.rule in metadata:
-                    for param_type in ["has parameter", "investigates"]:
-                        if param_type in metadata[job.rule]:
-                            new_method_node_id = (f"local:method_{job.rule}_{job.job.jobid}")
-                            rule_data = metadata.get(job.rule, {})
-                            optional_fields = {k: [rule_data[k]] for k in ("has parameter", "investigates") if k in rule_data}
-                            if tools:
-                                optional_fields["implemented by"] = [{"@id": tool["@id"]} for tool in tools]
-                            self.methods[new_method_node_id] = {
-                                "@id": new_method_node_id,
-                                "@type": "m4i:method",
-                                "label": f"{job.rule}_{job.job.jobid}",
-                                **optional_fields
-                            }
-                            node["realizes method"] = {"@id": new_method_node_id}
-                else:
-                    for key, _ in metadata.items():
-                        new_method_node_id = (f"local:method_{job.job.jobid}_{key}")
-                        new_child_node_id = (
-                            f"local:processing_step_{job.job.jobid}_{key}"
-                        )
-                        self.methods[new_method_node_id] = {
-                            "@id": new_method_node_id,
-                            "@type": "m4i:method",
-                            "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "has parameter": [metadata[key]["has parameter"]],
-                            "investigates": [metadata[key]["investigates"]],
-                        }
-                        self.child_nodes[new_child_node_id] = {
-                            "@id": new_child_node_id,
-                            "@type": "processing step",
-                            "label": f"{job.rule}_{job.job.jobid}_{key}",
-                            "start time": self._get_time_str(job.starttime),
-                            "end time": self._get_time_str(job.endtime),
-                            "realizes method": {"@id": new_method_node_id},
-                            "has input": [],
-                            "has output": [],
-                            "part of": {
-                                "@id": f"local:processing_step_{job.job.jobid}"
-                            },
-                        }
+                rule_data = metadata.get(job.rule, {})
+                for k in ("has parameter", "investigates"):
+                    if k in rule_data:
+                        optional_fields.setdefault(k, []).append(rule_data[k])
 
+        self.methods[new_method_node_id] = {
+            "@id": new_method_node_id,
+            "@type": "method",
+            "label": f"{job.rule}_{job.job.jobid}",
+            **optional_fields
+        }
+        node["realizes method"] = {"@id": new_method_node_id}
+        
         snakefile, snakepath = self._find_snakefile()
 
         if snakefile:
@@ -273,7 +290,7 @@ class Reporter(ReporterBase):
                 dest_path=snakepath,
                 properties={
                     "name": snakefile,
-                    "encodingFormat": "text/plain",
+                    "encodingFormat": "text/x-python",
                 },
             )
 
@@ -283,7 +300,7 @@ class Reporter(ReporterBase):
         resolved_path = self._copy_external_relative_files(file_path)
         if resolved_path not in file_dict:
             file_dict[resolved_path] = {
-                "@id": resolved_path,
+                "@id": f"local:file_{counter}",
                 "@type": "cr:FileObject",
                 "label": resolved_path,
             }
@@ -291,33 +308,20 @@ class Reporter(ReporterBase):
         return file_dict[resolved_path], counter
 
     def _add_research_problem(self):
-        if not self.settings.config:
-            return None
-
-        config_path = Path(self.settings.config).expanduser().resolve()
-        if not config_path.exists():
-            raise FileNotFoundError(f"Config file not found: {config_path}")
-
-        with open(config_path, "r", encoding="utf-8") as f:
-            try:
-                config_data = json.load(f)
-            except json.JSONDecodeError as e:
-                raise ValueError(
-                    f"Error parsing JSON config file: {e}"
-                ) from e
-        if "Research Problem" in config_data:
+        if "researchProblem" in self.config_data:
             self.research_problem_id = f"local:research_problem"
             research_problem = {
                 "@id": self.research_problem_id,
                 "@type": "mardi4nfdi:ResearchProblem"
             }
-            for key, value in config_data["Research Problem"].items():
+            for key, value in self.config_data["researchProblem"].items():
                 property_key = f"{key.replace(' ', '_').lower()}"
                 research_problem[property_key] = value
             self.research_problem[self.research_problem_id] = research_problem
             
     def _add_benchmark_processing_step(self, sorted_jobs):
         self.benchmark_processing_step_id = f"local:processing_step_benchmark"
+        self.crate.mainEntity = {"@id": self.benchmark_processing_step_id.replace("local:", "#")}
         earliest_start = min(item.starttime for item in sorted_jobs)
         latest_end = max(item.endtime for item in sorted_jobs)
         benchmark_node = {
@@ -538,7 +542,6 @@ class Reporter(ReporterBase):
             mapping = json.load(f)
         pint_unit = self.ureg.parse_units(unit)
         if str(pint_unit) in mapping:
-            print(f"unit:{mapping[str(pint_unit)]}")
             return f"unit:{mapping[str(pint_unit)]}"
         return unit
 
@@ -675,7 +678,7 @@ class Reporter(ReporterBase):
                 )
 
         def _validate_section(section_name, section_content):
-            """Validate a section like 'parameters' or 'investigates'."""
+            """Validate a section like 'has parameter' or 'investigates'."""
             if not isinstance(section_content, list):
                 raise TypeError(f"'{section_name}' must be a list.")
             for idx, item in enumerate(section_content):
@@ -810,10 +813,7 @@ class Reporter(ReporterBase):
             if not existing:
                 source_node[key] = [new_link]
             else:
-                if isinstance(existing, dict):
-                    existing = [existing]
-                    source_node[key] = existing
-                elif not isinstance(existing, list):
+                if isinstance(existing, dict) or not isinstance(existing, list):
                     existing = [existing]
                     source_node[key] = existing
 
@@ -874,6 +874,42 @@ class Reporter(ReporterBase):
         os.remove(self.provenance_filename)
         os.remove(self.provenance_ttl_filename)
 
+    def _replace_terms(self, obj, mapping: dict):
+        if isinstance(obj, dict):
+            new_obj = {}
+            for k, v in obj.items():
+                new_key = mapping.get(k, k)
+                new_obj[new_key] = self._replace_terms(v, mapping)
+            return new_obj
+
+        elif isinstance(obj, list):
+            return [self._replace_terms(v, mapping) for v in obj]
+
+        elif isinstance(obj, str):
+            obj = obj.replace("local:", "#")
+            return mapping.get(obj, obj)
+
+        else:
+            return obj
+    
+    def _add_provenance_nodes_to_crate(self, jsonld) -> None:
+        context = jsonld["@context"]
+        nodes = jsonld["@graph"]
+        mapping = {
+            k: (v["@id"] if isinstance(v, dict) and "@id" in v else v)
+            for k, v in context.items()
+            if isinstance(v, (dict, str))
+        }
+        print(mapping)
+        converted = self._replace_terms(nodes, mapping)
+        for node in converted:
+            if node.get("@type", "").startswith("cr:Field"):
+                continue
+            entity_id = node["@id"]
+            if entity_id is None or self.crate.get(entity_id):
+                continue
+            self.crate.add_jsonld(node)
+            
     def _validate_filename(self, filename: str) -> None:
         if not filename or filename.strip() == "":
             raise ValueError("Filename cannot be empty.")
