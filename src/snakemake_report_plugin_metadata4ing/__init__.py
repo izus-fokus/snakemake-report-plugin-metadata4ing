@@ -70,8 +70,12 @@ class Reporter(ReporterBase):
         self.methods = {}
         self.param_counter = 0
         self.field_counter = 0
+        self.extract_counter = 0
+        self.source_counter = 0
         self.param_dict = {}
         self.field_dict = {}
+        self.extract_dict = {}
+        self.source_dict = {}
         self.tool_counter = 0
         self.research_problem = {}
         self.tools_dict = {}
@@ -144,6 +148,8 @@ class Reporter(ReporterBase):
             self.field_dict,
             self.tools_dict,
             self.child_nodes,
+            self.extract_dict,
+            self.source_dict,
             self.research_problem,
         ):
             jsonld["@graph"].extend(d.values())
@@ -620,13 +626,40 @@ class Reporter(ReporterBase):
         return extractor_class()
 
     def _add_unique_field(self, name, param_id, file_node, data):
+        extract_field =  {"@type": "cr:extract", "cr:jsonPath": data["json-path"]}
+        extract_field_id = ""
+        matching_extract_keys = [
+            key for key, value in self.extract_dict.items()
+            if {k: v for k, v in value.items() if k != "@id"} == extract_field
+        ]
+        if matching_extract_keys:
+            extract_field_id = self.extract_dict[matching_extract_keys[0]]["@id"]
+            extract_field["@id"] = extract_field_id
+        else:
+            extract_field_id = f"local:extract_{self.extract_counter}"
+            extract_field["@id"] = extract_field_id
+            self.extract_dict[f"extract_{self.extract_counter}"] = extract_field
+            self.extract_counter += 1
+
+        source = {"@type": "source", "file object": {"@id": file_node["@id"] }, "cr:extract":  {"@id": extract_field_id }}
+        source_id = ""
+        matching_source_keys = [
+            key for key, value in self.source_dict.items()
+            if {k: v for k, v in value.items() if k != "@id"} == source
+        ]
+        if matching_source_keys:
+            source_id = self.source_dict[matching_source_keys[0]]["@id"]
+            source["@id"] = source_id
+        else:
+            source_id = f"local:source_{self.source_counter}"
+            source["@id"] = source_id
+            self.source_dict[f"source_{self.source_counter}"] = source
+            self.source_counter += 1
+        
         new_field = {
             "@type": "Field",
             "represents": {"@id": param_id},
-            "source": {
-                "file object": {"@id": file_node["@id"]},
-                "cr:extract": {"cr:jsonPath": data["json-path"]},
-            },
+            "source": {"@id": source_id},
             **(
                 {"cr:dataType": data["data-type"]}
                 if data.get("data-type")
@@ -900,11 +933,8 @@ class Reporter(ReporterBase):
             for k, v in context.items()
             if isinstance(v, (dict, str))
         }
-        print(mapping)
         converted = self._replace_terms(nodes, mapping)
         for node in converted:
-            if node.get("@type", "").startswith("cr:Field"):
-                continue
             entity_id = node["@id"]
             if entity_id is None or self.crate.get(entity_id):
                 continue
