@@ -36,7 +36,7 @@ class ReportSettings(ReportSettingsBase):
             "unparse_func": str,
         },
     )
-    
+
     config: Optional[Path] = field(
         default=None,
         metadata={
@@ -73,6 +73,7 @@ class Reporter(ReporterBase):
         self.param_dict = {}
         self.field_dict = {}
         self.tool_counter = 0
+        self._unique_fields = set()
         self.research_problem = {}
         self.tools_dict = {}
         self.child_nodes = {}
@@ -95,6 +96,7 @@ class Reporter(ReporterBase):
         self.ssn_url = "http://www.w3.org/ns/ssn/"
         self.cr_url = "http://mlcommons.org/croissant/"
         self.dcterms_url = "http://purl.org/dc/terms/"
+        self.sio_url = "http://semanticscience.org/resource/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
         self.ontologies_path = (
@@ -102,10 +104,10 @@ class Reporter(ReporterBase):
             / "ontologies"
         )
         self.ureg = UnitRegistry()
-        
+
         if self.settings.filename:
             self._validate_filename(str(self.settings.filename))
-        
+
         self._extend_rocrate_context()
         self._read_config()
         self._get_context()
@@ -118,7 +120,7 @@ class Reporter(ReporterBase):
         }
         jsonld["@context"]["unit"] = self.unit_url
         jsonld["@context"]["mardi4nfdi"] = self.mardi4nfdi_url
-        
+
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         file_nodes = {}
         file_counter = 0
@@ -126,10 +128,12 @@ class Reporter(ReporterBase):
         self._add_research_problem()
         self._add_rocrate_config_data()
         self._add_benchmark_processing_step(sorted_jobs)
-        
+
         for job in sorted_jobs:
             job_label = f"{job.rule}_{job.job.jobid}"
-            step_node = self._create_processing_step_node(job, file_nodes, file_counter)
+            step_node = self._create_processing_step_node(
+                job, file_nodes, file_counter
+            )
             self.processing_steps[job_label] = step_node
             file_counter = len(file_nodes)
 
@@ -156,7 +160,7 @@ class Reporter(ReporterBase):
 
         with open("provenance.jsonld", "w", encoding="utf8") as f:
             json.dump(jsonld, f, indent=4, ensure_ascii=False)
-        
+
         self._create_ttl_from_jsonld(jsonld)
         self._add_provenance_nodes_to_crate(jsonld)
         self._add_ro_crate_file_nodes(file_nodes)
@@ -175,18 +179,17 @@ class Reporter(ReporterBase):
             try:
                 self.config_data = json.load(f)
             except json.JSONDecodeError as e:
-                raise ValueError(
-                    f"Error parsing JSON config file: {e}"
-                ) from e
-    
+                raise ValueError(f"Error parsing JSON config file: {e}") from e
+
     def _extend_rocrate_context(self):
-        self.crate.metadata.extra_terms['m4i'] = self.metadata4ing_url
-        self.crate.metadata.extra_terms['obo'] = self.obo_url
-        self.crate.metadata.extra_terms['unit'] = self.unit_url
-        self.crate.metadata.extra_terms['mardi4nfdi'] = self.mardi4nfdi_url
-        self.crate.metadata.extra_terms['ssn'] = self.ssn_url
-        self.crate.metadata.extra_terms['cr'] = self.cr_url
-        self.crate.metadata.extra_terms['dcterms'] = self.dcterms_url
+        self.crate.metadata.extra_terms["m4i"] = self.metadata4ing_url
+        self.crate.metadata.extra_terms["obo"] = self.obo_url
+        self.crate.metadata.extra_terms["unit"] = self.unit_url
+        self.crate.metadata.extra_terms["mardi4nfdi"] = self.mardi4nfdi_url
+        self.crate.metadata.extra_terms["ssn"] = self.ssn_url
+        self.crate.metadata.extra_terms["cr"] = self.cr_url
+        self.crate.metadata.extra_terms["dcterms"] = self.dcterms_url
+        self.crate.metadata.extra_terms["sio"] = self.sio_url
 
     def _add_rocrate_config_data(self):
         rocrate_info = self.config_data.get("rocrate", {})
@@ -204,9 +207,7 @@ class Reporter(ReporterBase):
             "has input": [],
             "has output": [],
             "realizes method": [],
-            "part of": {
-                "@id": self.benchmark_processing_step_id
-            }
+            "part of": {"@id": self.benchmark_processing_step_id},
         }
 
         input_files = [
@@ -252,18 +253,22 @@ class Reporter(ReporterBase):
                     tools = self._add_tools(conda_file.content)
                     self.conda_tools_cache[conda_file] = tools
 
-        new_method_node_id = (f"local:method_{job.rule}_{job.job.jobid}")
-        
+        new_method_node_id = f"local:method_{job.rule}_{job.job.jobid}"
+
         if tools:
-            optional_fields["implemented by"] = [{"@id": tool["@id"]} for tool in tools]
-        
-        for file, source in [(f, 'input') for f in input_files] + [(f, 'output') for f in job.output]:
+            optional_fields["implemented by"] = [
+                {"@id": tool["@id"]} for tool in tools
+            ]
+
+        for file, source in [(f, "input") for f in input_files] + [
+            (f, "output") for f in job.output
+        ]:
             if not self._is_file(file):
                 continue
             file_node, file_counter = self._add_file(
                 file, files_dict, file_counter
             )
-            if source == 'input':
+            if source == "input":
                 node["has input"].append({"@id": file_node["@id"]})
             else:
                 node["has output"].append({"@id": file_node["@id"]})
@@ -278,10 +283,10 @@ class Reporter(ReporterBase):
             "@id": new_method_node_id,
             "@type": "method",
             "label": f"{job.rule}_{job.job.jobid}",
-            **optional_fields
+            **optional_fields,
         }
         node["realizes method"] = {"@id": new_method_node_id}
-        
+
         snakefile, snakepath = self._find_snakefile()
 
         if snakefile:
@@ -312,16 +317,18 @@ class Reporter(ReporterBase):
             self.research_problem_id = f"local:research_problem"
             research_problem = {
                 "@id": self.research_problem_id,
-                "@type": "mardi4nfdi:ResearchProblem"
+                "@type": "mardi4nfdi:ResearchProblem",
             }
             for key, value in self.config_data["researchProblem"].items():
                 property_key = f"{key.replace(' ', '_').lower()}"
                 research_problem[property_key] = value
             self.research_problem[self.research_problem_id] = research_problem
-            
+
     def _add_benchmark_processing_step(self, sorted_jobs):
         self.benchmark_processing_step_id = f"local:processing_step_benchmark"
-        self.crate.mainEntity = {"@id": self.benchmark_processing_step_id.replace("local:", "#")}
+        self.crate.mainEntity = {
+            "@id": self.benchmark_processing_step_id.replace("local:", "#")
+        }
         earliest_start = min(item.starttime for item in sorted_jobs)
         latest_end = max(item.endtime for item in sorted_jobs)
         benchmark_node = {
@@ -333,10 +340,14 @@ class Reporter(ReporterBase):
             "has input": [],
             "has output": [],
             "has parameter": [],
-            "investigates": {"@id": self.research_problem_id} if self.research_problem_id else []
+            "investigates": (
+                {"@id": self.research_problem_id}
+                if self.research_problem_id
+                else []
+            ),
         }
         self.processing_steps[id] = benchmark_node
-        
+
     def _extract_parameters(self, rule, file, file_node):
         metadata = {}
         extract_params_obj = self._load_param_extractor_obj()
@@ -377,10 +388,8 @@ class Reporter(ReporterBase):
                                                 ]
                                             }
                                         else:
-                                            qudt_unit = (
-                                                self._get_qudt_unit_from_mapping(
-                                                    data["unit"]
-                                                )
+                                            qudt_unit = self._get_qudt_unit_from_mapping(
+                                                data["unit"]
                                             )
                                             self.qudt_mapping_dict[
                                                 data["unit"]
@@ -620,30 +629,43 @@ class Reporter(ReporterBase):
         return extractor_class()
 
     def _add_unique_field(self, name, param_id, file_node, data):
+        # Create a unique key tuple to ensure uniqueness
+        unique_key = (
+            name,
+            param_id,
+            file_node.get("@id") if isinstance(file_node, dict) else file_node,
+            data.get("data-type"),
+        )
+
+        if unique_key in self._unique_fields:
+            return
+
         new_field = {
             "@type": "Field",
             "represents": {"@id": param_id},
             "source": {
+                "@id": f"local:source_{param_id.replace('local:variable_', '')}",
+                "@type": "cr:DataSource",
                 "file object": {"@id": file_node["@id"]},
-                "cr:extract": {"cr:jsonPath": data["json-path"]},
+                "cr:extract": {
+                    "@id": f"local:extract_{param_id.replace('local:variable_', '')}",
+                    "cr:jsonPath": data["json-path"],
+                },
             },
             **(
-                {"cr:dataType": data["data-type"]}
+                {"cr:dataType": {"@id": data["data-type"]}}
                 if data.get("data-type")
                 else {}
             ),
         }
-
-        for existing in self.field_dict.values():
-            existing_no_id = {k: v for k, v in existing.items() if k != "@id"}
-            if existing_no_id == new_field:
-                return
 
         key = f"{name}_{self.field_counter}"
         self.field_dict[key] = {
             "@id": f"local:field_{name}_{self.field_counter}",
             **new_field,
         }
+
+        self._unique_fields.add(unique_key)
         self.field_counter += 1
 
     def _validate_extract_param_output(self, result):
@@ -891,7 +913,7 @@ class Reporter(ReporterBase):
 
         else:
             return obj
-    
+
     def _add_provenance_nodes_to_crate(self, jsonld) -> None:
         context = jsonld["@context"]
         nodes = jsonld["@graph"]
@@ -908,7 +930,7 @@ class Reporter(ReporterBase):
             if entity_id is None or self.crate.get(entity_id):
                 continue
             self.crate.add_jsonld(node)
-            
+
     def _validate_filename(self, filename: str) -> None:
         if not filename or filename.strip() == "":
             raise ValueError("Filename cannot be empty.")
