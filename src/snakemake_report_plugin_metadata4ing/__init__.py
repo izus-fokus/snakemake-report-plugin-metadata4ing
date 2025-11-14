@@ -924,8 +924,6 @@ class Reporter(ReporterBase):
         }
         converted = self._replace_terms(nodes, mapping)
         for node in converted:
-            if node.get("@type", "").startswith("cr:Field"):
-                continue
             entity_id = node["@id"]
             if entity_id is None or self.crate.get(entity_id):
                 continue
