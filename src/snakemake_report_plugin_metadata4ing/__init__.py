@@ -374,37 +374,44 @@ class Reporter(ReporterBase):
                                     "label": name,
                                 }
                                 if data["data-type"] == "schema:Text":
-                                    param["has string value"] = data["value"]
+                                    param["has string value"] = {
+                                        "@value": data["value"],
+                                        "@type": "xsd:string",
+                                    }
                                 else:
-                                    param["has numerical value"] = data["value"]
-                                    if data["unit"]:
-                                        if (
+                                    param["has numerical value"] = {
+                                        "@value": data["value"],
+                                        "@type": "xsd:decimal",
+                                    }
+                                
+                                if data["unit"]:
+                                    if (
+                                        data["unit"]
+                                        in self.qudt_mapping_dict
+                                    ):
+                                        param["has unit"] = {
+                                            "@id": self.qudt_mapping_dict[
+                                                data["unit"]
+                                            ]
+                                        }
+                                    else:
+                                        qudt_unit = self._get_qudt_unit_from_mapping(
                                             data["unit"]
-                                            in self.qudt_mapping_dict
-                                        ):
+                                        )
+                                        self.qudt_mapping_dict[
+                                            data["unit"]
+                                        ] = qudt_unit
+                                        if qudt_unit:
                                             param["has unit"] = {
-                                                "@id": self.qudt_mapping_dict[
-                                                    data["unit"]
-                                                ]
+                                                "@id": qudt_unit
                                             }
                                         else:
-                                            qudt_unit = self._get_qudt_unit_from_mapping(
-                                                data["unit"]
-                                            )
                                             self.qudt_mapping_dict[
                                                 data["unit"]
-                                            ] = qudt_unit
-                                            if qudt_unit:
-                                                param["has unit"] = {
-                                                    "@id": qudt_unit
-                                                }
-                                            else:
-                                                self.qudt_mapping_dict[
-                                                    data["unit"]
-                                                ] = data["unit"]
-                                                param["has unit"] = {
-                                                    "@id": data["unit"]
-                                                }
+                                            ] = data["unit"]
+                                            param["has unit"] = {
+                                                "@id": data["unit"]
+                                            }
 
                                 if param in self.param_dict.values():
                                     param_id = next(
@@ -417,6 +424,10 @@ class Reporter(ReporterBase):
                                     )
                                 else:
                                     param_id = f"local:variable_{name}_{self.param_counter}"
+                                    if data["data-type"] == "schema:Text":
+                                        param["has string value"]["@id"] = param_id.replace("local:variable_","local:variable_value_")
+                                    else:
+                                        param["has numerical value"]["@id"] = param_id.replace("local:variable_","local:variable_value_")
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
                                 metadata[processing_step_name][
