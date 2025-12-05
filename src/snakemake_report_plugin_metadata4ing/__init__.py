@@ -190,6 +190,7 @@ class Reporter(ReporterBase):
                 raise ValueError(f"Error parsing JSON config file: {e}") from e
 
     def _extend_rocrate_context(self):
+        self.crate.metadata.extra_terms["m4i:Method"] = f"{self.metadata4ing_url}Method"
         self.crate.metadata.extra_terms["m4i:hasParameter"] = f"{self.metadata4ing_url}hasParameter"
         self.crate.metadata.extra_terms["m4i:investigates"] = f"{self.metadata4ing_url}investigates"
         self.crate.metadata.extra_terms["m4i:realizesMethod"] = f"{self.metadata4ing_url}realizesMethod"
