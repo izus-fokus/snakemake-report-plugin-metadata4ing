@@ -72,6 +72,8 @@ class Reporter(ReporterBase):
         self.field_counter = 0
         self.param_dict = {}
         self.field_dict = {}
+        self.source_dict = {}
+        self.extract_dict = {}
         self.tool_counter = 0
         self._unique_fields = set()
         self.research_problem = {}
@@ -97,6 +99,10 @@ class Reporter(ReporterBase):
         self.cr_url = "http://mlcommons.org/croissant/"
         self.dcterms_url = "http://purl.org/dc/terms/"
         self.sio_url = "http://semanticscience.org/resource/"
+        self.schema_url = "http://schema.org/"
+        self.rdfs_url = "http://www.w3.org/2000/01/rdf-schema#"
+        self.rdf_url = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        self.dcterms_url = "http://purl.org/dc/terms/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
         self.ontologies_path = (
@@ -146,6 +152,8 @@ class Reporter(ReporterBase):
             self.methods,
             self.param_dict,
             self.field_dict,
+            self.source_dict,
+            self.extract_dict,
             self.tools_dict,
             self.child_nodes,
             self.research_problem,
@@ -182,14 +190,28 @@ class Reporter(ReporterBase):
                 raise ValueError(f"Error parsing JSON config file: {e}") from e
 
     def _extend_rocrate_context(self):
-        self.crate.metadata.extra_terms["m4i"] = self.metadata4ing_url
-        self.crate.metadata.extra_terms["obo"] = self.obo_url
-        self.crate.metadata.extra_terms["unit"] = self.unit_url
-        self.crate.metadata.extra_terms["mardi4nfdi"] = self.mardi4nfdi_url
-        self.crate.metadata.extra_terms["ssn"] = self.ssn_url
-        self.crate.metadata.extra_terms["cr"] = self.cr_url
-        self.crate.metadata.extra_terms["dcterms"] = self.dcterms_url
-        self.crate.metadata.extra_terms["sio"] = self.sio_url
+        self.crate.metadata.extra_terms["m4i:hasParameter"] = f"{self.metadata4ing_url}hasParameter"
+        self.crate.metadata.extra_terms["m4i:investigates"] = f"{self.metadata4ing_url}investigates"
+        self.crate.metadata.extra_terms["m4i:realizesMethod"] = f"{self.metadata4ing_url}realizesMethod"
+        self.crate.metadata.extra_terms["obo:BFO_0000063"] = f"{self.obo_url}BFO_0000063"
+        self.crate.metadata.extra_terms["ssn:implementedBy"] = f"{self.ssn_url}implementedBy"
+        self.crate.metadata.extra_terms["schema:isPartOf"] = f"{self.schema_url}isPartOf"
+        self.crate.metadata.extra_terms["schema:startTime"] = f"{self.schema_url}startTime"
+        self.crate.metadata.extra_terms["schema:endTime"] = f"{self.schema_url}endTime"
+        self.crate.metadata.extra_terms["schema:object"] = f"{self.schema_url}object"
+        self.crate.metadata.extra_terms["schema:result"] = f"{self.schema_url}result"
+        self.crate.metadata.extra_terms["schema:unitCode"] = f"{self.schema_url}unitCode"
+        self.crate.metadata.extra_terms["schema:MediaObject"] = f"{self.schema_url}MediaObject"
+        self.crate.metadata.extra_terms["schema:value"] = f"{self.schema_url}value"
+        self.crate.metadata.extra_terms["schema:softwareVersion"] = f"{self.schema_url}softwareVersion"
+        self.crate.metadata.extra_terms["cr:dataType"] = f"{self.cr_url}dataType"
+        self.crate.metadata.extra_terms["cr:extract"] = f"{self.cr_url}extract"
+        self.crate.metadata.extra_terms["cr:jsonPath"] = f"{self.cr_url}jsonPath"
+        self.crate.metadata.extra_terms["cr:source"] = f"{self.cr_url}source"
+        self.crate.metadata.extra_terms["sio:SIO_000210"] = f"{self.sio_url}SIO_000210"
+        self.crate.metadata.extra_terms["rdfs:label"] = f"{self.rdfs_url}label"
+        self.crate.metadata.extra_terms["dcterms:description"] = f"{self.dcterms_url}description"
+        self.crate.metadata.extra_terms["@value"] = f"{self.rdf_url}value"
 
     def _add_rocrate_config_data(self):
         rocrate_info = self.config_data.get("rocrate", {})
@@ -374,15 +396,9 @@ class Reporter(ReporterBase):
                                     "label": name,
                                 }
                                 if data["data-type"] == "schema:Text":
-                                    param["has string value"] = {
-                                        "@value": data["value"],
-                                        "@type": "xsd:string",
-                                    }
+                                    param["has string value"] = data["value"]
                                 else:
-                                    param["has numerical value"] = {
-                                        "@value": data["value"],
-                                        "@type": "xsd:decimal",
-                                    }
+                                    param["has numerical value"] = data["value"]
                                 
                                 if data["unit"]:
                                     if (
@@ -424,10 +440,6 @@ class Reporter(ReporterBase):
                                     )
                                 else:
                                     param_id = f"local:variable_{name}_{self.param_counter}"
-                                    if data["data-type"] == "schema:Text":
-                                        param["has string value"]["@id"] = param_id.replace("local:variable_","local:variable_value_")
-                                    else:
-                                        param["has numerical value"]["@id"] = param_id.replace("local:variable_","local:variable_value_")
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
                                 metadata[processing_step_name][
@@ -650,18 +662,12 @@ class Reporter(ReporterBase):
 
         if unique_key in self._unique_fields:
             return
-
+        
         new_field = {
             "@type": "Field",
             "represents": {"@id": param_id},
             "source": {
-                "@id": f"local:source_{param_id.replace('local:variable_', '')}",
-                "@type": "cr:DataSource",
-                "file object": {"@id": file_node["@id"]},
-                "cr:extract": {
-                    "@id": f"local:extract_{param_id.replace('local:variable_', '')}",
-                    "cr:jsonPath": data["json-path"],
-                },
+                "@id": f"local:source_{name}_{self.field_counter}"
             },
             **(
                 {"cr:dataType": {"@id": data["data-type"]}}
@@ -669,13 +675,29 @@ class Reporter(ReporterBase):
                 else {}
             ),
         }
+        
+        new_source = {
+            "@id": f"local:source_{name}_{self.field_counter}",
+            "@type": "cr:DataSource",
+            "file object": {"@id": file_node["@id"]},
+            "cr:extract": {
+                "@id": f"local:extract_{name}_{self.field_counter}"
+            }
+        }
+        
+        new_extract = {
+            "@id": f"local:extract_{name}_{self.field_counter}",
+            "@type": "cr:DataSource",
+            "cr:jsonPath": data["json-path"]
+        }
 
         key = f"{name}_{self.field_counter}"
         self.field_dict[key] = {
             "@id": f"local:field_{name}_{self.field_counter}",
             **new_field,
         }
-
+        self.extract_dict[key] = new_extract
+        self.source_dict[key] = new_source
         self._unique_fields.add(unique_key)
         self.field_counter += 1
 
