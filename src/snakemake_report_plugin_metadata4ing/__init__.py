@@ -194,6 +194,7 @@ class Reporter(ReporterBase):
         self.crate.metadata.extra_terms["m4i:hasParameter"] = f"{self.metadata4ing_url}hasParameter"
         self.crate.metadata.extra_terms["m4i:investigates"] = f"{self.metadata4ing_url}investigates"
         self.crate.metadata.extra_terms["m4i:realizesMethod"] = f"{self.metadata4ing_url}realizesMethod"
+        self.crate.metadata.extra_terms["m4i:implementedByTool"] = f"{self.metadata4ing_url}implementedByTool"
         self.crate.metadata.extra_terms["obo:BFO_0000063"] = f"{self.obo_url}BFO_0000063"
         self.crate.metadata.extra_terms["ssn:implementedBy"] = f"{self.ssn_url}implementedBy"
         self.crate.metadata.extra_terms["schema:isPartOf"] = f"{self.schema_url}isPartOf"
