@@ -1,6 +1,6 @@
 [project]
 name = "snakemake-report-plugin-metadata4ing"
-version = "1.0.0"
+version = "1.2.1"
 description = "Snakemake reporter plugin to extract metadata accoriding to MetaData4Ing ontology"
 readme = "README.md"
 requires-python = ">=3.11,<4.0"
