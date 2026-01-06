@@ -386,7 +386,6 @@ class Reporter(ReporterBase):
                         )
                         for entry in processing_step_data[parameter_type]:
                             for name, data in entry.items():
-                                name = name.replace("-", "_")
                                 param_id = ""
                                 param = {
                                     "@type": (
@@ -440,6 +439,7 @@ class Reporter(ReporterBase):
                                         None,
                                     )
                                 else:
+                                    name = name.replace("-", "_")
                                     param_id = f"local:variable_{name}_{self.param_counter}"
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
