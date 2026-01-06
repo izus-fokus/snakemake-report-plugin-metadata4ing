@@ -387,6 +387,7 @@ class Reporter(ReporterBase):
                         )
                         for entry in processing_step_data[parameter_type]:
                             for name, data in entry.items():
+                                sanitized_name = name.replace("-", "_")
                                 param_id = ""
                                 param = {
                                     "@type": (
@@ -440,15 +441,14 @@ class Reporter(ReporterBase):
                                         None,
                                     )
                                 else:
-                                    name = name.replace("-", "_")
-                                    param_id = f"local:variable_{name}_{self.param_counter}"
+                                    param_id = f"local:variable_{sanitized_name}_{self.param_counter}"
                                     self.param_dict[param_id] = param
                                     self.param_counter += 1
                                 metadata[processing_step_name][
                                     parameter_type
                                 ].append({"@id": param_id})
                                 self._add_unique_field(
-                                    name, param_id, file_node, data
+                                    sanitized_name, param_id, file_node, data
                                 )
         return metadata
 
