@@ -114,7 +114,7 @@ class Reporter(ReporterBase):
         if self.settings.filename:
             self._validate_filename(str(self.settings.filename))
 
-        self._extend_rocrate_context()
+        
         self._read_config()
         self._get_context()
         self._get_qudt()
@@ -126,7 +126,7 @@ class Reporter(ReporterBase):
         }
         jsonld["@context"]["unit"] = self.unit_url
         jsonld["@context"]["mardi4nfdi"] = self.mardi4nfdi_url
-
+        self._extend_rocrate_context()
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         file_nodes = {}
         file_counter = 0
@@ -190,30 +190,14 @@ class Reporter(ReporterBase):
                 raise ValueError(f"Error parsing JSON config file: {e}") from e
 
     def _extend_rocrate_context(self):
-        self.crate.metadata.extra_terms["m4i:Method"] = f"{self.metadata4ing_url}Method"
-        self.crate.metadata.extra_terms["m4i:hasParameter"] = f"{self.metadata4ing_url}hasParameter"
-        self.crate.metadata.extra_terms["m4i:investigates"] = f"{self.metadata4ing_url}investigates"
-        self.crate.metadata.extra_terms["m4i:realizesMethod"] = f"{self.metadata4ing_url}realizesMethod"
-        self.crate.metadata.extra_terms["m4i:implementedByTool"] = f"{self.metadata4ing_url}implementedByTool"
-        self.crate.metadata.extra_terms["obo:BFO_0000063"] = f"{self.obo_url}BFO_0000063"
-        self.crate.metadata.extra_terms["ssn:implementedBy"] = f"{self.ssn_url}implementedBy"
-        self.crate.metadata.extra_terms["schema:isPartOf"] = f"{self.schema_url}isPartOf"
-        self.crate.metadata.extra_terms["schema:startTime"] = f"{self.schema_url}startTime"
-        self.crate.metadata.extra_terms["schema:endTime"] = f"{self.schema_url}endTime"
-        self.crate.metadata.extra_terms["schema:object"] = f"{self.schema_url}object"
-        self.crate.metadata.extra_terms["schema:result"] = f"{self.schema_url}result"
-        self.crate.metadata.extra_terms["schema:unitCode"] = f"{self.schema_url}unitCode"
-        self.crate.metadata.extra_terms["schema:MediaObject"] = f"{self.schema_url}MediaObject"
-        self.crate.metadata.extra_terms["schema:value"] = f"{self.schema_url}value"
-        self.crate.metadata.extra_terms["schema:softwareVersion"] = f"{self.schema_url}softwareVersion"
-        self.crate.metadata.extra_terms["cr:dataType"] = f"{self.cr_url}dataType"
-        self.crate.metadata.extra_terms["cr:extract"] = f"{self.cr_url}extract"
-        self.crate.metadata.extra_terms["cr:jsonPath"] = f"{self.cr_url}jsonPath"
-        self.crate.metadata.extra_terms["cr:source"] = f"{self.cr_url}source"
-        self.crate.metadata.extra_terms["sio:SIO_000210"] = f"{self.sio_url}SIO_000210"
-        self.crate.metadata.extra_terms["rdfs:label"] = f"{self.rdfs_url}label"
-        self.crate.metadata.extra_terms["dcterms:description"] = f"{self.dcterms_url}description"
-        self.crate.metadata.extra_terms["@value"] = f"{self.rdf_url}value"
+        metadata4ing_context = self.context_data.get("@context", {})
+        metadata4ing_context.pop("@vocab", None)
+        metadata4ing_context.pop("description", None)
+        metadata4ing_context["softwareVersion"] = {"@id": "schema:softwareVersion"}
+        metadata4ing_context["dataType"] = {"@id": "cr:dataType"}
+        metadata4ing_context["extract"] = {"@id": "cr:extract"}
+        metadata4ing_context["jsonPath"] = {"@id": "cr:jsonPath"}
+        self.crate.metadata.extra_contexts.append(metadata4ing_context)
 
     def _add_rocrate_config_data(self):
         rocrate_info = self.config_data.get("rocrate", {})
@@ -518,7 +502,7 @@ class Reporter(ReporterBase):
                         "@type": "schema:SoftwareApplication",
                         "label": name,
                         **(
-                            {"schema:softwareVersion": version}
+                            {"softwareVersion": version}
                             if version
                             else {}
                         ),
@@ -654,7 +638,6 @@ class Reporter(ReporterBase):
         return extractor_class()
 
     def _add_unique_field(self, name, param_id, file_node, data):
-        # Create a unique key tuple to ensure uniqueness
         unique_key = (
             name,
             param_id,
@@ -672,7 +655,7 @@ class Reporter(ReporterBase):
                 "@id": f"local:source_{name}_{self.field_counter}"
             },
             **(
-                {"cr:dataType": {"@id": data["data-type"]}}
+                {"dataType": {"@id": data["data-type"]}}
                 if data.get("data-type")
                 else {}
             ),
@@ -682,7 +665,7 @@ class Reporter(ReporterBase):
             "@id": f"local:source_{name}_{self.field_counter}",
             "@type": "cr:DataSource",
             "file object": {"@id": file_node["@id"]},
-            "cr:extract": {
+            "extract": {
                 "@id": f"local:extract_{name}_{self.field_counter}"
             }
         }
@@ -690,7 +673,7 @@ class Reporter(ReporterBase):
         new_extract = {
             "@id": f"local:extract_{name}_{self.field_counter}",
             "@type": "cr:DataSource",
-            "cr:jsonPath": data["json-path"]
+            "jsonPath": data["json-path"]
         }
 
         key = f"{name}_{self.field_counter}"
@@ -950,15 +933,8 @@ class Reporter(ReporterBase):
             return obj
 
     def _add_provenance_nodes_to_crate(self, jsonld) -> None:
-        context = jsonld["@context"]
         nodes = jsonld["@graph"]
-        mapping = {
-            k: (v["@id"] if isinstance(v, dict) and "@id" in v else v)
-            for k, v in context.items()
-            if isinstance(v, (dict, str))
-        }
-        converted = self._replace_terms(nodes, mapping)
-        for node in converted:
+        for node in nodes:
             entity_id = node["@id"]
             if entity_id is None or self.crate.get(entity_id):
                 continue
