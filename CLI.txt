@@ -33,7 +33,7 @@ CODE
 ============================================================
 
 poetry build
-pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-1.2.2-py3-none-any.whl
+pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-1.2.3-py3-none-any.whl
 snakemake --reporter metadata4ing --cores 1 ./paper.pdf
 unzip ro-crate-metadata.zip -d ro-crate-metadata
 
