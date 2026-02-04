@@ -93,16 +93,6 @@ class Reporter(ReporterBase):
         self.qudt_url = "http://qudt.org/schema/qudt/"
         self.unit_url = "http://qudt.org/vocab/unit/"
         self.mardi4nfdi_url = "https://mardi4nfdi.de/mathmoddb#"
-        self.metadata4ing_url = "http://w3id.org/nfdi4ing/metadata4ing#"
-        self.obo_url = "http://purl.obolibrary.org/obo/"
-        self.ssn_url = "http://www.w3.org/ns/ssn/"
-        self.cr_url = "http://mlcommons.org/croissant/"
-        self.dcterms_url = "http://purl.org/dc/terms/"
-        self.sio_url = "http://semanticscience.org/resource/"
-        self.schema_url = "http://schema.org/"
-        self.rdfs_url = "http://www.w3.org/2000/01/rdf-schema#"
-        self.rdf_url = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-        self.dcterms_url = "http://purl.org/dc/terms/"
         self.QUDT_NS = Namespace(self.qudt_url)
         self.UNIT_NS = Namespace(self.unit_url)
         self.ontologies_path = (
@@ -197,6 +187,7 @@ class Reporter(ReporterBase):
         metadata4ing_context["dataType"] = {"@id": "cr:dataType"}
         metadata4ing_context["extract"] = {"@id": "cr:extract"}
         metadata4ing_context["jsonPath"] = {"@id": "cr:jsonPath"}
+        metadata4ing_context["schema"] = "http://schema.org/"
         self.crate.metadata.extra_contexts.append(metadata4ing_context)
 
     def _add_rocrate_config_data(self):
