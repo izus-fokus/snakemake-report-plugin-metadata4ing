@@ -1,0 +1,27 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "Metadata4ing Reporter Plugin for Snakemake: A reporter plugin for snakemake to generate research object",
+  "description": "A Snakemake reporter plugin that outputs metadata of your snakemake run in a RO-Crate format.",
+  "version": "1.2.5",
+  "url": "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing",
+  "keywords": [
+    "snakemake",
+    "reporter plugin",
+    "metadata4ing"
+  ],
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Mahdi",
+      "familyName": "Jafarkhani",
+      "identifier": "https://orcid.org/0009-0008-6162-8404"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Dorothea",
+      "familyName": "Iglezakis",
+      "identifier": "https://orcid.org/0000-0002-8524-0569"
+    }
+  ]
+}
