@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Jafarkhani"
+  given-names: "Mahdi"
+- family-names: "Iglezakis"
+  given-names: "Dorothea"
+  orcid: "https://orcid.org/0000-0002-8524-0569"
+title: "Metadata4ing Reporter Plugin for Snakemake: A reporter plugin for snakemake to generate research object"
+version: 1.2.5
+url: "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
+keywords:
+  - snakemake
+  - plugin
+  - metadata
+abstract: "A Snakemake reporter plugin that outputs metadata of your snakemake run in a RO-Crate format."
