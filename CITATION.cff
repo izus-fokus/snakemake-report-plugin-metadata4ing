@@ -3,6 +3,7 @@ message: "If you use this software, please cite it as below."
 authors:
 - family-names: "Jafarkhani"
   given-names: "Mahdi"
+  orcid: "https://orcid.org/0009-0008-6162-8404"
 - family-names: "Iglezakis"
   given-names: "Dorothea"
   orcid: "https://orcid.org/0000-0002-8524-0569"
@@ -11,6 +12,6 @@ version: 1.2.5
 url: "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
 keywords:
   - snakemake
-  - plugin
-  - metadata
+  - reporter plugin
+  - metadata4ing
 abstract: "A Snakemake reporter plugin that outputs metadata of your snakemake run in a RO-Crate format."
