@@ -58,6 +58,28 @@ class ReportSettings(ReportSettingsBase):
             "unparse_func": str,
         },
     )
+    
+    benchmarkfile: Optional[Path] = field(
+        default=None,
+        metadata={
+            "help": "Path to the benchmark file, which contains metadata about the research problem.",
+            "env_var": False,
+            "required": False,
+            "parse_func": Path,
+            "unparse_func": str,
+        },
+    )
+    
+    configname: Optional[Path] = field(
+        default=None,
+        metadata={
+            "help": "Name of the config which is currently running",
+            "env_var": False,
+            "required": False,
+            "parse_func": Path,
+            "unparse_func": str,
+        },
+    )
 
 
 class Reporter(ReporterBase):
@@ -103,7 +125,6 @@ class Reporter(ReporterBase):
 
         if self.settings.filename:
             self._validate_filename(str(self.settings.filename))
-
         
         self._read_config()
         self._get_context()
@@ -272,12 +293,18 @@ class Reporter(ReporterBase):
             else:
                 node["has output"].append({"@id": file_node["@id"]})
             if self.settings.paramscript:
-                metadata = self._extract_parameters(job.rule, file, file_node)
+                metadata = self._extract_parameters_from_paramscript(job.rule, file, file_node)
                 rule_data = metadata.get(job.rule, {})
                 for k in ("has parameter", "investigates"):
                     if k in rule_data:
                         optional_fields.setdefault(k, []).append(rule_data[k])
-
+            elif self.settings.benchmarkfile:
+                metadata = self._extract_parameters_from_benchmark(job.rule, file, file_node)
+                rule_data = metadata.get(job.rule, {})
+                for k in ("has parameter", "investigates"):
+                    if k in rule_data:
+                        optional_fields.setdefault(k, []).append(rule_data[k])
+                
         self.methods[new_method_node_id] = {
             "@id": new_method_node_id,
             "@type": "method",
@@ -346,86 +373,167 @@ class Reporter(ReporterBase):
             ),
         }
         self.processing_steps[id] = benchmark_node
+        
+    def _extract_parameters_from_benchmark(self, rule, file, file_node):
+        """
+        Reads a JSON-LD benchmark metadata file, converts it to RDF,
+        and extracts parameters for the given configuration.
+    
+        Returns the same structure as the old extract_params function.
+        """
+        if (file != "parameters.json"):
+            return {}
+        
+        params = {}
+        file_path = self.settings.benchmarkfile
+        config_name = self.settings.configname
+        rule_name = "run_simulation"
+        
+        if rule != rule_name:
+            return {}
+        
+        file_name = os.path.basename(file_path)
+    
+        if not (file_name.endswith(".json") or file_name.endswith(".jsonld")):
+            return params
+        
+        g = Graph()
+        g.parse(file_path, format="json-ld")
+    
+        query = f"""
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX m4i: <http://w3id.org/nfdi4ing/metadata4ing#>
+    
+        SELECT ?paramLabel ?numVal ?strVal ?unit
+        WHERE {{
+            ?config rdfs:label ?confLabel .
+            FILTER(LCASE(STR(?confLabel)) = LCASE("{config_name}"))
+    
+            ?config <http://purl.obolibrary.org/obo/BFO_0000051> ?param .
+    
+            ?param rdfs:label ?paramLabel .
+    
+            OPTIONAL {{ ?param <http://w3id.org/nfdi4ing/metadata4ing#hasNumericalValue> ?numVal }}
+            OPTIONAL {{ ?param <http://w3id.org/nfdi4ing/metadata4ing#hasStringValue> ?strVal }}
+            OPTIONAL {{ ?param <http://w3id.org/nfdi4ing/metadata4ing#hasUnit> ?unit }}
+        }}
+        """
+    
+        qres = g.query(query)
+    
+        params.setdefault(rule_name, {}).setdefault("has parameter", [])
+    
+        for row in qres:
+            name = str(row.paramLabel)
+    
+            value = None
+            if row.numVal is not None:
+                value = float(row.numVal)
+            elif row.strVal is not None:
+                value = str(row.strVal)
+    
+            unit = str(row.unit) if row.unit else None
+    
+            params[rule_name]["has parameter"].append({
+                name: {
+                    "value": value,
+                    "unit": unit,
+                    "json-path": f"/{name}",
+                    "data-type": self.get_type(value)
+                }
+            })
+        return self._build_metadata_from_params(params, file_node)
+    
+    def get_type(self, val):
+        if isinstance(val, float):
+            return "schema:Float"
+        elif isinstance(val, int):
+            return "schema:Integer"
+        elif isinstance(val, str):
+            return "schema:Text"
+        return None
 
-    def _extract_parameters(self, rule, file, file_node):
+    def _build_metadata_from_params(self, params, file_node):
         metadata = {}
-        extract_params_obj = self._load_param_extractor_obj()
-        params = extract_params_obj.extract_params(rule, file)
-        if params:
-            params = self._validate_extract_param_output(params)
-            for processing_step_name, processing_step_data in params.items():
-                metadata.setdefault(processing_step_name, {})
-                for parameter_type in ["has parameter", "investigates"]:
-                    if parameter_type in processing_step_data:
-                        metadata[processing_step_name].setdefault(
-                            parameter_type, []
-                        )
-                        for entry in processing_step_data[parameter_type]:
-                            for name, data in entry.items():
-                                sanitized_name = name.replace("-", "_")
-                                param_id = ""
-                                param = {
-                                    "@type": (
-                                        "text variable"
-                                        if data["data-type"] == "schema:Text"
-                                        else "numerical variable"
-                                    ),
-                                    "label": name,
-                                }
-                                if data["data-type"] == "schema:Text":
-                                    param["has string value"] = data["value"]
+        if not params:
+            return metadata
+
+        params = self._validate_extract_param_output(params)
+        for processing_step_name, processing_step_data in params.items():
+            metadata.setdefault(processing_step_name, {})
+            for parameter_type in ["has parameter", "investigates"]:
+                if parameter_type in processing_step_data:
+                    metadata[processing_step_name].setdefault(
+                        parameter_type, []
+                    )
+                    for entry in processing_step_data[parameter_type]:
+                        for name, data in entry.items():
+                            sanitized_name = name.replace("-", "_")
+                            param_id = ""
+                            param = {
+                                "@type": (
+                                    "text variable"
+                                    if data["data-type"] == "schema:Text"
+                                    else "numerical variable"
+                                ),
+                                "label": name,
+                            }
+                            if data["data-type"] == "schema:Text":
+                                param["has string value"] = data["value"]
+                            else:
+                                param["has numerical value"] = data["value"]
+
+                            if data["unit"]:
+                                if data["unit"] in self.qudt_mapping_dict:
+                                    param["has unit"] = {
+                                        "@id": self.qudt_mapping_dict[
+                                            data["unit"]
+                                        ]
+                                    }
                                 else:
-                                    param["has numerical value"] = data["value"]
-                                
-                                if data["unit"]:
-                                    if (
+                                    qudt_unit = self._get_qudt_unit_from_mapping(
                                         data["unit"]
-                                        in self.qudt_mapping_dict
-                                    ):
+                                    )
+                                    self.qudt_mapping_dict[
+                                        data["unit"]
+                                    ] = qudt_unit
+                                    if qudt_unit:
                                         param["has unit"] = {
-                                            "@id": self.qudt_mapping_dict[
-                                                data["unit"]
-                                            ]
+                                            "@id": qudt_unit
                                         }
                                     else:
-                                        qudt_unit = self._get_qudt_unit_from_mapping(
-                                            data["unit"]
-                                        )
                                         self.qudt_mapping_dict[
                                             data["unit"]
-                                        ] = qudt_unit
-                                        if qudt_unit:
-                                            param["has unit"] = {
-                                                "@id": qudt_unit
-                                            }
-                                        else:
-                                            self.qudt_mapping_dict[
-                                                data["unit"]
-                                            ] = data["unit"]
-                                            param["has unit"] = {
-                                                "@id": data["unit"]
-                                            }
+                                        ] = data["unit"]
+                                        param["has unit"] = {
+                                            "@id": data["unit"]
+                                        }
 
-                                if param in self.param_dict.values():
-                                    param_id = next(
-                                        (
-                                            k
-                                            for k, v in self.param_dict.items()
-                                            if v == param
-                                        ),
-                                        None,
-                                    )
-                                else:
-                                    param_id = f"local:variable_{sanitized_name}_{self.param_counter}"
-                                    self.param_dict[param_id] = param
-                                    self.param_counter += 1
-                                metadata[processing_step_name][
-                                    parameter_type
-                                ].append({"@id": param_id})
-                                self._add_unique_field(
-                                    sanitized_name, param_id, file_node, data
+                            if param in self.param_dict.values():
+                                param_id = next(
+                                    (
+                                        k
+                                        for k, v in self.param_dict.items()
+                                        if v == param
+                                    ),
+                                    None,
                                 )
+                            else:
+                                param_id = f"local:variable_{sanitized_name}_{self.param_counter}"
+                                self.param_dict[param_id] = param
+                                self.param_counter += 1
+                            metadata[processing_step_name][
+                                parameter_type
+                            ].append({"@id": param_id})
+                            self._add_unique_field(
+                                sanitized_name, param_id, file_node, data
+                            )
         return metadata
+
+    def _extract_parameters_from_paramscript(self, rule, file, file_node):
+        extract_params_obj = self._load_param_extractor_obj()
+        params = extract_params_obj.extract_params(rule, file)
+        return self._build_metadata_from_params(params, file_node)
 
     def _extract_tools_from_yaml(self, env_file_content: str) -> dict:
         results = {}
