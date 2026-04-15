@@ -80,7 +80,8 @@ class Reporter(ReporterBase):
         self.tools_dict = {}
         self.child_nodes = {}
         self.conda_tools_cache = {}
-        self.crate = ROCrate()
+        self.ro_crate_version = "1.1"
+        self.crate = ROCrate(version=self.ro_crate_version)
         self.benchmark_processing_step_id = ""
         self.research_problem_id = ""
         self.method_id = ""
@@ -562,7 +563,7 @@ class Reporter(ReporterBase):
                 "name": self.provenance_filename,
                 "encodingFormat": "application/ld+json",
                 "conformsTo": [
-                    "https://w3id.org/ro/crate/1.1",
+                    f"https://w3id.org/ro/crate/{self.ro_crate_version}",
                     "https://w3id.org/nfdi4ing/metadata4ing/1.3.1",
                 ],
             },
