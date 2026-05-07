@@ -74,8 +74,11 @@ class ProvenanceBuilder:
         self._get_context()
         self._get_qudt()
 
+        jsonld_context = dict(self.context_data.get("@context", {}))
+        jsonld_context.pop("@vocab", None)
+        jsonld_context.pop("description", None)
         jsonld = {
-            "@context": self.context_data.get("@context", {}),
+            "@context": jsonld_context,
             "@graph": [],
         }
         jsonld["@context"]["unit"] = self.unit_url
