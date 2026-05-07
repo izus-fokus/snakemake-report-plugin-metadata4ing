@@ -1,7 +1,10 @@
 .DS_Store
 dist
 poetry.lock
-examples/_all
+src/snake
+src/snakemake_report_plugin_metadata4ing/__pycache__
+src/snakemake_report_plugin_metadata4ing/ontologies/__pycache__
+tests/__pycache__
 sample_extractor/__pycache__/
 examples/benchmarks/FEniCS/.snakemake/log
 examples/benchmarks/Kratos/.snakemake/log
