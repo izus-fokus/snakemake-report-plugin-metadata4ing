@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "name": "Metadata4ing Reporter Plugin for Snakemake: A reporter plugin for snakemake to generate research object",
   "description": "A Snakemake reporter plugin that outputs metadata of your snakemake run in a RO-Crate format.",
-  "version": "1.2.5",
+  "version": "2.0.0",
   "url": "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing",
   "keywords": [
     "snakemake",
