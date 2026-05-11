@@ -8,12 +8,8 @@ from typing import Any
 from rocrate.model import ContextEntity
 from rocrate.rocrate import ROCrate
 
-try:
-    from snakemake_report_plugin_metadata4ing.models import ProvenanceResult
-    from snakemake_report_plugin_metadata4ing.utils import get_mime_type
-except ImportError:
-    from models import ProvenanceResult
-    from utils import get_mime_type
+from snakemake_report_plugin_metadata4ing.models import ProvenanceResult
+from snakemake_report_plugin_metadata4ing.utils import get_mime_type
 
 RO_CRATE_PROFILE = "ro-crate-1.1"
 PROVENANCE_RUN_CRATE_PROFILE = "provenance-run-crate-0.5"
@@ -193,7 +189,7 @@ class ROCrateBuilder(ABC):
         )
 
 
-class Metadata4IngROCrateBuilder(ROCrateBuilder):
+class BaseROCrateBuilder(ROCrateBuilder):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("default_output_stem", "ro-crate")
         super().__init__(*args, **kwargs)
@@ -501,7 +497,7 @@ def rocrate_builder_for_profile(
     provenance_ttl_filename: str = "provenance.ttl",
 ) -> ROCrateBuilder:
     if profile_identifier == RO_CRATE_PROFILE:
-        return Metadata4IngROCrateBuilder(
+        return BaseROCrateBuilder(
             settings=settings,
             config_data=config_data,
             provenance_filename=provenance_filename,
