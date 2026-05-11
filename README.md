@@ -10,7 +10,7 @@ The plugin:
 - serializes that provenance as `provenance.jsonld` and `provenance.ttl`
 - packages the workflow run as an RO-Crate ZIP
 - supports multiple RO-Crate profiles
-- validates the generated crate automatically with `rocrate_validator`
+- validates the generated crate automatically with [`rocrate_validator`](https://pypi.org/project/roc-validator/).
 
 ## Installation
 
@@ -31,7 +31,7 @@ After installation, the plugin is available as the `metadata4ing` Snakemake
 reporter:
 
 ```bash
-snakemake --reporter metadata4ing --cores 1
+snakemake --reporter metadata4ing ...
 ```
 
 ## What The Reporter Produces
@@ -53,19 +53,14 @@ The crate contains:
 - workflow input, output, and supplemental files referenced by the run
 
 After the crate is created, it is validated automatically against the selected
-RO-Crate profile.
+RO-Crate profile using [`rocrate_validator`](https://pypi.org/project/roc-validator/).
 
 ## Supported RO-Crate Profiles
 
 The plugin currently supports these profile identifiers:
 
-- `ro-crate-1.1`
-- `provenance-run-crate-0.5`
-
-Profile specifications:
-
-- Provenance Run Crate Profile: <https://www.researchobject.org/workflow-run-crate/profiles/provenance_run_crate/>
-- RO-Crate 1.1 Profile: <https://www.researchobject.org/ro-crate/specification/1.1/>
+- [`ro-crate-1.1`](https://www.researchobject.org/ro-crate/specification/1.1/).
+- [`provenance-run-crate-0.5` ](https://www.researchobject.org/workflow-run-crate/profiles/provenance_run_crate/).
 
 Use the `profileidentifier` reporter setting to choose which one to build:
 
@@ -76,6 +71,8 @@ snakemake \
   --cores 1
 ```
 
+Or
+
 ```bash
 snakemake \
   --reporter metadata4ing \
@@ -83,16 +80,16 @@ snakemake \
   --cores 1
 ```
 
-### Profile Behavior
+### Profiles
 
-`ro-crate-1.1`
+# `ro-crate-1.1`
 
 - produces a standard RO-Crate 1.1 archive
 - copies the generated Metadata4Ing provenance graph into the crate as
   contextual entities
 - keeps the provenance structure closest to the internal JSON-LD graph
 
-`provenance-run-crate-0.5`
+# `provenance-run-crate-0.5`
 
 - produces a workflow/provenance run crate
 - derives workflow run entities such as actions, formal parameters, and
@@ -252,7 +249,7 @@ The repository contains runnable benchmark examples under:
 Each example contains:
 
 - a `Snakefile`
-- an `experiment.json`
+- a `experiment.json`
 - a `metadata4ing.config`
 - parameter JSON files
 - simulation scripts
