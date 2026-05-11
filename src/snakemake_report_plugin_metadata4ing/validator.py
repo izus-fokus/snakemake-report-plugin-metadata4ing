@@ -1,6 +1,12 @@
 from __future__ import annotations
+
 from pathlib import Path
+
 from rocrate_validator import models, services
+
+
+class ROCrateValidationError(ValueError):
+    pass
 
 
 def validate_rocrate(
@@ -21,8 +27,12 @@ def validate_rocrate(
 
     result = services.validate(settings)
 
-    assert not result.has_issues(), "RO-Crate is invalid!\n" + "\n".join(
-        f"Detected issue of severity {issue.severity.name} with check "
-        f'"{issue.check.identifier}": {issue.message}'
-        for issue in result.get_issues()
-    )
+    if result.has_issues():
+        raise ROCrateValidationError(
+            "RO-Crate is invalid!\n"
+            + "\n".join(
+                f"Detected issue of severity {issue.severity.name} with check "
+                f'"{issue.check.identifier}": {issue.message}'
+                for issue in result.get_issues()
+            )
+        )

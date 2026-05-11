@@ -53,7 +53,7 @@ class ReportSettings(ReportSettingsBase):
     )
 
     profileidentifier: str = field(
-        default=PROVENANCE_RUN_CRATE_PROFILE,
+        default=RO_CRATE_PROFILE,
         metadata={
             "help": (
                 "RO-Crate profile to create. Supported values: "
@@ -99,8 +99,7 @@ class Reporter(ReporterBase):
             external_directory_name=self.external_directory_name,
         )
 
-        provenance_builder.create_external_directory()
-        try:
+        with provenance_builder.workspace():
             provenance = provenance_builder.build()
             provenance_builder.write_files(provenance)
 
@@ -113,8 +112,6 @@ class Reporter(ReporterBase):
             )
             crate_path = crate_builder.write(provenance)
             validate_rocrate(crate_path, profile_identifier=profile_identifier)
-        finally:
-            provenance_builder.clean_data()
 
     def _read_config(self):
         if not self.settings.config:

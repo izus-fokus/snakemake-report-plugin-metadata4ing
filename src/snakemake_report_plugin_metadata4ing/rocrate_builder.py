@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import uuid
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
@@ -8,6 +7,14 @@ from typing import Any
 from rocrate.model import ContextEntity
 from rocrate.rocrate import ROCrate
 
+from snakemake_report_plugin_metadata4ing.jsonld import (
+    JsonLdDocument,
+    JsonLdNode,
+    JsonLdNodeMap,
+    as_list,
+    crate_safe_id,
+    reference_id,
+)
 from snakemake_report_plugin_metadata4ing.models import ProvenanceResult
 from snakemake_report_plugin_metadata4ing.utils import get_mime_type
 
@@ -146,7 +153,7 @@ class ROCrateBuilder(ABC):
         )
 
     def _add_data_files(
-        self, file_nodes: dict[str, dict[str, Any]]
+        self, file_nodes: JsonLdNodeMap
     ) -> dict[str, str]:
         file_id_map: dict[str, str] = {}
         for file_path, file_node in file_nodes.items():
@@ -165,7 +172,7 @@ class ROCrateBuilder(ABC):
 
     def _add_context_entity(
         self,
-        jsonld: dict[str, Any],
+        jsonld: JsonLdNode,
         *,
         skip_existing: bool = False,
     ) -> ContextEntity | None:
@@ -189,7 +196,7 @@ class ROCrateBuilder(ABC):
         )
 
 
-class BaseROCrateBuilder(ROCrateBuilder):
+class Metadata4IngROCrateBuilder(ROCrateBuilder):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("default_output_stem", "ro-crate")
         super().__init__(*args, **kwargs)
@@ -209,7 +216,7 @@ class BaseROCrateBuilder(ROCrateBuilder):
         self._add_provenance_nodes_to_crate(provenance.jsonld)
         self._add_ro_crate_file_nodes(provenance.file_nodes)
 
-    def _extend_rocrate_context(self, context_data: dict) -> None:
+    def _extend_rocrate_context(self, context_data: JsonLdDocument) -> None:
         metadata4ing_context = dict(context_data.get("@context", {}))
         metadata4ing_context.pop("@vocab", None)
         metadata4ing_context.pop("description", None)
@@ -220,7 +227,7 @@ class BaseROCrateBuilder(ROCrateBuilder):
         metadata4ing_context["schema"] = "http://schema.org/"
         self.crate.metadata.extra_contexts.append(metadata4ing_context)
 
-    def _add_ro_crate_file_nodes(self, file_nodes: dict[str, dict[str, Any]]) -> None:
+    def _add_ro_crate_file_nodes(self, file_nodes: JsonLdNodeMap) -> None:
         self._add_provenance_files(
             jsonld_properties={
                 "conformsTo": [
@@ -231,7 +238,7 @@ class BaseROCrateBuilder(ROCrateBuilder):
         )
         self._add_data_files(file_nodes)
 
-    def _add_provenance_nodes_to_crate(self, jsonld: dict[str, Any]) -> None:
+    def _add_provenance_nodes_to_crate(self, jsonld: JsonLdDocument) -> None:
         for node in jsonld["@graph"]:
             entity_id = node["@id"]
             if entity_id is None:
@@ -281,7 +288,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         tool_id_map: dict[str, str] = {}
         for tool_node in tools.values():
             source_id = tool_node.get("@id")
-            crate_id = _crate_safe_id(source_id)
+            crate_id = crate_safe_id(source_id)
             self._add_context_entity(
                 {
                     "@id": crate_id,
@@ -333,7 +340,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             if step_node.get("@type") != "processing step":
                 continue
 
-            action_id = _crate_safe_id(step_node.get("@id"))
+            action_id = crate_safe_id(step_node.get("@id"))
             input_parameters = []
             output_parameters = []
 
@@ -344,7 +351,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
                 self._add_formal_parameters(
                     action_id=action_id,
                     direction=direction,
-                    file_refs=_as_list(step_node.get(source_key)),
+                    file_refs=as_list(step_node.get(source_key)),
                     file_id_map=file_id_map,
                     file_nodes_by_id=file_nodes_by_id,
                     target=target,
@@ -375,7 +382,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         target: list[dict[str, str]],
     ) -> None:
         for index, file_ref in enumerate(file_refs, start=1):
-            file_ref_id = _reference_id(file_ref)
+            file_ref_id = reference_id(file_ref)
             if not file_ref_id:
                 continue
             parameter = self._formal_parameter_node(
@@ -399,7 +406,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_id_map: dict[str, str],
         file_nodes_by_id: dict[str, dict[str, Any]],
     ) -> dict[str, Any]:
-        file_entity_id = file_id_map.get(file_ref_id, _crate_safe_id(file_ref_id))
+        file_entity_id = file_id_map.get(file_ref_id, crate_safe_id(file_ref_id))
         file_node = file_nodes_by_id.get(file_ref_id, {})
         name = file_node.get("label", file_entity_id)
         action_slug = action_id.removeprefix("#")
@@ -449,11 +456,11 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         tool_id_map: dict[str, str],
         fallback_tool_id: str,
     ) -> list[dict[str, str]]:
-        method_id = _reference_id(step_node.get("realizes method"))
+        method_id = reference_id(step_node.get("realizes method"))
         method_node = methods_by_id.get(method_id, {}) if method_id else {}
         instrument_ids = []
-        for tool_ref in _as_list(method_node.get("implemented by")):
-            tool_id = _reference_id(tool_ref)
+        for tool_ref in as_list(method_node.get("implemented by")):
+            tool_id = reference_id(tool_ref)
             crate_tool_id = tool_id_map.get(tool_id) if tool_id else None
             if crate_tool_id:
                 instrument_ids.append({"@id": crate_tool_id})
@@ -497,7 +504,7 @@ def rocrate_builder_for_profile(
     provenance_ttl_filename: str = "provenance.ttl",
 ) -> ROCrateBuilder:
     if profile_identifier == RO_CRATE_PROFILE:
-        return BaseROCrateBuilder(
+        return Metadata4IngROCrateBuilder(
             settings=settings,
             config_data=config_data,
             provenance_filename=provenance_filename,
@@ -516,27 +523,3 @@ def rocrate_builder_for_profile(
         f"Unsupported profile_identifier '{profile_identifier}'. "
         f"Supported values are: {supported}."
     )
-
-
-def _as_list(value: Any) -> list[Any]:
-    if value is None:
-        return []
-    if isinstance(value, list):
-        return value
-    return [value]
-
-
-def _reference_id(value: Any) -> str | None:
-    if isinstance(value, dict):
-        return value.get("@id")
-    if isinstance(value, str):
-        return value
-    return None
-
-
-def _crate_safe_id(entity_id: str | None) -> str:
-    if not entity_id:
-        return f"#{uuid.uuid4()}"
-    if entity_id.startswith("local:"):
-        return f"#{entity_id.removeprefix('local:')}"
-    return entity_id
