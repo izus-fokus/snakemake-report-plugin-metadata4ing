@@ -1,3 +1,11 @@
+"""Build intermediate provenance data from Snakemake execution metadata.
+
+The classes in this module transform Snakemake runtime objects, workflow
+configuration, and optional parameter-extractor output into an intermediate
+JSON-LD representation. That representation is later consumed by the
+RO-Crate builders to create the final archive.
+"""
+
 import hashlib
 import importlib.util
 import inspect
@@ -34,7 +42,20 @@ from snakemake_report_plugin_metadata4ing.utils import get_mime_type
 
 
 class OntologyResources:
+    """Lazy loader for packaged ontology assets and unit-mapping resources.
+
+    The builder needs a JSON-LD context, a QUDT graph, and a small mapping
+    between human-friendly unit strings and QUDT identifiers. This helper
+    keeps those resources cached so repeated provenance builds do not reload
+    the same package files over and over.
+    """
+
     def __init__(self) -> None:
+        """Initialize ontology-related caches and namespace constants.
+
+        Returns:
+            None.
+        """
         self.context_data: JsonLdDocument | None = None
         self.unit_graph = Graph()
         self._qudt_loaded = False
@@ -45,6 +66,13 @@ class OntologyResources:
         self.ureg = UnitRegistry()
 
     def load_context(self) -> JsonLdDocument:
+        """Load the packaged Metadata4Ing JSON-LD context.
+
+        Returns:
+            JsonLdDocument: Parsed JSON-LD context document loaded from the
+            packaged ``metadata4ing.jsonld`` resource. The same object is
+            reused on later calls.
+        """
         if self.context_data is None:
             with resources.files(
                 "snakemake_report_plugin_metadata4ing.ontologies"
@@ -53,6 +81,12 @@ class OntologyResources:
         return self.context_data
 
     def load_qudt_graph(self) -> Graph:
+        """Load the packaged QUDT ontology graph.
+
+        Returns:
+            Graph: RDF graph parsed from the packaged ``qudt.ttl`` file. The
+            graph is cached after the first call.
+        """
         if not self._qudt_loaded:
             with resources.files(
                 "snakemake_report_plugin_metadata4ing.ontologies"
@@ -62,6 +96,17 @@ class OntologyResources:
         return self.unit_graph
 
     def get_qudt_unit(self, unit: str) -> str | None:
+        """Resolve a free-form unit string to a QUDT unit identifier.
+
+        Args:
+            unit: Unit expression returned by the parameter extractor, such as
+                ``m/s`` or ``second``.
+
+        Returns:
+            str | None: A QUDT-prefixed identifier such as ``unit:M`` when the
+            mapping is known. If the unit parses but is not in the mapping, the
+            original string is returned so the caller can still preserve it.
+        """
         if self._qudt_mapping is None:
             with resources.files(
                 "snakemake_report_plugin_metadata4ing.ontologies"
@@ -74,15 +119,58 @@ class OntologyResources:
 
 
 class ParameterExtractorRunner:
+    """Load and execute an optional external parameter-extractor script.
+
+    The plugin allows users to provide a Python script implementing
+    :class:`ParameterExtractorInterface`. This wrapper imports that script once,
+    instantiates the first matching implementation, executes it for relevant
+    files, and validates the returned metadata shape.
+    """
+
     def __init__(self, script_path: Path | None) -> None:
+        """Store the extractor path and initialize the lazy instance cache.
+
+        Args:
+            script_path: Path to the user-provided Python module containing a
+                ``ParameterExtractorInterface`` implementation, or ``None`` if
+                parameter extraction is disabled.
+
+        Returns:
+            None.
+        """
         self.script_path = script_path.expanduser().resolve() if script_path else None
         self._extractor = None
 
     @property
     def enabled(self) -> bool:
+        """Return whether parameter extraction is enabled.
+
+        Returns:
+            bool: ``True`` when a script path was configured, otherwise
+            ``False``.
+        """
         return self.script_path is not None
 
     def extract(self, rule_name: str, file_path: str) -> dict[str, Any]:
+        """Run the configured extractor for one rule/file pair.
+
+        Args:
+            rule_name: Name of the Snakemake rule currently being processed.
+            file_path: Path to the file whose contents may contain parameter
+                metadata.
+
+        Returns:
+            dict[str, Any]: Validated extractor output. An empty dictionary is
+            returned when extraction is disabled or the extractor returns a
+            falsey result.
+
+        Raises:
+            FileNotFoundError: If extraction is enabled but the configured
+                script path does not exist.
+            ImportError: If the script cannot provide a valid extractor class.
+            TypeError: If the extractor output has the wrong container types.
+            ValueError: If required extractor keys are missing.
+        """
         if not self.enabled:
             return {}
         extractor = self._load_extractor()
@@ -90,6 +178,16 @@ class ParameterExtractorRunner:
         return self.validate_output(result) if result else {}
 
     def _load_extractor(self):
+        """Import and instantiate the configured extractor implementation.
+
+        Returns:
+            ParameterExtractorInterface: Instantiated extractor implementation.
+
+        Raises:
+            FileNotFoundError: If the configured script path does not exist.
+            ImportError: If the module does not define a concrete subclass of
+                ``ParameterExtractorInterface``.
+        """
         if self._extractor is not None:
             return self._extractor
         if self.script_path is None or not self.script_path.exists():
@@ -113,6 +211,30 @@ class ParameterExtractorRunner:
 
     @staticmethod
     def validate_output(result: dict[str, Any]) -> dict[str, Any]:
+        """Validate the structure returned by a parameter extractor.
+
+        The expected shape is::
+
+            {
+                "<processing-step-name>": {
+                    "has parameter": [
+                        {"<name>": {"value": ..., "unit": ..., ...}}
+                    ],
+                    "investigates": [...]
+                }
+            }
+
+        Args:
+            result: Raw dictionary returned by the extractor implementation.
+
+        Returns:
+            dict[str, Any]: The same dictionary when validation succeeds.
+
+        Raises:
+            TypeError: If keys or values have unexpected types.
+            ValueError: If required sections or required per-parameter keys are
+                missing.
+        """
         if not isinstance(result, dict):
             raise TypeError("Function output must be a dictionary.")
 
@@ -178,11 +300,33 @@ class ParameterExtractorRunner:
 
 
 class ToolResolver:
+    """Resolve software tool metadata from conda environment definitions.
+
+    Tool versions can be declared directly in a workflow's environment YAML,
+    but sometimes only package names are present. This helper inspects local
+    conda environments to fill in missing versions when possible.
+    """
+
     def __init__(self) -> None:
+        """Initialize conda discovery caches.
+
+        Returns:
+            None.
+        """
         self._envs: dict[str, str] | None = None
         self._packages_by_env: dict[str, dict[str, str]] = {}
 
     def extract_tools_from_yaml(self, env_file_content: str) -> dict[str, str | None]:
+        """Extract tool names and versions from a conda environment file.
+
+        Args:
+            env_file_content: Text contents of a conda environment YAML file.
+
+        Returns:
+            dict[str, str | None]: Mapping from normalized package name to
+            discovered version. Versions remain ``None`` when neither the YAML
+            file nor the inspected local environments provide one.
+        """
         results: dict[str, str | None] = {}
         found_targets = set()
         parsed = yaml.safe_load(env_file_content) or {}
@@ -230,6 +374,15 @@ class ToolResolver:
         return results
 
     def _list_conda_envs(self) -> dict[str, str]:
+        """List locally available conda environments.
+
+        Returns:
+            dict[str, str]: Mapping from environment name to environment path.
+
+        Raises:
+            subprocess.CalledProcessError: If ``conda env list --json`` fails.
+            json.JSONDecodeError: If the command output is not valid JSON.
+        """
         if self._envs is None:
             result = subprocess.run(
                 ["conda", "env", "list", "--json"],
@@ -242,6 +395,20 @@ class ToolResolver:
         return self._envs
 
     def _get_packages(self, env_path: str, targets: set[str]) -> dict[str, str]:
+        """Return package versions for selected packages in one environment.
+
+        Args:
+            env_path: Filesystem path to the conda environment to inspect.
+            targets: Lower-cased package names to keep in the returned mapping.
+
+        Returns:
+            dict[str, str]: Mapping from package name to installed version for
+            the subset present in ``targets``.
+
+        Raises:
+            subprocess.CalledProcessError: If ``conda list --json`` fails.
+            json.JSONDecodeError: If the command output is not valid JSON.
+        """
         if env_path not in self._packages_by_env:
             result = subprocess.run(
                 ["conda", "list", "--prefix", env_path, "--json"],
@@ -261,6 +428,14 @@ class ToolResolver:
 
 
 class ProvenanceBuilder:
+    """Build an intermediate provenance graph from Snakemake execution data.
+
+    The builder walks completed jobs, derives processing-step, method, file,
+    parameter, tool, and research-problem nodes, and returns a
+    :class:`ProvenanceResult` object containing both the assembled JSON-LD
+    document and the registries used to build it.
+    """
+
     def __init__(
         self,
         jobs,
@@ -271,6 +446,25 @@ class ProvenanceBuilder:
         provenance_ttl_filename: str = "provenance.ttl",
         external_directory_name: str = "_EXTERNAL",
     ):
+        """Initialize the builder with Snakemake runtime objects and config.
+
+        Args:
+            jobs: Iterable of Snakemake job records with timing information.
+            dag: Snakemake DAG object used to resolve rule inputs, shell
+                commands, and conda environments.
+            settings: Plugin settings object. Only selected attributes are used,
+                including an optional ``paramscript`` path.
+            config_data: Parsed plugin configuration dictionary.
+            provenance_filename: Output filename for the generated JSON-LD
+                document.
+            provenance_ttl_filename: Output filename for the generated Turtle
+                serialization.
+            external_directory_name: Working directory name used for copied
+                files that live outside the current report directory.
+
+        Returns:
+            None.
+        """
         self.jobs = jobs
         self.dag = dag
         self.settings = settings
@@ -286,6 +480,13 @@ class ProvenanceBuilder:
         self.tool_resolver = ToolResolver()
 
     def build(self) -> ProvenanceResult:
+        """Build the complete intermediate provenance payload.
+
+        Returns:
+            ProvenanceResult: Container with the assembled JSON-LD document,
+            supporting node registries, supplemental file records, and the
+            derived simulation hash used for local identifiers.
+        """
         self.state = ProvenanceState()
         context_data = self.resources.load_context()
         self.resources.load_qudt_graph()
@@ -351,6 +552,14 @@ class ProvenanceBuilder:
         )
 
     def write_files(self, provenance: ProvenanceResult) -> None:
+        """Serialize provenance output to JSON-LD and Turtle files.
+
+        Args:
+            provenance: Provenance result returned by :meth:`build`.
+
+        Returns:
+            None.
+        """
         with open(self.provenance_filename, "w", encoding="utf8") as f:
             json.dump(provenance.jsonld, f, indent=4, ensure_ascii=False)
 
@@ -359,6 +568,11 @@ class ProvenanceBuilder:
         )
 
     def create_external_directory(self):
+        """Create a clean workspace for copied external file references.
+
+        Returns:
+            None.
+        """
         target_dir = Path(self.external_directory_name)
         if target_dir.exists():
             shutil.rmtree(target_dir)
@@ -366,6 +580,12 @@ class ProvenanceBuilder:
 
     @contextmanager
     def workspace(self) -> Iterator[None]:
+        """Provide a temporary workspace lifecycle around provenance work.
+
+        Yields:
+            None: Control returns to the caller while the external workspace is
+            available.
+        """
         self.create_external_directory()
         try:
             yield
@@ -373,6 +593,11 @@ class ProvenanceBuilder:
             self.clean_data()
 
     def clean_data(self):
+        """Remove temporary workspace content and serialized provenance files.
+
+        Returns:
+            None.
+        """
         target_dir = Path(self.external_directory_name)
         if target_dir.exists():
             shutil.rmtree(target_dir)
@@ -384,6 +609,17 @@ class ProvenanceBuilder:
     def _create_processing_step_node(
         self, job, file_nodes: JsonLdNodeMap
     ) -> JsonLdNode:
+        """Create the processing-step node for one executed Snakemake job.
+
+        Args:
+            job: Snakemake job record with rule name, job identifier, outputs,
+                and timing information.
+            file_nodes: Shared registry of already-created file nodes.
+
+        Returns:
+            JsonLdNode: Processing-step node with input/output references and a
+            linked method node.
+        """
         node = {
             "@id": f"local:processing_step_{job.job.jobid}",
             "@type": "processing step",
@@ -408,6 +644,15 @@ class ProvenanceBuilder:
         return node
 
     def _job_input_files(self, job) -> list[str]:
+        """Collect input file paths for a job from the DAG.
+
+        Args:
+            job: Snakemake job record whose matching DAG entry should be
+                inspected.
+
+        Returns:
+            list[str]: Input file paths associated with the job.
+        """
         return [
             file_path
             for dag_job in self.dag.jobs
@@ -416,6 +661,16 @@ class ProvenanceBuilder:
         ]
 
     def _job_conda_files(self, job) -> list[Any]:
+        """Collect conda environment descriptors for a job.
+
+        Args:
+            job: Snakemake job record whose matching DAG entry should be
+                inspected.
+
+        Returns:
+            list[Any]: Conda environment descriptors attached to the job. The
+            concrete descriptor type is provided by Snakemake.
+        """
         return [
             dag_job.conda_env
             for dag_job in self.dag.jobs
@@ -423,6 +678,15 @@ class ProvenanceBuilder:
         ]
 
     def _job_shell_commands(self, job) -> list[str]:
+        """Collect shell commands associated with a job.
+
+        Args:
+            job: Snakemake job record whose matching DAG entry should be
+                inspected.
+
+        Returns:
+            list[str]: Non-empty shell command strings attached to the job.
+        """
         return [
             dag_job.shellcmd
             for dag_job in self.dag.jobs
@@ -430,6 +694,14 @@ class ProvenanceBuilder:
         ]
 
     def _add_shell_supplemental_files(self, job) -> None:
+        """Register shell scripts referenced by a job as supplemental files.
+
+        Args:
+            job: Job whose shell commands should be scanned for script files.
+
+        Returns:
+            None.
+        """
         for shell_cmd in self._job_shell_commands(job):
             script_file, _ = self._extract_script_and_files(shell_cmd)
             if not script_file:
@@ -442,6 +714,16 @@ class ProvenanceBuilder:
             )
 
     def _method_optional_fields(self, job) -> JsonLdNode:
+        """Build optional method properties inferred from a job.
+
+        Args:
+            job: Job whose derived metadata should contribute optional method
+                fields.
+
+        Returns:
+            JsonLdNode: Partial node payload containing optional method
+            properties such as ``implemented by``.
+        """
         optional_fields: JsonLdNode = {}
         tools = self._job_tools(job)
         if tools:
@@ -451,6 +733,14 @@ class ProvenanceBuilder:
         return optional_fields
 
     def _job_tools(self, job) -> list[JsonLdNode]:
+        """Resolve software-tool nodes associated with a job.
+
+        Args:
+            job: Job whose conda environment definitions should be inspected.
+
+        Returns:
+            list[JsonLdNode]: Tool nodes referenced by the job's method node.
+        """
         tools: list[JsonLdNode] = []
         for conda_file in self._job_conda_files(job):
             if not conda_file:
@@ -469,6 +759,19 @@ class ProvenanceBuilder:
         file_nodes: JsonLdNodeMap,
         optional_fields: JsonLdNode,
     ) -> None:
+        """Attach file references and extracted parameter metadata to a step.
+
+        Args:
+            job: Job whose inputs and outputs are being registered.
+            node: Processing-step node being populated in place.
+            file_nodes: Shared registry of file nodes, updated as new files are
+                encountered.
+            optional_fields: Method-node payload updated in place with
+                extracted parameter and investigation references.
+
+        Returns:
+            None.
+        """
         for file_path, source in [(f, "input") for f in self._job_input_files(job)] + [
             (f, "output") for f in job.output
         ]:
@@ -485,11 +788,32 @@ class ProvenanceBuilder:
     def _merge_parameter_metadata(
         self, optional_fields: JsonLdNode, rule_data: JsonLdNode
     ) -> None:
+        """Merge extracted parameter references into a method payload.
+
+        Args:
+            optional_fields: Method payload updated in place.
+            rule_data: Extracted metadata block for one rule, already converted
+                to parameter node references.
+
+        Returns:
+            None.
+        """
         for key in ("has parameter", "investigates"):
             if key in rule_data:
                 optional_fields.setdefault(key, []).append(rule_data[key])
 
     def _create_method_node(self, job, optional_fields: JsonLdNode) -> str:
+        """Create and register the method node backing one processing step.
+
+        Args:
+            job: Job whose rule name and identifier determine the method label
+                and identifier.
+            optional_fields: Additional method properties to merge into the
+                created node.
+
+        Returns:
+            str: Local identifier of the created method node.
+        """
         method_id = f"local:method_{job.rule}_{job.job.jobid}"
         self.state.methods[method_id] = {
             "@id": method_id,
@@ -500,6 +824,11 @@ class ProvenanceBuilder:
         return method_id
 
     def _add_snakefile_supplemental_file(self) -> None:
+        """Register the workflow Snakefile as a supplemental file when found.
+
+        Returns:
+            None.
+        """
         snakefile = self._find_snakefile()
         if not snakefile:
             return
@@ -511,6 +840,15 @@ class ProvenanceBuilder:
         )
 
     def _add_file(self, file_path: str, file_dict: JsonLdNodeMap) -> JsonLdNode:
+        """Register a file node, copying external files into the workspace.
+
+        Args:
+            file_path: Path to the file referenced by the workflow.
+            file_dict: Shared registry of file nodes keyed by resolved path.
+
+        Returns:
+            JsonLdNode: File node representing ``file_path``.
+        """
         resolved_path = self._copy_external_relative_files(file_path)
         if resolved_path not in file_dict:
             file_dict[resolved_path] = {
@@ -523,6 +861,16 @@ class ProvenanceBuilder:
     def _add_supplemental_file(
         self, source_path: str, dest_path: str, encoding_format: str
     ) -> None:
+        """Register a supplemental file for later inclusion in the crate.
+
+        Args:
+            source_path: Original path used to copy the file contents.
+            dest_path: Relative destination path inside the crate workspace.
+            encoding_format: MIME type recorded for the supplemental file.
+
+        Returns:
+            None.
+        """
         self.state.supplemental_files[dest_path] = CrateFile(
             source_path=source_path,
             dest_path=dest_path,
@@ -531,6 +879,11 @@ class ProvenanceBuilder:
         )
 
     def _add_research_problem(self) -> None:
+        """Create a research-problem node from plugin configuration.
+
+        Returns:
+            None.
+        """
         if "researchProblem" in self.config_data:
             self.state.research_problem_id = "local:research_problem"
             research_problem = {
@@ -543,6 +896,14 @@ class ProvenanceBuilder:
             self.state.research_problem[self.state.research_problem_id] = research_problem
 
     def _add_benchmark_processing_step(self, sorted_jobs) -> None:
+        """Create the synthetic benchmark processing step spanning all jobs.
+
+        Args:
+            sorted_jobs: Jobs sorted by start time.
+
+        Returns:
+            None.
+        """
         self.state.benchmark_processing_step_id = "local:processing_step_benchmark"
         earliest_start = min(item.starttime for item in sorted_jobs)
         latest_end = max(item.endtime for item in sorted_jobs)
@@ -566,6 +927,19 @@ class ProvenanceBuilder:
     def _extract_parameters(
         self, rule: str, file_path: str, file_node: JsonLdNode
     ) -> JsonLdNodeMap:
+        """Extract parameter metadata for a file and convert it to node refs.
+
+        Args:
+            rule: Snakemake rule name currently being processed.
+            file_path: Path to the file sent to the parameter extractor.
+            file_node: File node representing that file in the provenance
+                graph.
+
+        Returns:
+            JsonLdNodeMap: Mapping from processing-step label to extracted
+            metadata blocks, where parameters and investigation targets are
+            replaced with ``@id`` references to registered nodes.
+        """
         metadata: JsonLdNodeMap = {}
         params = self.parameter_extractor.extract(rule, file_path)
         for processing_step_name, processing_step_data in params.items():
@@ -590,6 +964,16 @@ class ProvenanceBuilder:
         return metadata
 
     def _build_parameter_node(self, name: str, data: JsonLdNode) -> JsonLdNode:
+        """Build a variable node from extractor output metadata.
+
+        Args:
+            name: Human-readable parameter name.
+            data: Extractor payload for the parameter, including ``value``,
+                ``unit``, and ``data-type``.
+
+        Returns:
+            JsonLdNode: Variable node representing the extracted parameter.
+        """
         param_node: JsonLdNode = {
             "@type": (
                 "text variable"
@@ -608,6 +992,15 @@ class ProvenanceBuilder:
         return param_node
 
     def _resolve_unit_reference(self, unit: str | None) -> str | None:
+        """Resolve and cache the identifier used for a parameter unit.
+
+        Args:
+            unit: Free-form unit string from the extractor, or ``None``.
+
+        Returns:
+            str | None: Resolved unit identifier, original unit string, or
+            ``None`` when no unit was provided.
+        """
         if not unit:
             return None
         if unit not in self.state.qudt_mapping:
@@ -618,6 +1011,15 @@ class ProvenanceBuilder:
     def _intern_parameter_node(
         self, sanitized_name: str, param_node: JsonLdNode
     ) -> str:
+        """Deduplicate a parameter node and return its stable local identifier.
+
+        Args:
+            sanitized_name: Parameter name normalized for use in local IDs.
+            param_node: Parameter node candidate to register.
+
+        Returns:
+            str: Existing or newly created local parameter identifier.
+        """
         for key, value in self.state.parameters.items():
             if value == param_node:
                 return key
@@ -627,6 +1029,14 @@ class ProvenanceBuilder:
         return param_id
 
     def _add_tools(self, env_file_content: str) -> list:
+        """Register tool nodes derived from a conda environment file.
+
+        Args:
+            env_file_content: Text contents of a conda environment YAML file.
+
+        Returns:
+            list: Tool nodes referenced by the current job.
+        """
         tools_list = []
         tools = self.tool_resolver.extract_tools_from_yaml(env_file_content)
         if tools:
@@ -646,6 +1056,18 @@ class ProvenanceBuilder:
         return tools_list
 
     def _add_unique_field(self, name, param_id, file_node, data):
+        """Create a field/source/extract triple if it has not been seen before.
+
+        Args:
+            name: Parameter name used when composing local identifiers.
+            param_id: Identifier of the parameter node represented by the field.
+            file_node: File node where the parameter value was extracted from.
+            data: Original extractor payload containing ``json-path`` and
+                optional data-type metadata.
+
+        Returns:
+            None.
+        """
         unique_key = (
             name,
             param_id,
@@ -695,6 +1117,15 @@ class ProvenanceBuilder:
     def _extract_script_and_files(
         self, cmd: str
     ) -> tuple[Optional[str], list[str]]:
+        """Parse a shell command and identify likely script and file arguments.
+
+        Args:
+            cmd: Shell command string from a Snakemake job.
+
+        Returns:
+            tuple[Optional[str], list[str]]: Detected script path, if any, and
+            additional command arguments that look like file paths.
+        """
         interpreters = {
             "python",
             "python3",
@@ -749,6 +1180,13 @@ class ProvenanceBuilder:
         return script_path, file_paths
 
     def _find_snakefile(self):
+        """Return the local Snakefile name and relative path if it exists.
+
+        Returns:
+            tuple[str, str] | None: ``(filename, relative_path)`` when a file
+            named ``Snakefile`` is present in the current directory, otherwise
+            ``None``.
+        """
         current_dir = os.getcwd()
         for file in os.listdir(current_dir):
             if file.lower() == "snakefile":
@@ -757,6 +1195,19 @@ class ProvenanceBuilder:
         return None
 
     def _add_precedes_relations(self, jsonld_data: dict) -> dict:
+        """Infer ``precedes`` edges between processing steps.
+
+        The inference is based on a simple rule: if one action ``result`` node
+        matches another action ``object`` node, the producing step precedes the
+        consuming step.
+
+        Args:
+            jsonld_data: Complete JSON-LD document under construction.
+
+        Returns:
+            dict: The same JSON-LD document with inferred ``precedes``
+            relationships added in place.
+        """
         g = Graph()
         g.parse(data=json.dumps(jsonld_data), format="json-ld")
         schema = Namespace("https://schema.org/")
@@ -796,20 +1247,61 @@ class ProvenanceBuilder:
         return jsonld_data
 
     def _get_local_id(self, iri: str) -> str:
+        """Extract the local identifier component from an IRI.
+
+        Args:
+            iri: Absolute or local IRI string.
+
+        Returns:
+            str: Final path or fragment component, with any ``local:`` prefix
+            removed.
+        """
         local = iri.rsplit("/", 1)[-1].rsplit("#", 1)[-1]
         if local.startswith("local:"):
             local = local.replace("local:", "")
         return local
 
     def _is_file(self, file_name: str) -> bool:
+        """Return whether a path currently exists as a regular file.
+
+        Args:
+            file_name: Filesystem path to test.
+
+        Returns:
+            bool: ``True`` when the path exists and is a file.
+        """
         return os.path.isfile(file_name)
 
     def _random_hash_from_json(self, json_content: dict, length=8) -> str:
+        """Create a stable short hash from serialized JSON content.
+
+        Args:
+            json_content: JSON-serializable object to hash.
+            length: Number of hexadecimal characters to keep from the SHA-256
+                digest.
+
+        Returns:
+            str: Deterministic truncated hash string.
+        """
         json_str = json.dumps(json_content, sort_keys=True).encode("utf-8")
         hash_value = hashlib.sha256(json_str).hexdigest()
         return hash_value[:length]
 
     def _copy_external_relative_files(self, path_str) -> str:
+        """Copy external files into the workspace while preserving structure.
+
+        Files already under the current working directory are left untouched.
+        Files outside the working directory are copied under
+        ``external_directory_name`` using their path relative to the nearest
+        shared ancestor.
+
+        Args:
+            path_str: Original path string referenced by the workflow.
+
+        Returns:
+            str: Original path string for in-tree files, or the copied relative
+            path inside the external workspace for out-of-tree files.
+        """
         original_path = Path(path_str).resolve()
         current_dir = Path.cwd().resolve()
 
@@ -829,6 +1321,16 @@ class ProvenanceBuilder:
         return str(target_path)
 
     def _get_time_str(self, timestamp) -> str:
+        """Convert a Unix timestamp into a local datetime string.
+
+        Args:
+            timestamp: Unix timestamp or timestamp-like value accepted by
+                ``datetime.fromtimestamp``.
+
+        Returns:
+            str: Human-readable local datetime string, or an empty string when
+            conversion fails.
+        """
         try:
             return f"{datetime.fromtimestamp(timestamp)}"
         except Exception:

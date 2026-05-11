@@ -1,3 +1,11 @@
+"""RO-Crate builder implementations for the supported output profiles.
+
+This module converts :class:`~snakemake_report_plugin_metadata4ing.models.ProvenanceResult`
+instances into concrete RO-Crate ZIP archives. Each builder specializes in one
+profile while sharing a common base class for file handling, metadata
+application, and contextual-entity creation.
+"""
+
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
@@ -71,6 +79,13 @@ DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION = (
 
 
 class ROCrateBuilder(ABC):
+    """Abstract base class for transforming provenance into an RO-Crate.
+
+    Subclasses populate ``self.crate`` according to a selected RO-Crate
+    profile, while this base class handles output naming and shared file/entity
+    helpers.
+    """
+
     def __init__(
         self,
         settings,
@@ -80,6 +95,20 @@ class ROCrateBuilder(ABC):
         ro_crate_version: str = "1.1",
         default_output_stem: str = "RO",
     ):
+        """Initialize shared builder configuration and an empty crate.
+
+        Args:
+            settings: Snakemake report plugin settings object.
+            config_data: Parsed plugin configuration dictionary.
+            provenance_filename: Filename of the serialized JSON-LD provenance
+                document that will be included in the crate.
+            provenance_ttl_filename: Filename of the serialized Turtle
+                provenance document that will be included in the crate.
+            ro_crate_version: RO-Crate version string used to initialize the
+                crate object.
+            default_output_stem: Default filename stem used when the user does
+                not provide an explicit output name.
+        """
         self.settings = settings
         self.config_data = config_data
         self.provenance_filename = provenance_filename
@@ -89,33 +118,86 @@ class ROCrateBuilder(ABC):
         self.crate = ROCrate(version=self.ro_crate_version)
 
     def write(self, provenance: ProvenanceResult) -> str:
+        """Build the crate and write it to a ZIP archive.
+
+        Args:
+            provenance: Provenance payload extracted from the workflow run.
+
+        Returns:
+            The path to the written ZIP archive.
+        """
         self.build(provenance)
         return self._write_zip(provenance)
 
     @abstractmethod
     def build(self, provenance: ProvenanceResult) -> None:
+        """Populate ``self.crate`` from the given provenance payload.
+
+        Args:
+            provenance: Provenance payload extracted from the workflow run.
+
+        Returns:
+            None. Subclasses mutate ``self.crate`` in place.
+        """
         pass
 
     def _write_zip(self, provenance: ProvenanceResult) -> str:
+        """Write the current crate to its resolved output path.
+
+        Args:
+            provenance: Provenance payload used to derive the output filename.
+
+        Returns:
+            The output path passed to :meth:`ROCrate.write_zip`.
+        """
         crate_path = self._output_path(provenance)
         self.crate.write_zip(crate_path)
         return crate_path
 
     def _output_path(self, provenance: ProvenanceResult) -> str:
+        """Resolve the output ZIP path for the generated crate.
+
+        Args:
+            provenance: Provenance payload containing the stable simulation
+                hash.
+
+        Returns:
+            The ZIP filename for the generated crate.
+        """
         if self.settings.filename:
             return f"{self.settings.filename}.zip"
         return f"{self.default_output_stem}-{provenance.simulation_hash}.zip"
 
     def _rocrate_config(self) -> dict[str, Any]:
+        """Return the RO-Crate-specific section of the plugin config.
+
+        Returns:
+            The ``rocrate`` subsection from the plugin configuration, or an
+            empty dictionary when it is not defined.
+        """
         return self.config_data.get("rocrate", {})
 
     def _apply_rocrate_config(self) -> None:
+        """Apply user-provided name, description, and license values.
+
+        Returns:
+            None. The method mutates the root dataset metadata in ``self.crate``.
+        """
         rocrate_info = self._rocrate_config()
         self.crate.name = rocrate_info.get("name")
         self.crate.description = rocrate_info.get("description")
         self.crate.license = rocrate_info.get("license")
 
     def _add_supplemental_files(self, provenance: ProvenanceResult) -> None:
+        """Add supplemental files gathered during provenance extraction.
+
+        Args:
+            provenance: Provenance payload containing supplemental file
+                descriptors.
+
+        Returns:
+            None. Files are added directly to ``self.crate``.
+        """
         for file in provenance.supplemental_files:
             self.crate.add_file(
                 file.source_path,
@@ -131,6 +213,17 @@ class ROCrateBuilder(ABC):
         jsonld_properties: dict[str, Any] | None = None,
         ttl_properties: dict[str, Any] | None = None,
     ) -> None:
+        """Add serialized provenance files to the crate.
+
+        Args:
+            jsonld_properties: Optional additional properties for the JSON-LD
+                provenance file entity.
+            ttl_properties: Optional additional properties for the Turtle
+                provenance file entity.
+
+        Returns:
+            None. The two provenance files are added directly to ``self.crate``.
+        """
         jsonld_properties = {
             "name": self.provenance_filename,
             "encodingFormat": "application/ld+json",
@@ -155,6 +248,15 @@ class ROCrateBuilder(ABC):
     def _add_data_files(
         self, file_nodes: JsonLdNodeMap
     ) -> dict[str, str]:
+        """Add file entities and map source node IDs to crate paths.
+
+        Args:
+            file_nodes: Mapping from original file paths to provenance file
+                nodes.
+
+        Returns:
+            A mapping from provenance ``@id`` values to crate file IDs.
+        """
         file_id_map: dict[str, str] = {}
         for file_path, file_node in file_nodes.items():
             self.crate.add_file(
@@ -176,6 +278,22 @@ class ROCrateBuilder(ABC):
         *,
         skip_existing: bool = False,
     ) -> ContextEntity | None:
+        """Create and add a contextual entity from a JSON-LD node.
+
+        Args:
+            jsonld: JSON-LD node containing at least ``@id`` and ``@type``.
+            skip_existing: When ``True``, return ``None`` instead of raising if
+                an entity with the same ID already exists in the crate.
+
+        Returns:
+            The created :class:`ContextEntity`, or ``None`` when the entity
+            already exists and ``skip_existing`` is enabled.
+
+        Raises:
+            ValueError: If the node is missing ``@id`` or ``@type``, or if a
+                duplicate entity is encountered while ``skip_existing`` is
+                ``False``.
+        """
         entity_id = jsonld.get("@id")
         if not entity_id or "@type" not in jsonld:
             raise ValueError(
@@ -197,11 +315,31 @@ class ROCrateBuilder(ABC):
 
 
 class Metadata4IngROCrateBuilder(ROCrateBuilder):
+    """Builder for the Metadata4Ing-flavoured base RO-Crate profile.
+
+    This profile keeps the original provenance graph inside a standard
+    RO-Crate, enriched with Metadata4Ing-specific context terms.
+    """
+
     def __init__(self, *args, **kwargs):
+        """Set the default output stem for the base profile builder.
+
+        Args:
+            *args: Positional arguments forwarded to :class:`ROCrateBuilder`.
+            **kwargs: Keyword arguments forwarded to :class:`ROCrateBuilder`.
+        """
         kwargs.setdefault("default_output_stem", "ro-crate")
         super().__init__(*args, **kwargs)
 
     def build(self, provenance: ProvenanceResult) -> None:
+        """Populate a base RO-Crate with provenance entities and files.
+
+        Args:
+            provenance: Provenance payload extracted from the workflow run.
+
+        Returns:
+            None. The crate is mutated in place.
+        """
         self._extend_rocrate_context(provenance.context_data)
         self._apply_rocrate_config()
 
@@ -217,6 +355,16 @@ class Metadata4IngROCrateBuilder(ROCrateBuilder):
         self._add_ro_crate_file_nodes(provenance.file_nodes)
 
     def _extend_rocrate_context(self, context_data: JsonLdDocument) -> None:
+        """Append Metadata4Ing terms to the RO-Crate JSON-LD context.
+
+        Args:
+            context_data: Source JSON-LD context document produced during
+                provenance extraction.
+
+        Returns:
+            None. The method appends an extra context mapping to the crate
+            metadata.
+        """
         metadata4ing_context = dict(context_data.get("@context", {}))
         metadata4ing_context.pop("@vocab", None)
         metadata4ing_context.pop("description", None)
@@ -228,6 +376,14 @@ class Metadata4IngROCrateBuilder(ROCrateBuilder):
         self.crate.metadata.extra_contexts.append(metadata4ing_context)
 
     def _add_ro_crate_file_nodes(self, file_nodes: JsonLdNodeMap) -> None:
+        """Add provenance descriptors and data files for the base profile.
+
+        Args:
+            file_nodes: Mapping of file paths to provenance file nodes.
+
+        Returns:
+            None. Required file entities are added directly to the crate.
+        """
         self._add_provenance_files(
             jsonld_properties={
                 "conformsTo": [
@@ -239,6 +395,14 @@ class Metadata4IngROCrateBuilder(ROCrateBuilder):
         self._add_data_files(file_nodes)
 
     def _add_provenance_nodes_to_crate(self, jsonld: JsonLdDocument) -> None:
+        """Copy provenance graph nodes into the crate as contextual entities.
+
+        Args:
+            jsonld: Complete provenance JSON-LD document.
+
+        Returns:
+            None. Nodes are copied into ``self.crate`` when not already present.
+        """
         for node in jsonld["@graph"]:
             entity_id = node["@id"]
             if entity_id is None:
@@ -247,11 +411,32 @@ class Metadata4IngROCrateBuilder(ROCrateBuilder):
 
 
 class ProvenanceRunROCrateBuilder(ROCrateBuilder):
+    """Builder for the Provenance Run Crate profile.
+
+    This profile derives workflow, software, action, and formal-parameter
+    entities from the extracted provenance graph rather than copying the graph
+    directly.
+    """
+
     def __init__(self, *args, **kwargs):
+        """Set the default output stem for the provenance-run builder.
+
+        Args:
+            *args: Positional arguments forwarded to :class:`ROCrateBuilder`.
+            **kwargs: Keyword arguments forwarded to :class:`ROCrateBuilder`.
+        """
         kwargs.setdefault("default_output_stem", "ro-crate")
         super().__init__(*args, **kwargs)
 
     def build(self, provenance: ProvenanceResult) -> None:
+        """Populate a provenance run crate from extracted provenance data.
+
+        Args:
+            provenance: Provenance payload extracted from the workflow run.
+
+        Returns:
+            None. The crate is mutated in place.
+        """
         self._configure_metadata()
         self._add_supplemental_files(provenance)
         self._add_provenance_files()
@@ -268,6 +453,11 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         self._add_profile_creative_works()
 
     def _configure_metadata(self) -> None:
+        """Set metadata fields required by the workflow run profiles.
+
+        Returns:
+            None. The method mutates the crate metadata and root dataset.
+        """
         self.crate.metadata.extra_contexts.append(WORKFLOW_RUN_CONTEXT)
         self.crate.metadata.extra_terms = {
             "m4i:hasKindOfQuantity": M4I_HAS_KIND_OF_QUANTITY
@@ -285,6 +475,14 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         )
 
     def _add_tools(self, tools: dict[str, dict[str, Any]]) -> dict[str, str]:
+        """Add tool entities and map source tool IDs to crate IDs.
+
+        Args:
+            tools: Provenance tool-node mapping.
+
+        Returns:
+            A mapping from provenance tool IDs to crate tool IDs.
+        """
         tool_id_map: dict[str, str] = {}
         for tool_node in tools.values():
             source_id = tool_node.get("@id")
@@ -306,6 +504,11 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         return tool_id_map
 
     def _ensure_default_software_application(self) -> str:
+        """Ensure the crate contains a fallback Snakemake software entity.
+
+        Returns:
+            The crate identifier of the fallback Snakemake software entity.
+        """
         software_id = "#snakemake"
         if not self.crate.get(software_id):
             self._add_context_entity(
@@ -324,6 +527,17 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         tool_id_map: dict[str, str],
         fallback_tool_id: str,
     ) -> None:
+        """Translate processing steps into RO-Crate action entities.
+
+        Args:
+            provenance: Complete provenance payload.
+            file_id_map: Mapping from provenance file IDs to crate file IDs.
+            tool_id_map: Mapping from provenance tool IDs to crate tool IDs.
+            fallback_tool_id: Crate ID of the fallback software entity.
+
+        Returns:
+            None. Action and parameter entities are added to the crate.
+        """
         file_nodes_by_id = {
             file_node["@id"]: file_node
             for file_node in provenance.file_nodes.values()
@@ -381,6 +595,19 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_nodes_by_id: dict[str, dict[str, Any]],
         target: list[dict[str, str]],
     ) -> None:
+        """Create formal parameter entities for a step input/output list.
+
+        Args:
+            action_id: Crate action identifier to which the parameters belong.
+            direction: Parameter direction such as ``input`` or ``output``.
+            file_refs: File references taken from provenance step nodes.
+            file_id_map: Mapping from provenance file IDs to crate file IDs.
+            file_nodes_by_id: File-node lookup keyed by provenance ``@id``.
+            target: List that receives the generated parameter references.
+
+        Returns:
+            None. Generated references are appended to ``target``.
+        """
         for index, file_ref in enumerate(file_refs, start=1):
             file_ref_id = reference_id(file_ref)
             if not file_ref_id:
@@ -406,6 +633,20 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_id_map: dict[str, str],
         file_nodes_by_id: dict[str, dict[str, Any]],
     ) -> dict[str, Any]:
+        """Build a JSON-LD formal parameter node for an action edge.
+
+        Args:
+            action_id: Crate action identifier that owns the parameter.
+            direction: Parameter direction such as ``input`` or ``output``.
+            index: One-based position within the direction-specific parameter
+                list.
+            file_ref_id: Provenance identifier of the referenced file.
+            file_id_map: Mapping from provenance file IDs to crate file IDs.
+            file_nodes_by_id: File-node lookup keyed by provenance ``@id``.
+
+        Returns:
+            A JSON-LD node describing the formal parameter.
+        """
         file_entity_id = file_id_map.get(file_ref_id, crate_safe_id(file_ref_id))
         file_node = file_nodes_by_id.get(file_ref_id, {})
         name = file_node.get("label", file_entity_id)
@@ -428,6 +669,22 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         tool_id_map: dict[str, str],
         fallback_tool_id: str,
     ) -> dict[str, Any]:
+        """Build a ``CreateAction`` node from a processing-step node.
+
+        Args:
+            step_node: Provenance processing-step node.
+            action_id: Target crate identifier for the action.
+            input_parameters: Formal parameter references representing action
+                inputs.
+            output_parameters: Formal parameter references representing action
+                outputs.
+            methods_by_id: Method-node lookup keyed by provenance ``@id``.
+            tool_id_map: Mapping from provenance tool IDs to crate tool IDs.
+            fallback_tool_id: Crate ID of the fallback software entity.
+
+        Returns:
+            A JSON-LD action node ready to be added to the crate.
+        """
         action: dict[str, Any] = {
             "@id": action_id,
             "@type": "CreateAction",
@@ -456,6 +713,18 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         tool_id_map: dict[str, str],
         fallback_tool_id: str,
     ) -> list[dict[str, str]]:
+        """Resolve the software instruments associated with a workflow step.
+
+        Args:
+            step_node: Provenance processing-step node.
+            methods_by_id: Method-node lookup keyed by provenance ``@id``.
+            tool_id_map: Mapping from provenance tool IDs to crate tool IDs.
+            fallback_tool_id: Crate ID of the fallback software entity.
+
+        Returns:
+            A list of JSON-LD references to software entities. Falls back to
+            the Snakemake software entity when no explicit tools are found.
+        """
         method_id = reference_id(step_node.get("realizes method"))
         method_node = methods_by_id.get(method_id, {}) if method_id else {}
         instrument_ids = []
@@ -469,6 +738,16 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
     def _add_workflow(
         self, provenance: ProvenanceResult, fallback_tool_id: str
     ) -> None:
+        """Add the Snakefile as the main workflow entity when available.
+
+        Args:
+            provenance: Provenance payload containing supplemental files.
+            fallback_tool_id: Crate ID of the fallback software entity to link
+                via ``hasPart``.
+
+        Returns:
+            None. A workflow entity is added only when a Snakefile is available.
+        """
         snakefile = next(
             (
                 file
@@ -479,7 +758,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         )
         if not snakefile:
             return
-    
+
         workflow = self.crate.add_workflow(
             source=snakefile.source_path,
             dest_path=snakefile.dest_path,
@@ -487,11 +766,16 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             main=True,
             fetch_remote=False,
             properties={"hasPart": {"@id": fallback_tool_id}},
-            gen_cwl=False
+            gen_cwl=False,
         )
         self.crate.mainEntity = {"@id": workflow.id}
 
     def _add_profile_creative_works(self) -> None:
+        """Add profile descriptors referenced by ``conformsTo`` statements.
+
+        Returns:
+            None. CreativeWork entities are added to the crate in place.
+        """
         for creative_work in WORKFLOW_RUN_PROFILE_CREATIVE_WORKS:
             self._add_context_entity(creative_work)
 
@@ -503,6 +787,22 @@ def rocrate_builder_for_profile(
     provenance_filename: str = "provenance.jsonld",
     provenance_ttl_filename: str = "provenance.ttl",
 ) -> ROCrateBuilder:
+    """Return the builder implementation matching a profile identifier.
+
+    Args:
+        profile_identifier: Selected RO-Crate profile identifier.
+        settings: Snakemake report plugin settings object.
+        config_data: Parsed plugin configuration dictionary.
+        provenance_filename: Filename of the serialized JSON-LD provenance file.
+        provenance_ttl_filename: Filename of the serialized Turtle provenance
+            file.
+
+    Returns:
+        An initialized builder instance for the requested profile.
+
+    Raises:
+        ValueError: If the profile identifier is not supported.
+    """
     if profile_identifier == RO_CRATE_PROFILE:
         return Metadata4IngROCrateBuilder(
             settings=settings,

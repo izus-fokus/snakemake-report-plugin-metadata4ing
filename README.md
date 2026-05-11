@@ -1,190 +1,322 @@
-# Metadata4ing reporter for snakemake
+# Metadata4Ing Reporter For Snakemake
 
-This project is based on the Snakemake [reporter plugin](https://github.com/snakemake/snakemake-interface-report-plugins). It provides a custom reporter plugin for [metadata4ing ontology](https://nfdi4ing.pages.rwth-aachen.de/metadata4ing/metadata4ing/1.2.1/index.html) , which can be used to extract and report metadata from Snakemake pipelines.
+This project provides a Snakemake reporter plugin that exports workflow runs as
+RO-Crates enriched with provenance derived from the
+[Metadata4Ing ontology](https://nfdi4ing.pages.rwth-aachen.de/metadata4ing/metadata4ing/1.2.1/index.html).
+
+The plugin:
+
+- extracts provenance from executed Snakemake jobs
+- serializes that provenance as `provenance.jsonld` and `provenance.ttl`
+- packages the workflow run as an RO-Crate ZIP
+- supports multiple RO-Crate profiles
+- validates the generated crate automatically with `rocrate_validator`
 
 ## Installation
 
-Install the plugin using pip:
-```
+Install directly from GitHub:
+
+```bash
 python -m pip install git+https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing
 ```
-or from the source code:
-```
-poetry build
-pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-1.0.0-py3-none-any.whl
-```
-Then, use it as the reporter in your Snakemake workflow:
-```
-snakemake --reporter metadata4ing ...
-```
-## Output Format
 
-The reporter creates a zip file, which contains a RO-Crate zip file which contains important files from the simulation like the input and output files for each rule. It also creates 3 files
--- `provenance.jsonld`: Knowledge graph based on [Metadata4ing ontology](https://nfdi4ing.pages.rwth-aachen.de/metadata4ing/metadata4ing/1.2.1/index.html)
--- `provenance.ttl`: Same as `provenance.jsonld` graph but in [turtle](https://www.w3.org/TR/turtle/) format.
--- `ro-crate-metadata.json`: [Research Object Crate](https://www.researchobject.org/ro-crate/) file describing the dataset. 
+Or build and install from source:
+
+```bash
+poetry build
+python -m pip install --force-reinstall dist/snakemake_report_plugin_metadata4ing-2.0.0-py3-none-any.whl
+```
+
+After installation, the plugin is available as the `metadata4ing` Snakemake
+reporter:
+
+```bash
+snakemake --reporter metadata4ing --cores 1
+```
+
+## What The Reporter Produces
+
+The reporter writes a single RO-Crate ZIP file. By default, the filename is:
+
+```text
+ro-crate-<simulation_hash>.zip
+```
+
+where `<simulation_hash>` is a deterministic hash derived from the generated
+provenance graph.
+
+The crate contains:
+
+- `ro-crate-metadata.json`: RO-Crate metadata
+- `provenance.jsonld`: provenance graph serialized as JSON-LD
+- `provenance.ttl`: the same provenance graph serialized as Turtle
+- workflow input, output, and supplemental files referenced by the run
+
+After the crate is created, it is validated automatically against the selected
+RO-Crate profile.
+
+## Supported RO-Crate Profiles
+
+The plugin currently supports these profile identifiers:
+
+- `ro-crate-1.1`
+- `provenance-run-crate-0.5`
+
+Profile specifications:
+
+- Provenance Run Crate Profile: <https://www.researchobject.org/workflow-run-crate/profiles/provenance_run_crate/>
+- RO-Crate 1.1 Profile: <https://www.researchobject.org/ro-crate/specification/1.1/>
+
+Use the `profileidentifier` reporter setting to choose which one to build:
+
+```bash
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-profileidentifier ro-crate-1.1 \
+  --cores 1
+```
+
+```bash
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+  --cores 1
+```
+
+### Profile Behavior
+
+`ro-crate-1.1`
+
+- produces a standard RO-Crate 1.1 archive
+- copies the generated Metadata4Ing provenance graph into the crate as
+  contextual entities
+- keeps the provenance structure closest to the internal JSON-LD graph
+
+`provenance-run-crate-0.5`
+
+- produces a workflow/provenance run crate
+- derives workflow run entities such as actions, formal parameters, and
+  software applications from the extracted provenance
+- is useful when downstream tooling expects workflow run profile semantics
+
+Both profiles use the same default filename pattern and both are validated
+after creation.
 
 ## Reporter Parameters
+
+### `profileidentifier`
+
+Selects which RO-Crate profile is created.
+
+```bash
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+  --cores 1
+```
+
+### `filename`
+
+Sets the output filename stem for the final crate ZIP. The `.zip` suffix is
+added automatically.
+
+```bash
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-filename my-report \
+  --cores 1
+```
+
+This creates:
+
+```text
+my-report.zip
+```
+
+### `config`
+
+Provides a JSON configuration file for extra report metadata. The current code
+uses:
+
+- `researchProblem`: metadata copied into a research-problem node
+- `rocrate`: top-level RO-Crate metadata such as name, description, and license
+
+Example:
+
+```json
+{
+  "researchProblem": {
+    "description": "This benchmark describes a linear-elastic plate with a hole test case."
+  },
+  "rocrate": {
+    "name": "NFDi4Ing Provenance",
+    "description": "Benchmark for linear-elastic plate with a hole",
+    "license": "https://opensource.org/licenses/MIT"
+  }
+}
+```
+
+Use it like this:
+
+```bash
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-config metadata4ing.config \
+  --cores 1
+```
+
 ### `paramscript`
-It is possible to pass a script as a parameter extractor. You can write your own extractor in a separate Python script and pass it to the reporter using the `paramscript` argument:
 
-```
-snakemake --reporter metadata4ing --report-metadata4ing-paramscript /Path_to_Extractor/my_extractor.py ...
+You can provide an external Python script that extracts parameters from input
+or output files and turns them into provenance variables.
+
+```bash
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-paramscript /path/to/my_extractor.py \
+  --cores 1
 ```
 
-Please note that, your extractor should implement the [`ParameterExtractorInterface`](src/snakemake_report_plugin_metadata4ing/interfaces.py).
-```
+The extractor must implement
+[`ParameterExtractorInterface`](src/snakemake_report_plugin_metadata4ing/interfaces.py):
+
+```python
 class ParameterExtractorInterface(ABC):
     @abstractmethod
     def extract_params(self, rule_name: str, file_path: str) -> dict:
         ...
 ```
 
-The `extract_params` method should return a dictionary where:
-
-- **Keys** are the name of the corresponding procssing step (or the `rule_name`).
-- **Values** another dictionary with two keys, `has parameter` and  `investigates`. These two keys resembele the input and output of that processing step, respectively. Each of these entries again should be a dictionary where the varaiable name is key and values as another dictionary with fixed key names:
-- **Values** are dictionaries with the following keys:
-  - `value`: parameter value
-  - `unit`: unit of the value (if applicable). It will be mapped to the neartest [QUDT](https://www.qudt.org/doc/DOC_VOCAB-UNITS.html) unit.
-  - `json-path`: the path to this value in the output JSON
-  - `data-type`: the data type of the value
-
-For example, a simple dictionary could liek this:
-```json
-{
-    "run_simulation": {
-        "has parameter": {
-            "length": {
-                "value": 15,
-                "unit": "m",
-                "json-path": "/parameters.json/inputs",
-                "data-type": "float"
-            }
-        },
-        "investigates": {
-            "stress": {
-                "value": 1.0,
-                "unit": "MPa",
-                "json-path": "summary.json",
-                "data-type": "float"
-            }
-        }
-    }
-}
-```
-
-Please note that if you provide another name (or even multiple entries as the output), it adds new nodes (as processing steps) to the give rule. These new nodes would be add as a `m4i:part of` to the original processing step. This would be hepful if you have a single file as the summary where it summarizes all the simulation results (input and output parameters).
-
-For example, if the meothd is called with a rule_name like `run_simulation` and the returned dictionary is like:
+The `extract_params` method must return a dictionary of this shape:
 
 ```json
 {
-    "run_simulation_1": {
-        "has parameter": {
-            "length": {
-                "value": 15,
-                "unit": "m",
-                "json-path": "/parameters.json/inputs",
-                "data-type": "float"
-            }
-        },
-        "investigates": {
-            "stress": {
-                "value": 1.0,
-                "unit": "MPa",
-                "json-path": "summary.json",
-                "data-type": "float"
-            }
+  "<processing-step-name>": {
+    "has parameter": [
+      {
+        "<parameter-name>": {
+          "value": 15,
+          "unit": "m",
+          "json-path": "/length/value",
+          "data-type": "schema:Float"
         }
-    },
-    "run_simulation_2": {
-        "has parameter": {
-            "length": {
-                "value": 10,
-                "unit": "m",
-                "json-path": "/parameters.json/inputs",
-                "data-type": "float"
-            }
-        },
-        "investigates": {
-            "stress": {
-                "value": 2.0,
-                "unit": "MPa",
-                "json-path": "summary.json",
-                "data-type": "float"
-            }
+      }
+    ],
+    "investigates": [
+      {
+        "<result-name>": {
+          "value": 1.0,
+          "unit": "MPa",
+          "json-path": "/max_mises_stress",
+          "data-type": "schema:Float"
         }
-    }
-}
-```
-```json
-{
-    "first_run": {
-        "has parameter": {
-            "length": {
-                "value": 15,
-                "unit": "m",
-                "json-path": "/parameters.json/inputs",
-                "data-type": "float"
-            }
-        },
-        "investigates": {
-            "stress": {
-                "value": 1.0,
-                "unit": "MPa",
-                "json-path": "summary.json",
-                "data-type": "float"
-            }
-        }
-    },
-    "second_run": {
-        "has parameter": {
-            "length": {
-                "value": 10,
-                "unit": "m",
-                "json-path": "/parameters.json/inputs",
-                "data-type": "float"
-            }
-        },
-        "investigates": {
-            "stress": {
-                "value": 2.0,
-                "unit": "MPa",
-                "json-path": "summary.json",
-                "data-type": "float"
-            }
-        }
-    }
+      }
+    ]
+  }
 }
 ```
 
-Then in the final graph we have:
-```ttl
+Important details:
 
-local:processing_step_* a schema:Action ;
-    rdfs:label "run_simualtion" ;
-    .....
+- top-level keys are processing-step names
+- each processing-step value must be a dictionary
+- `has parameter` and `investigates` must be lists
+- each list item must be a one-entry dictionary
+- each parameter entry must contain:
+  - `value`
+  - `unit`
+  - `json-path`
+  - `data-type`
 
-local:processing_step_** a schema:Action ;
-    rdfs:label "first_run" ;
-    schema:isPartOf local:processing_step_* ;
-    .....
+Typical `data-type` values are:
 
-local:processing_step_*** a schema:Action ;
-    rdfs:label "second_run" ;
-    schema:isPartOf local:processing_step_* ;   
-    .....
-    
+- `schema:Text`
+- `schema:Integer`
+- `schema:Float`
+
+If the extractor returns a different processing-step name from the current
+Snakemake rule, the plugin treats that metadata as belonging to a derived step
+under the same workflow run. This is useful when one file summarizes multiple
+sub-results.
+
+A sample extractor is included at
+[`sample_extractor/my_extractor.py`](sample_extractor/my_extractor.py).
+
+## Using The Examples
+
+The repository contains runnable benchmark examples under:
+
+- `examples/benchmarks/FEniCS`
+- `examples/benchmarks/Kratos`
+
+Each example contains:
+
+- a `Snakefile`
+- an `experiment.json`
+- a `metadata4ing.config`
+- parameter JSON files
+- simulation scripts
+
+### Running The FEniCS Example
+
+From the repository root:
+
+```bash
+cd examples/benchmarks/FEniCS
+snakemake --cores 1 --software-deployment-method conda
 ```
 
-A sample extractor is provided [here](sample_extractor/my_extractor.py).
+To generate an RO-Crate with extracted parameter metadata:
 
-### `filename`
-The name of the final ZIP file. If not provided, it defaults to `ro-crate-metadata-{simulation_hash}.zip`, where `simulation_hash` is a 16-character hash computed from the content of the graph.
-
+```bash
+cd examples/benchmarks/FEniCS
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
+  --report-metadata4ing-profileidentifier ro-crate-1.1 \
+  --cores 1 \
+  --software-deployment-method conda
 ```
-snakemake --reporter metadata4ing --report-metadata4ing-filename MyFile ...
+
+To generate a provenance run crate instead:
+
+```bash
+cd examples/benchmarks/FEniCS
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
+  --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+  --cores 1 \
+  --software-deployment-method conda
 ```
 
+The example workflow will generate input files, run the simulation, build
+summary JSON files, then emit a validated RO-Crate ZIP in the example
+directory.
 
+### Running The Kratos Example
+
+The same reporter invocation pattern applies in `examples/benchmarks/Kratos`:
+
+```bash
+cd examples/benchmarks/Kratos
+snakemake \
+  --reporter metadata4ing \
+  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
+  --report-metadata4ing-profileidentifier ro-crate-1.1 \
+  --cores 1 \
+  --software-deployment-method conda
+```
+
+An example generated crate is already checked into that directory as a sample
+artifact.
+
+## Notes
+
+- The plugin validates the generated crate after writing it.
+- Validation uses the same profile identifier selected for crate generation.
+- Supplemental files such as the Snakefile and referenced shell scripts are
+  included in the crate when they are detected.

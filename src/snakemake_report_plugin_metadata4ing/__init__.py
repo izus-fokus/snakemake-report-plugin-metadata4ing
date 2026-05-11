@@ -1,3 +1,11 @@
+"""Snakemake report plugin entrypoint for Metadata4Ing RO-Crate generation.
+
+This module exposes the Snakemake report plugin settings and reporter class.
+The reporter builds an intermediate provenance representation, serializes it to
+JSON-LD/Turtle, packages it as an RO-Crate for the selected profile, and
+validates the final crate.
+"""
+
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -19,6 +27,20 @@ from snakemake_report_plugin_metadata4ing.validator import validate_rocrate
 
 @dataclass
 class ReportSettings(ReportSettingsBase):
+    """User-configurable settings exposed through the Snakemake CLI.
+
+    Attributes:
+        paramscript: Optional path to a Python module implementing
+            :class:`ParameterExtractorInterface`. When provided, the extractor is
+            invoked for workflow files to derive additional parameter metadata.
+        config: Optional path to a JSON file containing extra configuration such
+            as research-problem metadata and crate-level settings.
+        filename: Optional output filename stem for the generated crate ZIP. The
+            ``.zip`` suffix is added automatically.
+        profileidentifier: Identifier of the RO-Crate profile to emit. Supported
+            values are defined in :mod:`snakemake_report_plugin_metadata4ing.rocrate_builder`.
+    """
+
     paramscript: Optional[Path] = field(
         default=None,
         metadata={
@@ -66,11 +88,31 @@ class ReportSettings(ReportSettingsBase):
 
 
 class Reporter(ReporterBase):
+    """Snakemake report plugin that generates and validates RO-Crates.
+
+    The reporter coordinates three stages:
+    1. provenance extraction from Snakemake runtime objects,
+    2. RO-Crate construction for the selected profile,
+    3. validation of the generated crate.
+    """
+
     provenance_filename = "provenance.jsonld"
     provenance_ttl_filename = "provenance.ttl"
     external_directory_name = "_EXTERNAL"
 
     def render(self):
+        """Build provenance, package it as an RO-Crate, and validate it.
+
+        Returns:
+            None. The method writes output files as a side effect.
+
+        Raises:
+            ValueError: If the configured filename or profile identifier is
+                invalid.
+            FileNotFoundError: If the optional configuration file cannot be
+                found.
+            ROCrateValidationError: If the generated crate does not validate.
+        """
         if self.settings.filename:
             validate_filename(str(self.settings.filename))
 
@@ -79,6 +121,14 @@ class Reporter(ReporterBase):
         self._render_rocrate(profile_identifier, config_data)
 
     def _profile_identifier(self) -> str:
+        """Return the selected profile identifier after validation.
+
+        Returns:
+            The normalized profile identifier requested by the user.
+
+        Raises:
+            ValueError: If the configured profile is not supported.
+        """
         profile_identifier = self.settings.profileidentifier or RO_CRATE_PROFILE
         if profile_identifier not in SUPPORTED_PROFILE_IDENTIFIERS:
             supported = ", ".join(sorted(SUPPORTED_PROFILE_IDENTIFIERS))
@@ -89,6 +139,18 @@ class Reporter(ReporterBase):
         return profile_identifier
 
     def _render_rocrate(self, profile_identifier: str, config_data: dict) -> None:
+        """Run the end-to-end provenance-to-RO-Crate pipeline.
+
+        Args:
+            profile_identifier: Target RO-Crate profile identifier to build.
+            config_data: Parsed plugin configuration data.
+
+        Returns:
+            None. The method writes provenance files and the final crate ZIP.
+
+        Raises:
+            ROCrateValidationError: If the generated crate fails validation.
+        """
         provenance_builder = ProvenanceBuilder(
             jobs=self.jobs,
             dag=self.dag,
@@ -114,6 +176,17 @@ class Reporter(ReporterBase):
             validate_rocrate(crate_path, profile_identifier=profile_identifier)
 
     def _read_config(self):
+        """Load the optional plugin configuration file as JSON.
+
+        Returns:
+            A dictionary containing parsed configuration values. Returns an
+            empty dictionary when no config path is provided.
+
+        Raises:
+            FileNotFoundError: If ``self.settings.config`` points to a missing
+                file.
+            ValueError: If the file cannot be parsed as valid JSON.
+        """
         if not self.settings.config:
             return {}
 
