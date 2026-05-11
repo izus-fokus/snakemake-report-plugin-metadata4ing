@@ -3,11 +3,9 @@ from __future__ import annotations
 import argparse
 import json
 import uuid
-import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Optional, TypedDict, Union
-
 from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rocrate.rocrate import ROCrate
 
@@ -787,24 +785,15 @@ def create_main_ro(
         crate.add_workflow(
             source=str(workflow_source),
             lang="snakemake",
+            main=True,
+            fetch_remote=False,
             properties={"hasPart": {"@id": software_id}},
+            gen_cwl=False,
         )
 
     output_path = str(output_path)
     crate.write_zip(output_path)
     return output_path
-
-
-def unzip_rocrate(ro_zip_path: str = "RO.zip", extract_dir: str = "RO") -> Path:
-    zip_path = Path(ro_zip_path)
-    if not zip_path.exists():
-        raise FileNotFoundError(f"RO-Crate zip not found: {zip_path}")
-
-    output_dir = Path(extract_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    with zipfile.ZipFile(zip_path, "r") as archive:
-        archive.extractall(output_dir)
-    return output_dir
 
 
 def main() -> None:
@@ -816,11 +805,6 @@ def main() -> None:
         help="Path containing run folders and SubCrate.zip files",
     )
     parser.add_argument("--ro-zip", default="RO.zip", help="Path to RO-Crate zip file")
-    parser.add_argument(
-        "--extract-dir",
-        default="RO",
-        help="Directory where RO.zip should be extracted",
-    )
     parser.add_argument("--query", help="Single SPARQL query string to execute")
     parser.add_argument(
         "--interactive-query",

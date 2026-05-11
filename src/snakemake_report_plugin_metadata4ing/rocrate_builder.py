@@ -476,12 +476,15 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         )
         if not snakefile:
             return
-
+    
         workflow = self.crate.add_workflow(
             source=snakefile.source_path,
             dest_path=snakefile.dest_path,
             lang="snakemake",
+            main=True,
+            fetch_remote=False,
             properties={"hasPart": {"@id": fallback_tool_id}},
+            gen_cwl=False
         )
         self.crate.mainEntity = {"@id": workflow.id}
 
