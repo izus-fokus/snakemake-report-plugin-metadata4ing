@@ -4,78 +4,352 @@ import argparse
 import json
 import uuid
 import zipfile
-from importlib import resources
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, TypedDict
+from typing import Any, Optional, TypedDict, Union
 
-from rdflib import Graph
+from rdflib import Graph, Literal, Namespace, RDF, RDFS, URIRef
 from rocrate.rocrate import ROCrate
 
 try:
-    from snakemake_report_plugin_metadata4ing.models import ProvenanceResult
-    from snakemake_report_plugin_metadata4ing.utils import get_mime_type
-    from . import semantic_benchmark
+    from snakemake_report_plugin_metadata4ing.rocrate_builder import (
+        M4I_HAS_KIND_OF_QUANTITY,
+        WORKFLOW_RUN_CONTEXT,
+        WORKFLOW_RUN_METADATA_CONFORMS_TO,
+        WORKFLOW_RUN_PROFILE_CREATIVE_WORKS,
+        WORKFLOW_RUN_ROOT_CONFORMS_TO,
+    )
 except ImportError:
-    from models import ProvenanceResult
-    from utils import get_mime_type
+    from rocrate_builder import (
+        M4I_HAS_KIND_OF_QUANTITY,
+        WORKFLOW_RUN_CONTEXT,
+        WORKFLOW_RUN_METADATA_CONFORMS_TO,
+        WORKFLOW_RUN_PROFILE_CREATIVE_WORKS,
+        WORKFLOW_RUN_ROOT_CONFORMS_TO,
+    )
 
-    import semantic_benchmark
+ROCRATE_CONFORMS_TO = WORKFLOW_RUN_METADATA_CONFORMS_TO
+ROOT_DATASET_CONFORMS_TO = WORKFLOW_RUN_ROOT_CONFORMS_TO
+PROFILE_CREATIVE_WORKS = WORKFLOW_RUN_PROFILE_CREATIVE_WORKS
 
-DEFAULT_BENCHMARK_FILE = (
-    "/Users/mahdi/Documents/GitHub/NFDI4IngModelValidationPlatform/examples/"
-    "linear-elastic-plate-with-hole/benchmark.json"
-)
-DEFAULT_SIMULATION_RESULT_PATH = (
-    "/Users/mahdi/Documents/GitHub/NFDI4IngModelValidationPlatform/examples/"
-    "linear-elastic-plate-with-hole/fenics/results"
-)
-M4I_HAS_KIND_OF_QUANTITY = "http://w3id.org/nfdi4ing/metadata4ing#hasKindOfQuantity"
-ROCRATE_CONFORMS_TO = [
-    {"@id": "https://w3id.org/ro/crate/1.1"},
-    {"@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"},
-]
-ROOT_DATASET_CONFORMS_TO = [
-    {"@id": "https://w3id.org/ro/wfrun/process/0.5"},
-    {"@id": "https://w3id.org/ro/wfrun/workflow/0.5"},
-    {"@id": "https://w3id.org/ro/wfrun/provenance/0.5"},
-    {"@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"},
-]
-PROFILE_CREATIVE_WORKS = (
-    {
-        "@id": "https://w3id.org/ro/wfrun/process/0.5",
-        "@type": "CreativeWork",
-        "name": "Process Run Crate",
-        "version": "0.5",
-    },
-    {
-        "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
-        "@type": "CreativeWork",
-        "name": "Workflow Run Crate",
-        "version": "0.5",
-    },
-    {
-        "@id": "https://w3id.org/ro/wfrun/provenance/0.5",
-        "@type": "CreativeWork",
-        "name": "Provenance Run Crate",
-        "version": "0.5",
-    },
-    {
-        "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
-        "@type": "CreativeWork",
-        "name": "Workflow RO-Crate",
-        "version": "1.0",
-    },
-)
-WORKFLOW_RUN_CONTEXT = "https://w3id.org/ro/terms/workflow-run/context"
-DEFAULT_PROVENANCE_RUN_CRATE_NAME = "Snakemake Provenance Run"
-DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION = (
-    "RO-Crate describing a Snakemake workflow run."
-)
+M4I = Namespace("http://w3id.org/nfdi4ing/metadata4ing#")
+OBO = Namespace("http://purl.obolibrary.org/obo/")
+CR = Namespace("http://mlcommons.org/croissant/")
+
+HAS_NUMERICAL_VALUE = M4I.hasNumericalValue
+HAS_STRING_VALUE = M4I.hasStringValue
+HAS_UNIT = M4I.hasUnit
+HAS_KIND_OF_QTY = M4I.hasKindOfQuantity
+HAS_PART = OBO.BFO_0000051
+HAS_INPUT = OBO.RO_0002233
+HAS_OUTPUT = OBO.RO_0002234
+USES_CONFIG = M4I.usesConfiguration
+HAS_EMPLOYED_TOOL = M4I.hasEmployedTool
+DATA_TYPE = M4I.dataType
+JSON_PATH = CR.jsonPath
+INVESTIGATES = M4I.investigates
+EVALUATES = M4I.evaluates
+USES = URIRef("https://mardi4nfdi.de/mathmoddb#uses")
+DESCRIBED_BY = URIRef("https://mardi4nfdi.de/mathmoddb#describedAsDocumentedBy")
+REPRESENTS = URIRef("http://semanticscience.org/resource/SIO_000210")
+HAS_SOURCE = CR.source
+HAS_EXTRACT = CR.extract
+HAS_FILE_OBJECT = URIRef("http://mlcommons.org/croissant/FileObject")
+HAS_FILE_OBJECT_ALT = URIRef("http://mlcommons.org/croissant/fileObject")
+
+T_BENCHMARK = M4I.Benchmark
+T_NUMERICAL_VARIABLE = M4I.NumericalVariable
+T_PROCESSING_STEP = M4I.ProcessingStep
+T_FIELD = CR.Field
+
+
+@dataclass
+class KGNode:
+    id: str
+    label: Optional[str] = None
+
+
+@dataclass
+class ResearchProblem(KGNode):
+    pass
+
+
+@dataclass
+class MathematicalModel(KGNode):
+    pass
+
+
+@dataclass
+class Publication(KGNode):
+    pass
+
+
+@dataclass
+class NumericalVariable(KGNode):
+    unit: Optional[str] = None
+    quantity_kind: Optional[str] = None
+    field_mapping: Optional["FieldMapping"] = None
+
+
+@dataclass
+class NumericalParameter(KGNode):
+    numerical_value: Optional[float] = None
+    unit: Optional[str] = None
+    field_mapping: Optional["FieldMapping"] = None
+
+
+@dataclass
+class TextParameter(KGNode):
+    string_value: Optional[str] = None
+    unit: Optional[str] = None
+    field_mapping: Optional["FieldMapping"] = None
+
+
+@dataclass
+class FieldMapping:
+    field_id: str
+    data_type: Optional[str] = None
+    source_id: Optional[str] = None
+    extract_id: Optional[str] = None
+    json_path: Optional[str] = None
+    file_object_id: Optional[str] = None
+    file_object_label: Optional[str] = None
+
+
+ParameterEntry = Union[NumericalParameter, TextParameter, NumericalVariable]
+
+
+@dataclass
+class ParameterSet(KGNode):
+    identifier: Optional[str] = None
+    parts: list[ParameterEntry] = field(default_factory=list)
+
+
+@dataclass
+class Tool(KGNode):
+    pass
+
+
+@dataclass
+class IOObject(KGNode):
+    pass
+
+
+@dataclass
+class ProcessingStep(KGNode):
+    inputs: list[IOObject] = field(default_factory=list)
+    outputs: list[IOObject] = field(default_factory=list)
+    configurations: list[ParameterSet] = field(default_factory=list)
+    employed_tools: list[Tool] = field(default_factory=list)
+
+
+@dataclass
+class SemanticBenchmark(KGNode):
+    investigates: Optional[ResearchProblem] = None
+    uses: Optional[MathematicalModel] = None
+    evaluates: list[NumericalVariable] = field(default_factory=list)
+    parameter_sets: list[ParameterSet] = field(default_factory=list)
+    described_by: Optional[Publication] = None
+    processing_steps: list[ProcessingStep] = field(default_factory=list)
+
+
+class BenchmarkLoader:
+    def __init__(self, jsonld_path: str | Path):
+        self.path = Path(jsonld_path)
+        if not self.path.exists():
+            raise FileNotFoundError(f"File not found: {self.path}")
+
+        self.graph = Graph()
+        self.graph.parse(str(self.path), format="json-ld")
+        self._field_mapping_by_variable_id = self._build_field_mapping_index()
+
+    @staticmethod
+    def _str(uri: URIRef) -> str:
+        return str(uri)
+
+    def _label(self, subject: URIRef) -> Optional[str]:
+        value = self.graph.value(subject, RDFS.label)
+        return str(value) if value else None
+
+    def _scalar(self, subject: URIRef, predicate: URIRef):
+        value = self.graph.value(subject, predicate)
+        if value is None:
+            return None
+        return value.toPython() if isinstance(value, Literal) else str(value)
+
+    def _build_field_mapping_index(self) -> dict[str, FieldMapping]:
+        mapping_by_variable_id: dict[str, FieldMapping] = {}
+        for field_uri in self.graph.subjects(RDF.type, T_FIELD):
+            variable_uri = self.graph.value(field_uri, REPRESENTS)
+            if variable_uri is None:
+                continue
+
+            source_uri = self.graph.value(field_uri, HAS_SOURCE)
+            extract_uri = (
+                self.graph.value(source_uri, HAS_EXTRACT) if source_uri else None
+            )
+            file_object_uri = None
+            if source_uri:
+                file_object_uri = self.graph.value(source_uri, HAS_FILE_OBJECT)
+                if file_object_uri is None:
+                    file_object_uri = self.graph.value(source_uri, HAS_FILE_OBJECT_ALT)
+
+            variable_id = self._str(variable_uri)
+            mapping = FieldMapping(
+                field_id=self._str(field_uri),
+                data_type=self._scalar(field_uri, DATA_TYPE),
+                source_id=self._str(source_uri) if source_uri else None,
+                extract_id=self._str(extract_uri) if extract_uri else None,
+                json_path=self._scalar(extract_uri, JSON_PATH) if extract_uri else None,
+                file_object_id=self._str(file_object_uri) if file_object_uri else None,
+                file_object_label=(
+                    self._label(file_object_uri) if file_object_uri else None
+                ),
+            )
+            mapping_by_variable_id[variable_id] = mapping
+
+            if "variable_" in variable_id:
+                mapping_by_variable_id[
+                    variable_id.replace("variable_", "metric_", 1)
+                ] = mapping
+            elif "metric_" in variable_id:
+                mapping_by_variable_id[
+                    variable_id.replace("metric_", "variable_", 1)
+                ] = mapping
+        return mapping_by_variable_id
+
+    def _field_mapping(self, variable_uri: URIRef) -> Optional[FieldMapping]:
+        return self._field_mapping_by_variable_id.get(self._str(variable_uri))
+
+    def build_numerical_parameter(self, uri: URIRef) -> NumericalParameter:
+        return NumericalParameter(
+            id=self._str(uri),
+            label=self._label(uri),
+            numerical_value=self._scalar(uri, HAS_NUMERICAL_VALUE),
+            unit=self._scalar(uri, HAS_UNIT),
+            field_mapping=self._field_mapping(uri),
+        )
+
+    def build_text_parameter(self, uri: URIRef) -> TextParameter:
+        return TextParameter(
+            id=self._str(uri),
+            label=self._label(uri),
+            string_value=self._scalar(uri, HAS_STRING_VALUE),
+            unit=self._scalar(uri, HAS_UNIT),
+            field_mapping=self._field_mapping(uri),
+        )
+
+    def build_numerical_variable(self, uri: URIRef) -> NumericalVariable:
+        return NumericalVariable(
+            id=self._str(uri),
+            label=self._label(uri),
+            unit=self._scalar(uri, HAS_UNIT),
+            quantity_kind=self._scalar(uri, HAS_KIND_OF_QTY),
+            field_mapping=self._field_mapping(uri),
+        )
+
+    def build_parameter_entry(self, uri: URIRef) -> ParameterEntry:
+        if self.graph.value(uri, HAS_STRING_VALUE):
+            return self.build_text_parameter(uri)
+        if (uri, RDF.type, T_NUMERICAL_VARIABLE) in self.graph:
+            return self.build_numerical_variable(uri)
+        return self.build_numerical_parameter(uri)
+
+    def build_parameter_set(self, uri: URIRef) -> ParameterSet:
+        return ParameterSet(
+            id=self._str(uri),
+            label=self._label(uri),
+            identifier=self._scalar(uri, M4I.identifier),
+            parts=[
+                self.build_parameter_entry(part)
+                for part in self.graph.objects(uri, HAS_PART)
+            ],
+        )
+
+    def build_tool(self, uri: URIRef) -> Tool:
+        return Tool(id=self._str(uri), label=self._label(uri))
+
+    def build_io_object(self, uri: URIRef) -> IOObject:
+        return IOObject(id=self._str(uri), label=self._label(uri))
+
+    def build_processing_step(self, uri: URIRef) -> ProcessingStep:
+        return ProcessingStep(
+            id=self._str(uri),
+            label=self._label(uri),
+            inputs=[
+                self.build_io_object(input_entity)
+                for input_entity in self.graph.objects(uri, HAS_INPUT)
+            ],
+            outputs=[
+                self.build_io_object(output_entity)
+                for output_entity in self.graph.objects(uri, HAS_OUTPUT)
+            ],
+            configurations=[
+                self.build_parameter_set(config)
+                for config in self.graph.objects(uri, USES_CONFIG)
+            ],
+            employed_tools=[
+                self.build_tool(tool)
+                for tool in self.graph.objects(uri, HAS_EMPLOYED_TOOL)
+            ],
+        )
+
+    def load(self) -> SemanticBenchmark:
+        benchmark_uri = next(self.graph.subjects(RDF.type, T_BENCHMARK), None)
+        if benchmark_uri is None:
+            raise ValueError("No m4i:Benchmark node found.")
+
+        research_problem_uri = self.graph.value(benchmark_uri, INVESTIGATES)
+        model_uri = self.graph.value(benchmark_uri, USES)
+        publication_uri = self.graph.value(benchmark_uri, DESCRIBED_BY)
+
+        return SemanticBenchmark(
+            id=self._str(benchmark_uri),
+            label=self._label(benchmark_uri),
+            investigates=(
+                ResearchProblem(
+                    id=self._str(research_problem_uri),
+                    label=self._label(research_problem_uri),
+                )
+                if research_problem_uri
+                else None
+            ),
+            uses=(
+                MathematicalModel(
+                    id=self._str(model_uri),
+                    label=self._label(model_uri),
+                )
+                if model_uri
+                else None
+            ),
+            evaluates=[
+                self.build_numerical_variable(metric)
+                for metric in self.graph.objects(benchmark_uri, EVALUATES)
+            ],
+            parameter_sets=[
+                self.build_parameter_set(parameter_set)
+                for parameter_set in self.graph.objects(
+                    benchmark_uri, M4I.hasParameterSet
+                )
+            ],
+            described_by=(
+                Publication(
+                    id=self._str(publication_uri),
+                    label=self._label(publication_uri),
+                )
+                if publication_uri
+                else None
+            ),
+            processing_steps=[
+                self.build_processing_step(step)
+                for step in self.graph.subjects(RDF.type, T_PROCESSING_STEP)
+            ],
+        )
 
 
 class ConfigurationEntry(TypedDict):
     index: int
-    config: semantic_benchmark.ParameterSet
+    config: ParameterSet
     config_id: str
     processing_step_id: str
 
@@ -119,7 +393,7 @@ def _create_action_object_ids(
     return object_ids
 
 
-def _formal_parameter_key(part: semantic_benchmark.ParameterEntry) -> tuple[Any, ...]:
+def _formal_parameter_key(part: ParameterEntry) -> tuple[Any, ...]:
     return (
         type(part).__name__,
         part.label,
@@ -130,9 +404,7 @@ def _formal_parameter_key(part: semantic_benchmark.ParameterEntry) -> tuple[Any,
     )
 
 
-def _formal_parameter_payload(
-    part_id: str, part: semantic_benchmark.ParameterEntry
-) -> dict[str, Any]:
+def _formal_parameter_payload(part_id: str, part: ParameterEntry) -> dict[str, Any]:
     payload: dict[str, Any] = {
         "@id": part_id,
         "@type": "FormalParameter",
@@ -141,16 +413,16 @@ def _formal_parameter_payload(
 
     unit = getattr(part, "unit", None)
     payload["additionalType"] = ""
-    
+
     if unit is not None:
-        payload["m4i:hasKindOfQuantity"] = { "@id": unit}
-        
-    if isinstance(part, semantic_benchmark.NumericalParameter):
+        payload["m4i:hasKindOfQuantity"] = {"@id": unit}
+
+    if isinstance(part, NumericalParameter):
         payload["defaultValue"] = part.numerical_value
-    elif isinstance(part, semantic_benchmark.TextParameter):
+    elif isinstance(part, TextParameter):
         payload["defaultValue"] = part.string_value
     elif (
-        isinstance(part, semantic_benchmark.NumericalVariable)
+        isinstance(part, NumericalVariable)
         and part.quantity_kind is not None
     ):
         payload["valueReference"] = part.quantity_kind
@@ -160,7 +432,7 @@ def _formal_parameter_payload(
 
 def _add_configuration_nodes(
     crate: ROCrate,
-    benchmark_object: semantic_benchmark.SemanticBenchmark,
+    benchmark_object: SemanticBenchmark,
 ) -> list[ConfigurationEntry]:
     if not benchmark_object.processing_steps:
         raise ValueError("Benchmark has no processing steps.")
@@ -298,7 +570,7 @@ def _load_json(path: Path, cache: dict[Path, Any]) -> Any:
 
 def _extract_evaluated_value(
     run_folder: Path,
-    metric: semantic_benchmark.NumericalVariable,
+    metric: NumericalVariable,
     json_cache: dict[Path, Any],
 ) -> tuple[Any, Path | None]:
     field_mapping = metric.field_mapping
@@ -323,7 +595,7 @@ def _extract_evaluated_value(
 
 def _add_evaluates_nodes(
     crate: ROCrate,
-    benchmark_object: semantic_benchmark.SemanticBenchmark,
+    benchmark_object: SemanticBenchmark,
     subfolders: list[Path],
 ) -> list[RunResultEntry]:
     run_results: list[RunResultEntry] = []
@@ -366,7 +638,7 @@ def _run_results_by_name(
 
 def _configuration_entries_for_step(
     configuration_entries: list[ConfigurationEntry],
-    processing_step: semantic_benchmark.ProcessingStep,
+    processing_step: ProcessingStep,
 ) -> list[ConfigurationEntry]:
     return [
         entry
@@ -379,7 +651,7 @@ def _add_run_actions(
     crate: ROCrate,
     subfolders: list[Path],
     object_ids_by_run: dict[str, str],
-    processing_steps: list[semantic_benchmark.ProcessingStep],
+    processing_steps: list[ProcessingStep],
     configuration_entries: list[ConfigurationEntry],
     run_results_by_name: dict[str, list[dict[str, str]]],
     software_id: str,
@@ -432,308 +704,8 @@ def _add_profile_creative_works(crate: ROCrate) -> None:
         crate.add_jsonld(creative_work)
 
 
-def _as_list(value: Any) -> list[Any]:
-    if value is None:
-        return []
-    if isinstance(value, list):
-        return value
-    return [value]
-
-
-def _reference_id(value: Any) -> str | None:
-    if isinstance(value, dict):
-        return value.get("@id")
-    if isinstance(value, str):
-        return value
-    return None
-
-
-def _crate_safe_id(entity_id: str | None) -> str:
-    if not entity_id:
-        return f"#{uuid.uuid4()}"
-    if entity_id.startswith("local:"):
-        return f"#{entity_id.removeprefix('local:')}"
-    return entity_id
-
-
-def _configure_extracted_provenance_run_metadata(
-    crate: ROCrate, config_data: dict
-) -> None:
-    crate.metadata.extra_contexts.append(WORKFLOW_RUN_CONTEXT)
-    crate.metadata.extra_terms = {"m4i:hasKindOfQuantity": M4I_HAS_KIND_OF_QUANTITY}
-
-    rocrate_info = config_data.get("rocrate", {})
-    crate.name = rocrate_info.get("name", DEFAULT_PROVENANCE_RUN_CRATE_NAME)
-    crate.description = rocrate_info.get(
-        "description", DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION
-    )
-    crate.license = rocrate_info.get("license")
-    crate.metadata["conformsTo"] = ROCRATE_CONFORMS_TO
-    crate.root_dataset.append_to("conformsTo", ROOT_DATASET_CONFORMS_TO)
-
-
-def _add_extracted_supplemental_files(
-    crate: ROCrate, provenance: ProvenanceResult
-) -> None:
-    for file in provenance.supplemental_files:
-        crate.add_file(
-            file.source_path,
-            dest_path=file.dest_path,
-            properties={
-                "name": file.name,
-                "encodingFormat": file.encoding_format,
-            },
-        )
-
-
-def _add_extracted_provenance_files(
-    crate: ROCrate,
-    provenance_filename: str,
-    provenance_ttl_filename: str,
-) -> None:
-    for file_path, encoding_format in (
-        (provenance_filename, "application/ld+json"),
-        (provenance_ttl_filename, "text/turtle"),
-    ):
-        crate.add_file(
-            file_path,
-            dest_path=file_path,
-            properties={
-                "name": file_path,
-                "encodingFormat": encoding_format,
-            },
-        )
-
-
-def _add_extracted_data_files(
-    crate: ROCrate, file_nodes: dict[str, dict[str, Any]]
-) -> dict[str, str]:
-    file_id_map: dict[str, str] = {}
-    for file_path, file_node in file_nodes.items():
-        crate.add_file(
-            file_path,
-            dest_path=file_path,
-            properties={
-                "name": file_node.get("label", file_path),
-                "encodingFormat": get_mime_type(file_path),
-            },
-        )
-        source_id = file_node.get("@id")
-        if source_id:
-            file_id_map[source_id] = file_path
-    return file_id_map
-
-
-def _add_extracted_tools(
-    crate: ROCrate, tools: dict[str, dict[str, Any]]
-) -> dict[str, str]:
-    tool_id_map: dict[str, str] = {}
-    for tool_node in tools.values():
-        source_id = tool_node.get("@id")
-        crate_id = _crate_safe_id(source_id)
-        crate.add_jsonld(
-            {
-                "@id": crate_id,
-                "@type": "SoftwareApplication",
-                "name": tool_node.get("label", crate_id),
-                **(
-                    {"softwareVersion": tool_node["softwareVersion"]}
-                    if tool_node.get("softwareVersion")
-                    else {}
-                ),
-            }
-        )
-        if source_id:
-            tool_id_map[source_id] = crate_id
-    return tool_id_map
-
-
-def _ensure_default_software_application(crate: ROCrate) -> str:
-    software_id = "#snakemake"
-    if not crate.get(software_id):
-        crate.add_jsonld(
-            {
-                "@id": software_id,
-                "@type": "SoftwareApplication",
-                "name": "Snakemake",
-            }
-        )
-    return software_id
-
-
-def _formal_parameter_node(
-    action_id: str,
-    direction: str,
-    index: int,
-    file_ref_id: str,
-    file_id_map: dict[str, str],
-    file_nodes_by_id: dict[str, dict[str, Any]],
-) -> dict[str, Any]:
-    file_entity_id = file_id_map.get(file_ref_id, _crate_safe_id(file_ref_id))
-    file_node = file_nodes_by_id.get(file_ref_id, {})
-    name = file_node.get("label", file_entity_id)
-    action_slug = action_id.removeprefix("#")
-    return {
-        "@id": f"#{action_slug}-{direction}-{index}",
-        "@type": "FormalParameter",
-        "name": name,
-        "additionalType": direction,
-        "workExample": {"@id": file_entity_id},
-    }
-
-
-def _instrument_ids_for_step(
-    step_node: dict[str, Any],
-    methods_by_id: dict[str, dict[str, Any]],
-    tool_id_map: dict[str, str],
-    fallback_tool_id: str,
-) -> list[dict[str, str]]:
-    method_id = _reference_id(step_node.get("realizes method"))
-    method_node = methods_by_id.get(method_id, {}) if method_id else {}
-    instrument_ids = []
-    for tool_ref in _as_list(method_node.get("implemented by")):
-        tool_id = _reference_id(tool_ref)
-        crate_tool_id = tool_id_map.get(tool_id) if tool_id else None
-        if crate_tool_id:
-            instrument_ids.append({"@id": crate_tool_id})
-    return instrument_ids or [{"@id": fallback_tool_id}]
-
-
-def _add_extracted_processing_steps_as_actions(
-    crate: ROCrate,
-    provenance: ProvenanceResult,
-    file_id_map: dict[str, str],
-    tool_id_map: dict[str, str],
-    fallback_tool_id: str,
-) -> None:
-    file_nodes_by_id = {
-        file_node["@id"]: file_node
-        for file_node in provenance.file_nodes.values()
-        if file_node.get("@id")
-    }
-    methods_by_id = {
-        method_node["@id"]: method_node
-        for method_node in provenance.methods.values()
-        if method_node.get("@id")
-    }
-    action_refs: list[dict[str, str]] = []
-
-    for step_node in provenance.processing_steps.values():
-        if step_node.get("@type") != "processing step":
-            continue
-
-        action_id = _crate_safe_id(step_node.get("@id"))
-        input_parameters = []
-        output_parameters = []
-
-        for direction, source_key, target in (
-            ("input", "has input", input_parameters),
-            ("output", "has output", output_parameters),
-        ):
-            for index, file_ref in enumerate(
-                _as_list(step_node.get(source_key)), start=1
-            ):
-                file_ref_id = _reference_id(file_ref)
-                if not file_ref_id:
-                    continue
-                parameter = _formal_parameter_node(
-                    action_id=action_id,
-                    direction=direction,
-                    index=index,
-                    file_ref_id=file_ref_id,
-                    file_id_map=file_id_map,
-                    file_nodes_by_id=file_nodes_by_id,
-                )
-                parameter_id = parameter["@id"]
-                crate.add_jsonld(parameter)
-                target.append({"@id": parameter_id})
-
-        action: dict[str, Any] = {
-            "@id": action_id,
-            "@type": "CreateAction",
-            "name": step_node.get("label", action_id),
-            "instrument": _instrument_ids_for_step(
-                step_node=step_node,
-                methods_by_id=methods_by_id,
-                tool_id_map=tool_id_map,
-                fallback_tool_id=fallback_tool_id,
-            ),
-        }
-        if step_node.get("start time"):
-            action["startTime"] = step_node["start time"]
-        if step_node.get("end time"):
-            action["endTime"] = step_node["end time"]
-        if input_parameters:
-            action["object"] = input_parameters
-        if output_parameters:
-            action["result"] = output_parameters
-
-        crate.add_jsonld(action)
-        action_refs.append({"@id": action_id})
-
-    if action_refs:
-        crate.root_dataset.append_to("mentions", action_refs)
-
-
-def _add_extracted_workflow(
-    crate: ROCrate, provenance: ProvenanceResult, fallback_tool_id: str
-) -> None:
-    snakefile = next(
-        (
-            file
-            for file in provenance.supplemental_files
-            if Path(file.dest_path).name.lower() == "snakefile"
-        ),
-        None,
-    )
-    if not snakefile:
-        return
-
-    workflow = crate.add_workflow(
-        source=snakefile.source_path,
-        dest_path=snakefile.dest_path,
-        lang="snakemake",
-        properties={"hasPart": {"@id": fallback_tool_id}},
-    )
-    crate.mainEntity = {"@id": workflow.id}
-
-
-def create_provenance_run_rocrate(
-    provenance: ProvenanceResult,
-    config_data: dict,
-    provenance_filename: str = "provenance.jsonld",
-    provenance_ttl_filename: str = "provenance.ttl",
-    output_path: str | Path = "RO.zip",
-    ro_crate_version: str = "1.1",
-) -> str:
-    crate = ROCrate(version=ro_crate_version)
-    _configure_extracted_provenance_run_metadata(crate, config_data)
-    _add_extracted_supplemental_files(crate, provenance)
-    _add_extracted_provenance_files(
-        crate,
-        provenance_filename=provenance_filename,
-        provenance_ttl_filename=provenance_ttl_filename,
-    )
-    file_id_map = _add_extracted_data_files(crate, provenance.file_nodes)
-    tool_id_map = _add_extracted_tools(crate, provenance.tools)
-    fallback_tool_id = _ensure_default_software_application(crate)
-    _add_extracted_processing_steps_as_actions(
-        crate=crate,
-        provenance=provenance,
-        file_id_map=file_id_map,
-        tool_id_map=tool_id_map,
-        fallback_tool_id=fallback_tool_id,
-    )
-    _add_extracted_workflow(crate, provenance, fallback_tool_id)
-    _add_profile_creative_works(crate)
-
-    output_path = str(output_path)
-    crate.write_zip(output_path)
-    return output_path
-
-
 def _software_application_payload(
-    benchmark_object: semantic_benchmark.SemanticBenchmark,
+    benchmark_object: SemanticBenchmark,
 ) -> tuple[str, dict[str, Any]]:
     for processing_step in benchmark_object.processing_steps:
         for tool in processing_step.employed_tools:
@@ -769,7 +741,7 @@ def _find_workflow_source(input_path: Path, subcrates: list[Path]) -> Path | Non
 
 def create_main_ro(
     path: str | Path,
-    benchmark_object: semantic_benchmark.SemanticBenchmark,
+    benchmark_object: SemanticBenchmark,
     output_path: str | Path = "RO.zip",
 ) -> str:
     crate = ROCrate(version="1.1")
@@ -840,13 +812,7 @@ def main() -> None:
         description="Create RO-Crate and run SPARQL queries on ro-crate-metadata.json"
     )
     parser.add_argument(
-        "--benchmark-file",
-        default=DEFAULT_BENCHMARK_FILE,
-        help="Path to benchmark JSON-LD file",
-    )
-    parser.add_argument(
         "--simulation-result-path",
-        default=DEFAULT_SIMULATION_RESULT_PATH,
         help="Path containing run folders and SubCrate.zip files",
     )
     parser.add_argument("--ro-zip", default="RO.zip", help="Path to RO-Crate zip file")
@@ -863,7 +829,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    benchmark_object = semantic_benchmark.BenchmarkLoader(args.benchmark_file).load()
+    benchmark_object = BenchmarkLoader(args.benchmark_file).load()
     create_main_ro(
         args.simulation_result_path,
         benchmark_object,

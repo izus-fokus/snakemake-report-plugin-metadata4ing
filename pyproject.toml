@@ -9,7 +9,9 @@ dependencies = [
     "snakemake-interface-report-plugins (>=1.1.0,<2.0.0)",
     "rdflib",
     "rocrate",
-    "pint"
+    "pint",
+    "roc-validator",
+    "markdown-it-py (>=2.2,<3.0.0)"
 ]
 repository = "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"
 documentation = "https://github.com/izus-fokus/snakemake-report-plugin-metadata4ing"

@@ -6,21 +6,15 @@ from typing import Optional
 from snakemake_interface_report_plugins.reporter import ReporterBase
 from snakemake_interface_report_plugins.settings import ReportSettingsBase
 
-from snakemake_report_plugin_metadata4ing.create_provenance import (
-    create_provenance_run_rocrate,
-)
 from snakemake_report_plugin_metadata4ing.provenance import ProvenanceBuilder
 from snakemake_report_plugin_metadata4ing.rocrate_builder import (
-    Metadata4IngROCrateBuilder,
+    PROVENANCE_RUN_CRATE_PROFILE,
+    RO_CRATE_PROFILE,
+    SUPPORTED_PROFILE_IDENTIFIERS,
+    rocrate_builder_for_profile,
 )
 from snakemake_report_plugin_metadata4ing.utils import validate_filename
-
-RO_CRATE_PROFILE = "ro-crate-1.1"
-PROVENANCE_RUN_CRATE_PROFILE = "provenance-run-crate-0.5"
-SUPPORTED_PROFILE_IDENTIFIERS = {
-    RO_CRATE_PROFILE,
-    PROVENANCE_RUN_CRATE_PROFILE,
-}
+from snakemake_report_plugin_metadata4ing.validator import validate_rocrate
 
 
 @dataclass
@@ -58,8 +52,8 @@ class ReportSettings(ReportSettingsBase):
         },
     )
 
-    profile_identifier: str = field(
-        default=PROVENANCE_RUN_CRATE_PROFILE,#RO_CRATE_PROFILE,
+    profileidentifier: str = field(
+        default=PROVENANCE_RUN_CRATE_PROFILE,
         metadata={
             "help": (
                 "RO-Crate profile to create. Supported values: "
@@ -82,23 +76,19 @@ class Reporter(ReporterBase):
 
         profile_identifier = self._profile_identifier()
         config_data = self._read_config()
-        if profile_identifier == PROVENANCE_RUN_CRATE_PROFILE:
-            self._render_provenance_run_crate(config_data)
-            return
-
-        self._render_metadata4ing_rocrate(config_data)
+        self._render_rocrate(profile_identifier, config_data)
 
     def _profile_identifier(self) -> str:
-        profile_identifier = self.settings.profile_identifier or RO_CRATE_PROFILE
+        profile_identifier = self.settings.profileidentifier or RO_CRATE_PROFILE
         if profile_identifier not in SUPPORTED_PROFILE_IDENTIFIERS:
             supported = ", ".join(sorted(SUPPORTED_PROFILE_IDENTIFIERS))
             raise ValueError(
-                f"Unsupported profile_identifier '{profile_identifier}'. "
+                f"Unsupported profileidentifier '{profile_identifier}'. "
                 f"Supported values are: {supported}."
             )
         return profile_identifier
 
-    def _render_metadata4ing_rocrate(self, config_data: dict) -> None:
+    def _render_rocrate(self, profile_identifier: str, config_data: dict) -> None:
         provenance_builder = ProvenanceBuilder(
             jobs=self.jobs,
             dag=self.dag,
@@ -114,45 +104,17 @@ class Reporter(ReporterBase):
             provenance = provenance_builder.build()
             provenance_builder.write_files(provenance)
 
-            crate_builder = Metadata4IngROCrateBuilder(
+            crate_builder = rocrate_builder_for_profile(
+                profile_identifier=profile_identifier,
                 settings=self.settings,
                 config_data=config_data,
                 provenance_filename=self.provenance_filename,
                 provenance_ttl_filename=self.provenance_ttl_filename,
             )
-            crate_builder.write(provenance)
+            crate_path = crate_builder.write(provenance)
+            validate_rocrate(crate_path, profile_identifier=profile_identifier)
         finally:
             provenance_builder.clean_data()
-
-    def _render_provenance_run_crate(self, config_data: dict) -> None:
-        provenance_builder = ProvenanceBuilder(
-            jobs=self.jobs,
-            dag=self.dag,
-            settings=self.settings,
-            config_data=config_data,
-            provenance_filename=self.provenance_filename,
-            provenance_ttl_filename=self.provenance_ttl_filename,
-            external_directory_name=self.external_directory_name,
-        )
-
-        provenance_builder.create_external_directory()
-        try:
-            provenance = provenance_builder.build()
-            provenance_builder.write_files(provenance)
-            create_provenance_run_rocrate(
-                provenance=provenance,
-                config_data=config_data,
-                provenance_filename=self.provenance_filename,
-                provenance_ttl_filename=self.provenance_ttl_filename,
-                output_path=self._crate_output_path("RO"),
-            )
-        finally:
-            provenance_builder.clean_data()
-
-    def _crate_output_path(self, default_stem: str) -> Path:
-        if self.settings.filename:
-            return Path(f"{self.settings.filename}.zip")
-        return Path(f"{default_stem}.zip")
 
     def _read_config(self):
         if not self.settings.config:

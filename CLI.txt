@@ -43,4 +43,12 @@ snakemake --reporter metadata4ing --cores 1 --use-conda ./paper.pdf
 snakemake --reporter metadata4ing \
     --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
     --report-metadata4ing-config metadata4ing.config \
+    --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+    --cores 1
+
+
+snakemake --reporter metadata4ing \
+    --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
+    --report-metadata4ing-config metadata4ing.config \
+    --report-metadata4ing-profileidentifier ro-crate-1.1 \
     --cores 1
