@@ -46,7 +46,6 @@ class ProvenanceResult:
         fields: Mapping of field IDs to Croissant field nodes.
         sources: Mapping of source IDs to Croissant data source nodes.
         extracts: Mapping of extract IDs to extraction nodes.
-        research_problem: Mapping of research-problem IDs to problem nodes.
         supplemental_files: Files that should be included in the final crate in
             addition to the main provenance serialization.
         simulation_hash: Stable hash derived from the JSON-LD graph.
@@ -63,7 +62,6 @@ class ProvenanceResult:
     fields: JsonLdNodeMap
     sources: JsonLdNodeMap
     extracts: JsonLdNodeMap
-    research_problem: JsonLdNodeMap
     supplemental_files: list[CrateFile] = field(default_factory=list)
     simulation_hash: str = ""
     benchmark_processing_step_id: str = ""
@@ -80,7 +78,6 @@ class ProvenanceState:
         fields: Field nodes collected so far.
         sources: Source nodes collected so far.
         extracts: Extract nodes collected so far.
-        research_problem: Research-problem nodes collected so far.
         tools: Tool nodes collected so far.
         supplemental_files: Supplemental files queued for crate inclusion.
         conda_tools_cache: Cache from conda descriptors to extracted tool nodes.
@@ -90,7 +87,6 @@ class ProvenanceState:
         field_counter: Counter used to generate unique field IDs.
         tool_counter: Counter used to generate unique tool IDs.
         benchmark_processing_step_id: Synthetic benchmark-step identifier.
-        research_problem_id: Research-problem identifier from config data.
         simulation_hash: Final graph hash once computed.
     """
 
@@ -100,7 +96,6 @@ class ProvenanceState:
     fields: JsonLdNodeMap = field(default_factory=dict)
     sources: JsonLdNodeMap = field(default_factory=dict)
     extracts: JsonLdNodeMap = field(default_factory=dict)
-    research_problem: JsonLdNodeMap = field(default_factory=dict)
     tools: JsonLdNodeMap = field(default_factory=dict)
     supplemental_files: dict[str, CrateFile] = field(default_factory=dict)
     conda_tools_cache: dict[Any, list[JsonLdNode]] = field(default_factory=dict)
@@ -110,5 +105,4 @@ class ProvenanceState:
     field_counter: int = 0
     tool_counter: int = 0
     benchmark_processing_step_id: str = ""
-    research_problem_id: str = ""
     simulation_hash: str = ""

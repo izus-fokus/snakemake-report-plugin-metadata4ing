@@ -1,9 +1,9 @@
 """Build intermediate provenance data from Snakemake execution metadata.
 
 The classes in this module transform Snakemake runtime objects, workflow
-configuration, and optional parameter-extractor output into an intermediate
-JSON-LD representation. That representation is later consumed by the
-RO-Crate builders to create the final archive.
+optional parameter-extractor output into an intermediate JSON-LD
+representation. That representation is later consumed by the RO-Crate builders
+to create the final archive.
 """
 
 import json
@@ -45,7 +45,7 @@ class ProvenanceBuilder(
     """Build an intermediate provenance graph from Snakemake execution data.
 
     The builder walks completed jobs, derives processing-step, method, file,
-    parameter, tool, and research-problem nodes, and returns a
+    parameter, and tool nodes, and returns a
     :class:`ProvenanceResult` object containing both the assembled JSON-LD
     document and the registries used to build it.
     """
@@ -55,12 +55,11 @@ class ProvenanceBuilder(
         jobs,
         dag,
         settings,
-        config_data: dict,
         provenance_filename: str = "provenance.jsonld",
         provenance_ttl_filename: str = "provenance.ttl",
         external_directory_name: str = "_EXTERNAL",
     ):
-        """Initialize the builder with Snakemake runtime objects and config.
+        """Initialize the builder with Snakemake runtime objects.
 
         Args:
             jobs: Iterable of Snakemake job records with timing information.
@@ -68,7 +67,6 @@ class ProvenanceBuilder(
                 commands, and conda environments.
             settings: Plugin settings object. Only selected attributes are used,
                 including an optional ``paramscript`` path.
-            config_data: Parsed plugin configuration dictionary.
             provenance_filename: Output filename for the generated JSON-LD
                 document.
             provenance_ttl_filename: Output filename for the generated Turtle
@@ -82,7 +80,6 @@ class ProvenanceBuilder(
         self.jobs = jobs
         self.dag = dag
         self.settings = settings
-        self.config_data = config_data
         self.provenance_filename = provenance_filename
         self.provenance_ttl_filename = provenance_ttl_filename
         self.external_directory_name = external_directory_name
@@ -118,7 +115,6 @@ class ProvenanceBuilder(
         sorted_jobs = sorted(self.jobs, key=lambda job: job.starttime)
         file_nodes: JsonLdNodeMap = {}
 
-        self._add_research_problem()
         self._add_benchmark_processing_step(sorted_jobs)
 
         for job in sorted_jobs:
@@ -138,7 +134,6 @@ class ProvenanceBuilder(
             self.state.sources,
             self.state.extracts,
             self.state.tools,
-            self.state.research_problem,
         ):
             jsonld["@graph"].extend(graph_fragment.values())
 
@@ -159,7 +154,6 @@ class ProvenanceBuilder(
             fields=self.state.fields,
             sources=self.state.sources,
             extracts=self.state.extracts,
-            research_problem=self.state.research_problem,
             supplemental_files=list(self.state.supplemental_files.values()),
             simulation_hash=self.state.simulation_hash,
             benchmark_processing_step_id=self.state.benchmark_processing_step_id,

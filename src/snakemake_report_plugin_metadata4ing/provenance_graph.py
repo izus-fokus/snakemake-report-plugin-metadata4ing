@@ -10,19 +10,6 @@ from rdflib import Graph, Namespace
 class ProvenanceGraphHelpers:
     """Helpers that create graph-level nodes and relationships."""
 
-    def _add_research_problem(self) -> None:
-        """Create a research-problem node from plugin configuration."""
-        if "researchProblem" in self.config_data:
-            self.state.research_problem_id = "local:research_problem"
-            research_problem = {
-                "@id": self.state.research_problem_id,
-                "@type": "mardi4nfdi:ResearchProblem",
-            }
-            for key, value in self.config_data["researchProblem"].items():
-                property_key = f"{key.replace(' ', '_').lower()}"
-                research_problem[property_key] = value
-            self.state.research_problem[self.state.research_problem_id] = research_problem
-
     def _add_benchmark_processing_step(self, sorted_jobs) -> None:
         """Create the synthetic benchmark processing step spanning all jobs."""
         self.state.benchmark_processing_step_id = "local:processing_step_benchmark"
@@ -37,11 +24,6 @@ class ProvenanceGraphHelpers:
             "has input": [],
             "has output": [],
             "has parameter": [],
-            "investigates": (
-                {"@id": self.state.research_problem_id}
-                if self.state.research_problem_id
-                else []
-            ),
         }
         self.state.processing_steps[self.state.benchmark_processing_step_id] = benchmark_node
 

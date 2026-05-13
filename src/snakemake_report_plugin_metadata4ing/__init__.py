@@ -6,7 +6,6 @@ JSON-LD/Turtle, packages it as an RO-Crate for the selected profile, and
 validates the final crate.
 """
 
-import json
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional
@@ -16,6 +15,9 @@ from snakemake_interface_report_plugins.settings import ReportSettingsBase
 
 from snakemake_report_plugin_metadata4ing.provenance import ProvenanceBuilder
 from snakemake_report_plugin_metadata4ing.rocrate_builder import (
+    DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION,
+    DEFAULT_PROVENANCE_RUN_CRATE_NAME,
+    DEFAULT_RO_CRATE_LICENSE,
     PROVENANCE_RUN_CRATE_PROFILE,
     RO_CRATE_PROFILE,
     SUPPORTED_PROFILE_IDENTIFIERS,
@@ -33,11 +35,12 @@ class ReportSettings(ReportSettingsBase):
         paramscript: Optional path to a Python module implementing
             :class:`ParameterExtractorInterface`. When provided, the extractor is
             invoked for workflow files to derive additional parameter metadata.
-        config: Optional path to a JSON file containing extra configuration such
-            as research-problem metadata and crate-level settings.
+        name: Top-level RO-Crate name.
+        description: Top-level RO-Crate description.
+        license: Top-level RO-Crate license.
         filename: Optional output filename stem for the generated crate ZIP. The
             ``.zip`` suffix is added automatically.
-        profileidentifier: Identifier of the RO-Crate profile to emit. Supported
+        profile: Identifier of the RO-Crate profile to emit. Supported
             values are defined in :mod:`snakemake_report_plugin_metadata4ing.rocrate_builder`.
     """
 
@@ -52,14 +55,30 @@ class ReportSettings(ReportSettingsBase):
         },
     )
 
-    config: Optional[Path] = field(
-        default=None,
+    name: str = field(
+        default=DEFAULT_PROVENANCE_RUN_CRATE_NAME,
         metadata={
-            "help": "Config file in JSON format containing metadata about the research problem.",
+            "help": "Top-level RO-Crate name.",
             "env_var": False,
             "required": False,
-            "parse_func": Path,
-            "unparse_func": str,
+        },
+    )
+
+    description: str = field(
+        default=DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION,
+        metadata={
+            "help": "Top-level RO-Crate description.",
+            "env_var": False,
+            "required": False,
+        },
+    )
+
+    license: str = field(
+        default=DEFAULT_RO_CRATE_LICENSE,
+        metadata={
+            "help": "Top-level RO-Crate license.",
+            "env_var": False,
+            "required": False,
         },
     )
 
@@ -74,8 +93,8 @@ class ReportSettings(ReportSettingsBase):
         },
     )
 
-    profileidentifier: str = field(
-        default=RO_CRATE_PROFILE,
+    profile: str = field(
+        default=PROVENANCE_RUN_CRATE_PROFILE,
         metadata={
             "help": (
                 "RO-Crate profile to create. Supported values: "
@@ -107,43 +126,38 @@ class Reporter(ReporterBase):
             None. The method writes output files as a side effect.
 
         Raises:
-            ValueError: If the configured filename or profile identifier is
-                invalid.
-            FileNotFoundError: If the optional configuration file cannot be
-                found.
+            ValueError: If the configured filename or profile is invalid.
             ROCrateValidationError: If the generated crate does not validate.
         """
         if self.settings.filename:
             validate_filename(str(self.settings.filename))
 
         profile_identifier = self._profile_identifier()
-        config_data = self._read_config()
-        self._render_rocrate(profile_identifier, config_data)
+        self._render_rocrate(profile_identifier)
 
     def _profile_identifier(self) -> str:
-        """Return the selected profile identifier after validation.
+        """Return the selected profile after validation.
 
         Returns:
-            The normalized profile identifier requested by the user.
+            The normalized profile requested by the user.
 
         Raises:
             ValueError: If the configured profile is not supported.
         """
-        profile_identifier = self.settings.profileidentifier or RO_CRATE_PROFILE
+        profile_identifier = self.settings.profile or RO_CRATE_PROFILE
         if profile_identifier not in SUPPORTED_PROFILE_IDENTIFIERS:
             supported = ", ".join(sorted(SUPPORTED_PROFILE_IDENTIFIERS))
             raise ValueError(
-                f"Unsupported profileidentifier '{profile_identifier}'. "
+                f"Unsupported profile '{profile_identifier}'. "
                 f"Supported values are: {supported}."
             )
         return profile_identifier
 
-    def _render_rocrate(self, profile_identifier: str, config_data: dict) -> None:
+    def _render_rocrate(self, profile_identifier: str) -> None:
         """Run the end-to-end provenance-to-RO-Crate pipeline.
 
         Args:
-            profile_identifier: Target RO-Crate profile identifier to build.
-            config_data: Parsed plugin configuration data.
+            profile_identifier: Target RO-Crate profile to build.
 
         Returns:
             None. The method writes provenance files and the final crate ZIP.
@@ -155,7 +169,6 @@ class Reporter(ReporterBase):
             jobs=self.jobs,
             dag=self.dag,
             settings=self.settings,
-            config_data=config_data,
             provenance_filename=self.provenance_filename,
             provenance_ttl_filename=self.provenance_ttl_filename,
             external_directory_name=self.external_directory_name,
@@ -168,34 +181,8 @@ class Reporter(ReporterBase):
             crate_builder = rocrate_builder_for_profile(
                 profile_identifier=profile_identifier,
                 settings=self.settings,
-                config_data=config_data,
                 provenance_filename=self.provenance_filename,
                 provenance_ttl_filename=self.provenance_ttl_filename,
             )
             crate_path = crate_builder.write(provenance)
             validate_rocrate(crate_path, profile_identifier=profile_identifier)
-
-    def _read_config(self):
-        """Load the optional plugin configuration file as JSON.
-
-        Returns:
-            A dictionary containing parsed configuration values. Returns an
-            empty dictionary when no config path is provided.
-
-        Raises:
-            FileNotFoundError: If ``self.settings.config`` points to a missing
-                file.
-            ValueError: If the file cannot be parsed as valid JSON.
-        """
-        if not self.settings.config:
-            return {}
-
-        config_path = Path(self.settings.config).expanduser().resolve()
-        if not config_path.exists():
-            raise FileNotFoundError(f"Config file not found: {config_path}")
-
-        with open(config_path, "r", encoding="utf-8") as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError as e:
-                raise ValueError(f"Error parsing JSON config file: {e}") from e

@@ -75,6 +75,7 @@ DEFAULT_PROVENANCE_RUN_CRATE_NAME = "Snakemake Provenance Run"
 DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION = (
     "RO-Crate describing a Snakemake workflow run."
 )
+DEFAULT_RO_CRATE_LICENSE = "https://opensource.org/licenses/MIT"
 
 
 class ROCrateBuilder(ABC):
@@ -88,7 +89,6 @@ class ROCrateBuilder(ABC):
     def __init__(
         self,
         settings,
-        config_data: dict,
         provenance_filename: str = "provenance.jsonld",
         provenance_ttl_filename: str = "provenance.ttl",
         ro_crate_version: str = "1.1",
@@ -98,7 +98,6 @@ class ROCrateBuilder(ABC):
 
         Args:
             settings: Snakemake report plugin settings object.
-            config_data: Parsed plugin configuration dictionary.
             provenance_filename: Filename of the serialized JSON-LD provenance
                 document that will be included in the crate.
             provenance_ttl_filename: Filename of the serialized Turtle
@@ -109,7 +108,6 @@ class ROCrateBuilder(ABC):
                 not provide an explicit output name.
         """
         self.settings = settings
-        self.config_data = config_data
         self.provenance_filename = provenance_filename
         self.provenance_ttl_filename = provenance_ttl_filename
         self.ro_crate_version = ro_crate_version
@@ -167,25 +165,15 @@ class ROCrateBuilder(ABC):
             return f"{self.settings.filename}.zip"
         return f"{self.default_output_stem}-{provenance.simulation_hash}.zip"
 
-    def _rocrate_config(self) -> dict[str, Any]:
-        """Return the RO-Crate-specific section of the plugin config.
-
-        Returns:
-            The ``rocrate`` subsection from the plugin configuration, or an
-            empty dictionary when it is not defined.
-        """
-        return self.config_data.get("rocrate", {})
-
-    def _apply_rocrate_config(self) -> None:
+    def _apply_rocrate_settings(self) -> None:
         """Apply user-provided name, description, and license values.
 
         Returns:
             None. The method mutates the root dataset metadata in ``self.crate``.
         """
-        rocrate_info = self._rocrate_config()
-        self.crate.name = rocrate_info.get("name")
-        self.crate.description = rocrate_info.get("description")
-        self.crate.license = rocrate_info.get("license")
+        self.crate.name = self.settings.name
+        self.crate.description = self.settings.description
+        self.crate.license = self.settings.license
 
     def _add_supplemental_files(self, provenance: ProvenanceResult) -> None:
         """Add supplemental files gathered during provenance extraction.
@@ -340,7 +328,7 @@ class Metadata4IngROCrateBuilder(ROCrateBuilder):
             None. The crate is mutated in place.
         """
         self._extend_rocrate_context(provenance.context_data)
-        self._apply_rocrate_config()
+        self._apply_rocrate_settings()
 
         if provenance.benchmark_processing_step_id:
             self.crate.mainEntity = {
@@ -459,12 +447,9 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         """
         self.crate.metadata.extra_contexts.append(WORKFLOW_RUN_CONTEXT)
 
-        rocrate_info = self._rocrate_config()
-        self.crate.name = rocrate_info.get("name", DEFAULT_PROVENANCE_RUN_CRATE_NAME)
-        self.crate.description = rocrate_info.get(
-            "description", DEFAULT_PROVENANCE_RUN_CRATE_DESCRIPTION
-        )
-        self.crate.license = rocrate_info.get("license")
+        self.crate.name = self.settings.name
+        self.crate.description = self.settings.description
+        self.crate.license = self.settings.license
         self.crate.metadata["conformsTo"] = WORKFLOW_RUN_METADATA_CONFORMS_TO
         self.crate.root_dataset.append_to(
             "conformsTo", WORKFLOW_RUN_ROOT_CONFORMS_TO
@@ -779,7 +764,6 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
 def rocrate_builder_for_profile(
     profile_identifier: str,
     settings,
-    config_data: dict,
     provenance_filename: str = "provenance.jsonld",
     provenance_ttl_filename: str = "provenance.ttl",
 ) -> ROCrateBuilder:
@@ -788,7 +772,6 @@ def rocrate_builder_for_profile(
     Args:
         profile_identifier: Selected RO-Crate profile identifier.
         settings: Snakemake report plugin settings object.
-        config_data: Parsed plugin configuration dictionary.
         provenance_filename: Filename of the serialized JSON-LD provenance file.
         provenance_ttl_filename: Filename of the serialized Turtle provenance
             file.
@@ -802,14 +785,12 @@ def rocrate_builder_for_profile(
     if profile_identifier == RO_CRATE_PROFILE:
         return Metadata4IngROCrateBuilder(
             settings=settings,
-            config_data=config_data,
             provenance_filename=provenance_filename,
             provenance_ttl_filename=provenance_ttl_filename,
         )
     if profile_identifier == PROVENANCE_RUN_CRATE_PROFILE:
         return ProvenanceRunROCrateBuilder(
             settings=settings,
-            config_data=config_data,
             provenance_filename=provenance_filename,
             provenance_ttl_filename=provenance_ttl_filename,
         )
