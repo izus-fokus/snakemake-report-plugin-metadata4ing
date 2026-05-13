@@ -9,3 +9,4 @@ sample_extractor/__pycache__/
 examples/benchmarks/FEniCS/.snakemake/log
 examples/benchmarks/Kratos/.snakemake/log
 examples/benchmarks/Poisson/snakemake/.snakemake/log
+examples/benchmarks/FEniCS_Simplified/.snakemake/log
