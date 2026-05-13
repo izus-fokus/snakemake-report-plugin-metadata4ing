@@ -57,17 +57,17 @@ RO-Crate profile using [`rocrate_validator`](https://pypi.org/project/roc-valida
 
 ## Supported RO-Crate Profiles
 
-The plugin currently supports these profile identifiers:
+The plugin currently supports these profiles:
 
 - [`ro-crate-1.1`](https://www.researchobject.org/ro-crate/specification/1.1/).
 - [`provenance-run-crate-0.5` ](https://www.researchobject.org/workflow-run-crate/profiles/provenance_run_crate/).
 
-Use the `profileidentifier` reporter setting to choose which one to build:
+Use the `profile` reporter setting to choose which one to build:
 
 ```bash
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-profileidentifier ro-crate-1.1 \
+  --report-metadata4ing-profile ro-crate-1.1 \
   --cores 1
 ```
 
@@ -76,7 +76,7 @@ Or
 ```bash
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+  --report-metadata4ing-profile provenance-run-crate-0.5 \
   --cores 1
 ```
 
@@ -101,14 +101,14 @@ after creation.
 
 ## Reporter Parameters
 
-### `profileidentifier`
+### `profile`
 
 Selects which RO-Crate profile is created.
 
 ```bash
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+  --report-metadata4ing-profile provenance-run-crate-0.5 \
   --cores 1
 ```
 
@@ -130,35 +130,20 @@ This creates:
 my-report.zip
 ```
 
-### `config`
+### `name`, `description`, and `license`
 
-Provides a JSON configuration file for extra report metadata. The current code
-uses:
+Set top-level RO-Crate metadata. Defaults are:
 
-- `researchProblem`: metadata copied into a research-problem node
-- `rocrate`: top-level RO-Crate metadata such as name, description, and license
-
-Example:
-
-```json
-{
-  "researchProblem": {
-    "description": "This benchmark describes a linear-elastic plate with a hole test case."
-  },
-  "rocrate": {
-    "name": "NFDi4Ing Provenance",
-    "description": "Benchmark for linear-elastic plate with a hole",
-    "license": "https://opensource.org/licenses/MIT"
-  }
-}
-```
-
-Use it like this:
+- `name`: `Snakemake Provenance Run`
+- `description`: `RO-Crate describing a Snakemake workflow run.`
+- `license`: `https://opensource.org/licenses/MIT`
 
 ```bash
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-name "NFDi4Ing Provenance" \
+  --report-metadata4ing-description "Benchmark for linear-elastic plate with a hole" \
+  --report-metadata4ing-license "https://opensource.org/licenses/MIT" \
   --cores 1
 ```
 
@@ -250,7 +235,6 @@ Each example contains:
 
 - a `Snakefile`
 - a `experiment.json`
-- a `metadata4ing.config`
 - parameter JSON files
 - simulation scripts
 
@@ -269,9 +253,11 @@ To generate an RO-Crate with extracted parameter metadata:
 cd examples/benchmarks/FEniCS
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-name "NFDi4Ing Provenance" \
+  --report-metadata4ing-description "Benchmark for linear-elastic plate with a hole" \
+  --report-metadata4ing-license "https://opensource.org/licenses/MIT" \
   --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
-  --report-metadata4ing-profileidentifier ro-crate-1.1 \
+  --report-metadata4ing-profile ro-crate-1.1 \
   --cores 1 \
   --software-deployment-method conda
 ```
@@ -282,9 +268,11 @@ To generate a provenance run crate instead:
 cd examples/benchmarks/FEniCS
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-name "NFDi4Ing Provenance" \
+  --report-metadata4ing-description "Benchmark for linear-elastic plate with a hole" \
+  --report-metadata4ing-license "https://opensource.org/licenses/MIT" \
   --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
-  --report-metadata4ing-profileidentifier provenance-run-crate-0.5 \
+  --report-metadata4ing-profile provenance-run-crate-0.5 \
   --cores 1 \
   --software-deployment-method conda
 ```
@@ -301,9 +289,11 @@ The same reporter invocation pattern applies in `examples/benchmarks/Kratos`:
 cd examples/benchmarks/Kratos
 snakemake \
   --reporter metadata4ing \
-  --report-metadata4ing-config metadata4ing.config \
+  --report-metadata4ing-name "NFDi4Ing Provenance" \
+  --report-metadata4ing-description "Benchmark for linear-elastic plate with a hole" \
+  --report-metadata4ing-license "https://opensource.org/licenses/MIT" \
   --report-metadata4ing-paramscript ../../../sample_extractor/my_extractor.py \
-  --report-metadata4ing-profileidentifier ro-crate-1.1 \
+  --report-metadata4ing-profile ro-crate-1.1 \
   --cores 1 \
   --software-deployment-method conda
 ```
@@ -314,6 +304,6 @@ artifact.
 ## Notes
 
 - The plugin validates the generated crate after writing it.
-- Validation uses the same profile identifier selected for crate generation.
+- Validation uses the same profile selected for crate generation.
 - Supplemental files such as the Snakefile and referenced shell scripts are
   included in the crate when they are detected.
