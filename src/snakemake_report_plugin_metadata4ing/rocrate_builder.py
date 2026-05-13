@@ -34,7 +34,6 @@ SUPPORTED_PROFILE_IDENTIFIERS = {
 }
 
 M4I_PROFILE = "https://w3id.org/nfdi4ing/metadata4ing/1.3.1"
-M4I_HAS_KIND_OF_QUANTITY = "http://w3id.org/nfdi4ing/metadata4ing#hasKindOfQuantity"
 WORKFLOW_RUN_CONTEXT = "https://w3id.org/ro/terms/workflow-run/context"
 WORKFLOW_RUN_METADATA_CONFORMS_TO = [
     {"@id": "https://w3id.org/ro/crate/1.1"},
@@ -459,9 +458,6 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             None. The method mutates the crate metadata and root dataset.
         """
         self.crate.metadata.extra_contexts.append(WORKFLOW_RUN_CONTEXT)
-        self.crate.metadata.extra_terms = {
-            "m4i:hasKindOfQuantity": M4I_HAS_KIND_OF_QUANTITY
-        }
 
         rocrate_info = self._rocrate_config()
         self.crate.name = rocrate_info.get("name", DEFAULT_PROVENANCE_RUN_CRATE_NAME)
