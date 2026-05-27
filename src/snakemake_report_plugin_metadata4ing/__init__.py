@@ -179,6 +179,7 @@ class Reporter(ReporterBase):
             provenance_builder.write_files(provenance)
 
             crate_builder = rocrate_builder_for_profile(
+                dag=self.dag,
                 profile_identifier=profile_identifier,
                 settings=self.settings,
                 provenance_filename=self.provenance_filename,
