@@ -88,6 +88,7 @@ class ROCrateBuilder(ABC):
 
     def __init__(
         self,
+        dag: any,
         settings,
         provenance_filename: str = "provenance.jsonld",
         provenance_ttl_filename: str = "provenance.ttl",
@@ -108,6 +109,7 @@ class ROCrateBuilder(ABC):
                 not provide an explicit output name.
         """
         self.settings = settings
+        self.dag = dag
         self.provenance_filename = provenance_filename
         self.provenance_ttl_filename = provenance_ttl_filename
         self.ro_crate_version = ro_crate_version
@@ -729,20 +731,16 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         Returns:
             None. A workflow entity is added only when a Snakefile is available.
         """
-        snakefile = next(
-            (
-                file
-                for file in provenance.supplemental_files
-                if Path(file.dest_path).name.lower() == "snakefile"
-            ),
-            None,
-        )
+        snakefile = self.dag.workflow.main_snakefile
+        
         if not snakefile:
             return
 
+        workflow_path = Path(snakefile)
+        
         workflow = self.crate.add_workflow(
-            source=snakefile.source_path,
-            dest_path=snakefile.dest_path,
+            source=workflow_path,
+            dest_path=workflow_path.name,
             lang="snakemake",
             main=True,
             fetch_remote=False,
@@ -762,8 +760,9 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
 
 
 def rocrate_builder_for_profile(
+    dag: any,
     profile_identifier: str,
-    settings,
+    settings: any,
     provenance_filename: str = "provenance.jsonld",
     provenance_ttl_filename: str = "provenance.ttl",
 ) -> ROCrateBuilder:
@@ -784,12 +783,14 @@ def rocrate_builder_for_profile(
     """
     if profile_identifier == RO_CRATE_PROFILE:
         return Metadata4IngROCrateBuilder(
+            dag=dag,
             settings=settings,
             provenance_filename=provenance_filename,
             provenance_ttl_filename=provenance_ttl_filename,
         )
     if profile_identifier == PROVENANCE_RUN_CRATE_PROFILE:
         return ProvenanceRunROCrateBuilder(
+            dag=dag,
             settings=settings,
             provenance_filename=provenance_filename,
             provenance_ttl_filename=provenance_ttl_filename,
