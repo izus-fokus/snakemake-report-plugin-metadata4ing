@@ -432,13 +432,14 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_id_map = self._add_data_files(provenance.file_nodes)
         tool_id_map = self._add_tools(provenance.tools)
         fallback_tool_id = self._ensure_default_software_application()
+        workflow_id = self._add_workflow(provenance, fallback_tool_id)
         self._add_processing_steps_as_actions(
             provenance=provenance,
             file_id_map=file_id_map,
             tool_id_map=tool_id_map,
             fallback_tool_id=fallback_tool_id,
+            workflow_id=workflow_id,
         )
-        self._add_workflow(provenance, fallback_tool_id)
         self._add_profile_creative_works()
 
     def _configure_metadata(self) -> None:
@@ -509,6 +510,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_id_map: dict[str, str],
         tool_id_map: dict[str, str],
         fallback_tool_id: str,
+        workflow_id: str | None,
     ) -> None:
         """Translate processing steps into RO-Crate action entities.
 
@@ -517,9 +519,10 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             file_id_map: Mapping from provenance file IDs to crate file IDs.
             tool_id_map: Mapping from provenance tool IDs to crate tool IDs.
             fallback_tool_id: Crate ID of the fallback software entity.
+            workflow_id: Crate ID of the main workflow entity, when present.
 
         Returns:
-            None. Action and parameter entities are added to the crate.
+            None. Action, value, and parameter entities are added to the crate.
         """
         file_nodes_by_id = {
             file_node["@id"]: file_node
@@ -551,6 +554,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
                     file_refs=as_list(step_node.get(source_key)),
                     file_id_map=file_id_map,
                     file_nodes_by_id=file_nodes_by_id,
+                    workflow_id=workflow_id,
                     target=target,
                 )
 
@@ -576,17 +580,19 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_refs: list[Any],
         file_id_map: dict[str, str],
         file_nodes_by_id: dict[str, dict[str, Any]],
+        workflow_id: str | None,
         target: list[dict[str, str]],
     ) -> None:
-        """Create formal parameter entities for a step input/output list.
+        """Create action value and formal parameter entities for an edge list.
 
         Args:
-            action_id: Crate action identifier to which the parameters belong.
+            action_id: Crate action identifier to which the values belong.
             direction: Parameter direction such as ``input`` or ``output``.
             file_refs: File references taken from provenance step nodes.
             file_id_map: Mapping from provenance file IDs to crate file IDs.
             file_nodes_by_id: File-node lookup keyed by provenance ``@id``.
-            target: List that receives the generated parameter references.
+            workflow_id: Crate ID of the main workflow entity, when present.
+            target: List that receives the generated value references.
 
         Returns:
             None. Generated references are appended to ``target``.
@@ -595,19 +601,29 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             file_ref_id = reference_id(file_ref)
             if not file_ref_id:
                 continue
-            parameter = self._formal_parameter_node(
+            parameter = self._add_formal_parameter(
                 action_id=action_id,
                 direction=direction,
                 index=index,
                 file_ref_id=file_ref_id,
                 file_id_map=file_id_map,
                 file_nodes_by_id=file_nodes_by_id,
+                workflow_id=workflow_id,
             )
-            parameter_id = parameter["@id"]
-            self._add_context_entity(parameter)
-            target.append({"@id": parameter_id})
+            parameter_id = parameter.id
+            value_ref = self._link_action_value_to_parameter(
+                action_id=action_id,
+                direction=direction,
+                index=index,
+                file_ref=file_ref,
+                file_ref_id=file_ref_id,
+                parameter_id=parameter_id,
+                file_id_map=file_id_map,
+                file_nodes_by_id=file_nodes_by_id,
+            )
+            target.append(value_ref)
 
-    def _formal_parameter_node(
+    def _add_formal_parameter(
         self,
         action_id: str,
         direction: str,
@@ -615,8 +631,9 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_ref_id: str,
         file_id_map: dict[str, str],
         file_nodes_by_id: dict[str, dict[str, Any]],
-    ) -> dict[str, Any]:
-        """Build a JSON-LD formal parameter node for an action edge.
+        workflow_id: str | None,
+    ) -> Any:
+        """Add a formal parameter entity for an action edge.
 
         Args:
             action_id: Crate action identifier that owns the parameter.
@@ -626,21 +643,77 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             file_ref_id: Provenance identifier of the referenced file.
             file_id_map: Mapping from provenance file IDs to crate file IDs.
             file_nodes_by_id: File-node lookup keyed by provenance ``@id``.
+            workflow_id: Crate ID of the main workflow entity, when present.
 
         Returns:
-            A JSON-LD node describing the formal parameter.
+            The created RO-Crate FormalParameter entity.
         """
         file_entity_id = file_id_map.get(file_ref_id, crate_safe_id(file_ref_id))
         file_node = file_nodes_by_id.get(file_ref_id, {})
         name = file_node.get("label", file_entity_id)
         action_slug = action_id.removeprefix("#")
-        return {
-            "@id": f"#{action_slug}-{direction}-{index}",
-            "@type": "FormalParameter",
-            "name": name,
-            "additionalType": direction,
-            "workExample": {"@id": file_entity_id},
+        properties = {}
+        if workflow_id:
+            properties[direction] = {"@id": workflow_id}
+        return self.crate.add_formal_parameter(
+            name=name,
+            additionalType=direction,
+            identifier=f"#{action_slug}-{direction}-{index}",
+            properties=properties,
+        )
+
+    def _link_action_value_to_parameter(
+        self,
+        action_id: str,
+        direction: str,
+        index: int,
+        file_ref: Any,
+        file_ref_id: str,
+        parameter_id: str,
+        file_id_map: dict[str, str],
+        file_nodes_by_id: dict[str, dict[str, Any]],
+    ) -> dict[str, str]:
+        """Link the action-side value node to its formal parameter.
+
+        Args:
+            action_id: Crate action identifier that owns the value.
+            direction: Parameter direction such as ``input`` or ``output``.
+            index: One-based position within the direction-specific value list.
+            file_ref: Original value reference from the provenance step node.
+            file_ref_id: Provenance identifier of the referenced value.
+            parameter_id: Crate identifier of the formal parameter.
+            file_id_map: Mapping from provenance file IDs to crate file IDs.
+            file_nodes_by_id: File-node lookup keyed by provenance ``@id``.
+
+        Returns:
+            A JSON-LD reference to the action-side value node.
+        """
+        if file_ref_id in file_id_map or file_ref_id in file_nodes_by_id:
+            file_entity_id = file_id_map.get(file_ref_id, crate_safe_id(file_ref_id))
+            file_entity = self.crate.get(file_entity_id)
+            if file_entity:
+                file_entity.append_to("exampleOfWork", {"@id": parameter_id})
+            return {"@id": file_entity_id}
+
+        value_id = self._property_value_id(
+            action_id=action_id,
+            direction=direction,
+            index=index,
+        )
+        value_node = {
+            "@id": value_id,
+            "@type": "PropertyValue",
+            "name": str(file_ref_id),
+            "value": file_ref_id,
+            "exampleOfWork": {"@id": parameter_id},
         }
+        self._add_context_entity(value_node)
+        return {"@id": value_id}
+
+    def _property_value_id(self, action_id: str, direction: str, index: int) -> str:
+        """Return a stable ID for a non-file action parameter value."""
+        action_slug = action_id.removeprefix("#")
+        return f"#{action_slug}-{direction}-{index}-value"
 
     def _create_action(
         self,
@@ -657,10 +730,10 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         Args:
             step_node: Provenance processing-step node.
             action_id: Target crate identifier for the action.
-            input_parameters: Formal parameter references representing action
-                inputs.
-            output_parameters: Formal parameter references representing action
-                outputs.
+            input_parameters: File or PropertyValue references representing
+                action inputs.
+            output_parameters: File or PropertyValue references representing
+                action outputs.
             methods_by_id: Method-node lookup keyed by provenance ``@id``.
             tool_id_map: Mapping from provenance tool IDs to crate tool IDs.
             fallback_tool_id: Crate ID of the fallback software entity.
@@ -720,7 +793,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
 
     def _add_workflow(
         self, provenance: ProvenanceResult, fallback_tool_id: str
-    ) -> None:
+    ) -> str | None:
         """Add the Snakefile as the main workflow entity when available.
 
         Args:
@@ -729,15 +802,15 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
                 via ``hasPart``.
 
         Returns:
-            None. A workflow entity is added only when a Snakefile is available.
+            The workflow entity ID, or ``None`` when no Snakefile is available.
         """
         snakefile = self.dag.workflow.main_snakefile
-        
+
         if not snakefile:
-            return
+            return None
 
         workflow_path = Path(snakefile)
-        
+
         workflow = self.crate.add_workflow(
             source=workflow_path,
             dest_path=workflow_path.name,
@@ -748,6 +821,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             gen_cwl=False,
         )
         self.crate.mainEntity = {"@id": workflow.id}
+        return workflow.id
 
     def _add_profile_creative_works(self) -> None:
         """Add profile descriptors referenced by ``conformsTo`` statements.
