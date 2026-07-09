@@ -248,6 +248,8 @@ class ROCrateBuilder(ABC):
         """
         file_id_map: dict[str, str] = {}
         for file_path, file_node in file_nodes.items():
+            if Path(file_path).is_absolute():
+                continue  # Skip absolute paths; they cannot be added to the crate.
             self.crate.add_file(
                 file_path,
                 dest_path=file_path,
