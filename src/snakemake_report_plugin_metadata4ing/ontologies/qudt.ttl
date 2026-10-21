@@ -23,7 +23,7 @@
   owl:imports <http://qudt.org/vocab/sou> ;
   owl:versionIRI <http://qudt.org/vocab/unit> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
-  rdfs:label "QUDT Vocab Units of Measure Release 3.5.2" ;
+  rdfs:label "QUDT Vocab Units of Measure Release 3.5.3" ;
   vaem:hasGraphMetadata vaem:GMD_QUDT-UNITS-ALL .
 
 unit:2PiRAD
@@ -9612,6 +9612,60 @@ unit:CCY_EUR-PER-M2
   rdfs:label "Euro pro Quadratmeter"@de ;
   rdfs:label "Euro per Square Metre" .
 
+unit:CCY_EUR-PER-MegaW
+  a qudt:Unit ;
+  qudt:applicableSystem sou:SI ;
+  qudt:conversionMultiplier 0.000001 ;
+  qudt:conversionMultiplierSN 1.0E-6 ;
+  qudt:hasDimensionVector qkdv:A0E0L-2I0M-1H0T3D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:MegaW ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:CCY_EUR ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:CostPerPower ;
+  qudt:plainTextDescription "Unit for measuring the cost of power, such as the hardware cost of a power generation unit relative to the generated power or a capacity price." ;
+  qudt:symbol "€/MW" ;
+  qudt:unitForQuantityKind quantitykind:CostPerPower ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Euro per Megawatt"@en ;
+  rdfs:label "Euro pro Megawatt"@de ;
+  rdfs:label "Euro per Megawatt" .
+
+unit:CCY_EUR-PER-MegaW-HR
+  a qudt:Unit ;
+  qudt:applicableSystem sou:SI ;
+  qudt:conversionMultiplier 0.0000000002777777777777777777777777777777778 ;
+  qudt:conversionMultiplierSN 2.777777777777777777777777777777778E-10 ;
+  qudt:hasDimensionVector qkdv:A0E0L-2I0M-1H0T2D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:HR ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:MegaW ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:CCY_EUR ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:CostPerEnergy ;
+  qudt:plainTextDescription "Unit for measuring the cost of electricity, commonly used for wholesale electricity prices." ;
+  qudt:symbol "€/(MW·h)" ;
+  qudt:unitForQuantityKind quantitykind:CostPerEnergy ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Euro per Megawatt Hour"@en ;
+  rdfs:label "Euro per Megawatt Hour" .
+
 unit:CCY_EUR-PER-W
   a qudt:Unit ;
   qudt:applicableSystem sou:SI ;
@@ -14839,12 +14893,14 @@ unit:CentiMOL-PER-KiloGM
   qudt:hasQuantityKind quantitykind:AmountOfSubstancePerMass ;
   qudt:hasQuantityKind quantitykind:IonicStrength ;
   qudt:hasQuantityKind quantitykind:MolalityOfSolute ;
+  qudt:hasQuantityKind quantitykind:ReactiveChargePerMass ;
   qudt:plainTextDescription "1/100 of SI unit of amount of substance per kilogram" ;
   qudt:symbol "cmol/kg" ;
   qudt:ucumCode "cmol.kg-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:AmountOfSubstancePerMass ;
   qudt:unitForQuantityKind quantitykind:IonicStrength ;
   qudt:unitForQuantityKind quantitykind:MolalityOfSolute ;
+  qudt:unitForQuantityKind quantitykind:ReactiveChargePerMass ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Centimol na Kilogram"@cs ;
   rdfs:label "Centimol na Kilogram"@pl ;
@@ -19462,20 +19518,14 @@ unit:ENZ-PER-L
 
 unit:EQ
   a qudt:Unit ;
-  dcterms:description """An equivalent is an amount of substance defined by the number of unit charges, positive or negative, that
-    the relevant reactive species donate, accept, or exchange in a chemical process. It expresses stoichiometric charge capacity
-    rather than the number of particles of a substance.
-  """@en ;
+  dcterms:description "An equivalent is an amount of substance defined by the number of unit charges, positive or negative, that the relevant reactive species donate, accept, or exchange in a chemical process. It expresses stoichiometric charge capacity rather than the number of particles of a substance. One equivalent is one mole of unit charges (UCUM defines 1 eq = 1 mol). Converting an amount in equivalents to the amount of a particular ionic species requires dividing by that species' charge number z (for example, 1 eq of Ca2+ is 0.5 mol of Ca2+). Because z is a property of the quantity being reported, not of the unit, it is not captured by the conversion multiplier."@en ;
   qudt:conversionMultiplier 1.0 ;
   qudt:conversionMultiplierSN 1.0E0 ;
   qudt:hasDimensionVector qkdv:A1E0L0I0M0H0T0D0 ;
   qudt:hasQuantityKind quantitykind:MolarEquivalent ;
-  qudt:plainTextDescription """An equivalent is an amount of substance defined by the number of unit charges, positive or
-    negative, that the relevant reactive species donate, accept, or exchange in a chemical process. It expresses stoichiometric
-    charge capacity rather than the number of particles of a substance.
-  """@en ;
+  qudt:plainTextDescription "An equivalent is an amount of substance defined by the number of unit charges, positive or negative, that the relevant reactive species donate, accept, or exchange in a chemical process. It expresses stoichiometric charge capacity rather than the number of particles of a substance. One equivalent is one mole of unit charges (UCUM defines 1 eq = 1 mol). Converting an amount in equivalents to the amount of a particular ionic species requires dividing by that species' charge number z (for example, 1 eq of Ca2+ is 0.5 mol of Ca2+). Because z is a property of the quantity being reported, not of the unit, it is not captured by the conversion multiplier."@en ;
   qudt:symbol "Eq" ;
-  qudt:ucumCode "EQ"^^qudt:UCUMcs ;
+  qudt:ucumCode "eq"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MolarEquivalent ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Equivalent"@en ;
@@ -19500,7 +19550,7 @@ unit:EQ-PER-L
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Equivalent per litre is a unit of equivalent concentration expressing the amount of an ionic substance in equivalents per litre of solution." ;
   qudt:symbol "Eq/L" ;
-  qudt:ucumCode "EQ.L-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "eq.L-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Equivalent per Liter"@en-US ;
@@ -20141,7 +20191,7 @@ unit:EV-PER-T
 
 unit:EV-SEC
   a qudt:Unit ;
-  dcterms:description "\"Electron Volt Second\" is a unit for  'Angular Momentum' expressed as $eV s$."^^qudt:LatexString ;
+  dcterms:description "\"Electron Volt Second\" is a unit for 'Action' and 'Angular Momentum' expressed as $eV s$."^^qudt:LatexString ;
   qudt:applicableSystem sou:CGS ;
   qudt:applicableSystem sou:CGS-EMU ;
   qudt:applicableSystem sou:CGS-GAUSS ;
@@ -20159,10 +20209,12 @@ unit:EV-SEC
     qudt:exponent 1 ;
     qudt:hasUnit unit:SEC ;
   ] ;
+  qudt:hasQuantityKind quantitykind:Action ;
   qudt:hasQuantityKind quantitykind:AngularImpulse ;
   qudt:hasQuantityKind quantitykind:AngularMomentum ;
   qudt:symbol "eV·s" ;
   qudt:ucumCode "eV.s"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:Action ;
   qudt:unitForQuantityKind quantitykind:AngularImpulse ;
   qudt:unitForQuantityKind quantitykind:AngularMomentum ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q97496530> ;
@@ -24381,6 +24433,7 @@ unit:GM
   qudt:dbpediaMatch "http://dbpedia.org/resource/Gram"^^xsd:anyURI ;
   qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T0D0 ;
   qudt:hasQuantityKind quantitykind:Mass ;
+  qudt:hasQuantityKind quantitykind:MassEquivalent ;
   qudt:iec61360Code "0112/2///62720#UAA465" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA465"^^xsd:anyURI ;
   qudt:informativeReference "https://en.wikipedia.org/wiki/Gram?oldid=493995797"^^xsd:anyURI ;
@@ -24391,6 +24444,7 @@ unit:GM
   qudt:udunitsCode "g" ;
   qudt:uneceCommonCode "GRM" ;
   qudt:unitForQuantityKind quantitykind:Mass ;
+  qudt:unitForQuantityKind quantitykind:MassEquivalent ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q41803> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Gram"@cs ;
@@ -25409,7 +25463,7 @@ unit:GM-PER-DEG_C
 
 unit:GM-PER-DeciL
   a qudt:DerivedUnit, qudt:Unit ;
-  dcterms:description "A derived unit for amount-of-substance concentration measured in g/dL."^^rdf:HTML ;
+  dcterms:description "A derived unit for mass concentration measured in g/dL."^^rdf:HTML ;
   qudt:applicableSystem sou:CGS ;
   qudt:applicableSystem sou:CGS-EMU ;
   qudt:applicableSystem sou:CGS-GAUSS ;
@@ -25429,11 +25483,13 @@ unit:GM-PER-DeciL
     qudt:hasUnit unit:GM ;
   ] ;
   qudt:hasQuantityKind quantitykind:Density ;
+  qudt:hasQuantityKind quantitykind:MassConcentration ;
   qudt:hasQuantityKind quantitykind:MassDensity ;
   qudt:hasReciprocalUnit unit:DeciL-PER-GM ;
   qudt:symbol "g/dL" ;
   qudt:ucumCode "g.dL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:Density ;
+  qudt:unitForQuantityKind quantitykind:MassConcentration ;
   qudt:unitForQuantityKind quantitykind:MassDensity ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Gram per Deciliter"@en-US ;
@@ -25955,6 +26011,41 @@ unit:GM-PER-KiloM
   rdfs:label "Gramo por Kilometro"@es ;
   rdfs:label "Gram per Kilometre" .
 
+unit:GM-PER-KiloW-HR
+  a qudt:DerivedUnit, qudt:Unit ;
+  dcterms:description "0.001-fold of the SI base unit kilogram divided by the unit kilowatt hour, commonly used for emission factors such as the carbon intensity of electricity"^^rdf:HTML ;
+  qudt:applicableSystem sou:CGS ;
+  qudt:applicableSystem sou:CGS-EMU ;
+  qudt:applicableSystem sou:CGS-GAUSS ;
+  qudt:applicableSystem sou:SI ;
+  qudt:conversionMultiplier 0.0000000002777777777777777777777777777777778 ;
+  qudt:conversionMultiplierSN 2.777777777777777777777777777777778E-10 ;
+  qudt:hasDimensionVector qkdv:A0E0L-2I0M0H0T2D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:HR ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:KiloW ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:GM ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:MassPerEnergy ;
+  qudt:plainTextDescription "0.001-fold of the SI base unit kilogram divided by the unit kilowatt hour, commonly used for emission factors such as the carbon intensity of electricity" ;
+  qudt:symbol "g/(kW·h)" ;
+  qudt:ucumCode "g.kW-1.h-1"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:MassPerEnergy ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Gram per Kilowatt Hour"@en ;
+  rdfs:label "Gramme par Kilowattheure"@fr ;
+  rdfs:label "Gram per Kilowatt Hour" .
+
 unit:GM-PER-L
   a qudt:Unit ;
   dcterms:description "0,001-fold of the SI base unit kilogram divided by the unit litre"^^rdf:HTML ;
@@ -25976,6 +26067,7 @@ unit:GM-PER-L
     qudt:hasUnit unit:GM ;
   ] ;
   qudt:hasQuantityKind quantitykind:Density ;
+  qudt:hasQuantityKind quantitykind:EquivalentDensity ;
   qudt:hasQuantityKind quantitykind:MassDensity ;
   qudt:iec61360Code "0112/2///62720#UAA482" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA482"^^xsd:anyURI ;
@@ -25984,6 +26076,7 @@ unit:GM-PER-L
   qudt:ucumCode "g.L-1"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "GL" ;
   qudt:unitForQuantityKind quantitykind:Density ;
+  qudt:unitForQuantityKind quantitykind:EquivalentDensity ;
   qudt:unitForQuantityKind quantitykind:MassDensity ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q834105> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
@@ -27239,6 +27332,38 @@ unit:GM-PER-TONNE
   rdfs:label "Gram per Tonne"@en ;
   rdfs:label "Gramm pro Tonne"@de ;
   rdfs:label "Gram per Tonne" .
+
+unit:GM-PER-YR
+  a qudt:Unit ;
+  dcterms:description "The unit gram divided by the unit year" ;
+  qudt:applicableSystem sou:CGS ;
+  qudt:applicableSystem sou:CGS-EMU ;
+  qudt:applicableSystem sou:CGS-GAUSS ;
+  qudt:applicableSystem sou:SI ;
+  qudt:conversionMultiplier 0.00000000003168808781402895023702689684893655 ;
+  qudt:conversionMultiplierSN 3.168808781402895023702689684893655E-11 ;
+  qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T-1D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:YR ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:GM ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:MassFlowRate ;
+  qudt:hasQuantityKind quantitykind:ToxicEquivalentFlowRate ;
+  qudt:plainTextDescription "gram divided by the unit year (Julian year of 365.25 days)" ;
+  qudt:symbol "g/a" ;
+  qudt:ucumCode "g.a-1"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:MassFlowRate ;
+  qudt:unitForQuantityKind quantitykind:ToxicEquivalentFlowRate ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Gram per Jaar"@nl ;
+  rdfs:label "Gram per Year"@en ;
+  rdfs:label "Gram per Year" .
 
 unit:GM-SEC-PER-L-CentiM3
   a qudt:Unit ;
@@ -31439,7 +31564,7 @@ unit:IN-PER-SEC2
 unit:IN-PER-YR
   a qudt:Unit ;
   dcterms:description """unit of the length according to the Anglo-American and Imperial system of units divided by the unit
-    common year with 365 days
+    year (Julian year of 365.25 days)
   """ ;
   qudt:conversionMultiplier 0.0000000008048774304763353360204831799629884 ;
   qudt:conversionMultiplierSN 8.048774304763353360204831799629884E-10 ;
@@ -31978,7 +32103,7 @@ unit:IU-PER-MilliGM
 <p>International Unit per milligramme.
 The magnitude of one $IU/mg$ depends on the material, so there is no single conversion multiplier.
 Following the mass-equivalent treatment of $IU$ (see unit:IU), $IU/mg$ is a mass-equivalent per mass and is therefore
-dimensionless (a potency or mass fraction).
+dimensionless. It is a potency, not a mass fraction (see quantitykind:AmountOfBiologicallyActiveSubstancePerMass).
 </p>"""^^rdf:HTML ;
   qudt:conversionMultiplier 0.0 ;
   qudt:conversionMultiplierSN 0.0E0 ;
@@ -31993,11 +32118,11 @@ dimensionless (a potency or mass fraction).
     qudt:exponent 1 ;
     qudt:hasUnit unit:IU ;
   ] ;
-  qudt:hasQuantityKind quantitykind:MassFraction ;
+  qudt:hasQuantityKind quantitykind:AmountOfBiologicallyActiveSubstancePerMass ;
   qudt:plainTextDescription "International Units per milligramme." ;
   qudt:symbol "IU/mg" ;
   qudt:ucumCode "[IU].mg-1"^^qudt:UCUMcs ;
-  qudt:unitForQuantityKind quantitykind:MassFraction ;
+  qudt:unitForQuantityKind quantitykind:AmountOfBiologicallyActiveSubstancePerMass ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "International Unit per Milligram"@en ;
   rdfs:label "International Unit per Milligram" .
@@ -36520,6 +36645,7 @@ unit:KiloGM
   qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T0D0 ;
   qudt:hasQuantityKind quantitykind:CO2Equivalent ;
   qudt:hasQuantityKind quantitykind:Mass ;
+  qudt:hasQuantityKind quantitykind:MassEquivalent ;
   qudt:iec61360Code "0112/2///62720#UAA594" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA594"^^xsd:anyURI ;
   qudt:informativeReference "https://en.wikipedia.org/wiki/Kilogram?oldid=493633626"^^xsd:anyURI ;
@@ -36536,6 +36662,7 @@ unit:KiloGM
   qudt:uneceCommonCode "KGM" ;
   qudt:unitForQuantityKind quantitykind:CO2Equivalent ;
   qudt:unitForQuantityKind quantitykind:Mass ;
+  qudt:unitForQuantityKind quantitykind:MassEquivalent ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q11570> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Chiliogramma"@la ;
@@ -37946,6 +38073,41 @@ unit:KiloGM-PER-KiloMOL
   rdfs:label "Kilogramo por Kilomol"@es ;
   rdfs:label "Kilogram per Kilomole" .
 
+unit:KiloGM-PER-KiloW-HR
+  a qudt:DerivedUnit, qudt:Unit ;
+  dcterms:description "SI base unit kilogram divided by the unit kilowatt hour, commonly used for emission factors per unit of energy"^^rdf:HTML ;
+  qudt:applicableSystem sou:CGS ;
+  qudt:applicableSystem sou:CGS-EMU ;
+  qudt:applicableSystem sou:CGS-GAUSS ;
+  qudt:applicableSystem sou:SI ;
+  qudt:conversionMultiplier 0.0000002777777777777777777777777777777778 ;
+  qudt:conversionMultiplierSN 2.777777777777777777777777777777778E-7 ;
+  qudt:hasDimensionVector qkdv:A0E0L-2I0M0H0T2D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:HR ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:KiloW ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:KiloGM ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:MassPerEnergy ;
+  qudt:plainTextDescription "SI base unit kilogram divided by the unit kilowatt hour, commonly used for emission factors per unit of energy" ;
+  qudt:symbol "kg/(kW·h)" ;
+  qudt:ucumCode "kg.kW-1.h-1"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:MassPerEnergy ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Kilogram per Kilowatt Hour"@en ;
+  rdfs:label "Kilogramme par Kilowattheure"@fr ;
+  rdfs:label "Kilogram per Kilowatt Hour" .
+
 unit:KiloGM-PER-L
   a qudt:Unit ;
   dcterms:description "SI base unit kilogram divided by the unit litre"^^rdf:HTML ;
@@ -38609,6 +38771,7 @@ unit:KiloGM-PER-M3
     qudt:hasUnit unit:KiloGM ;
   ] ;
   qudt:hasQuantityKind quantitykind:Density ;
+  qudt:hasQuantityKind quantitykind:EquivalentDensity ;
   qudt:hasQuantityKind quantitykind:MassConcentration ;
   qudt:hasQuantityKind quantitykind:MassConcentrationOfWater ;
   qudt:hasQuantityKind quantitykind:MassConcentrationOfWaterVapour ;
@@ -38623,6 +38786,7 @@ unit:KiloGM-PER-M3
   qudt:ucumCode "kg.m-3"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "KMQ" ;
   qudt:unitForQuantityKind quantitykind:Density ;
+  qudt:unitForQuantityKind quantitykind:EquivalentDensity ;
   qudt:unitForQuantityKind quantitykind:MassConcentration ;
   qudt:unitForQuantityKind quantitykind:MassConcentrationOfWater ;
   qudt:unitForQuantityKind quantitykind:MassConcentrationOfWaterVapour ;
@@ -39539,7 +39703,7 @@ unit:KiloGM-PER-YR
   ] ;
   qudt:hasQuantityKind quantitykind:MassFlowRate ;
   qudt:informativeReference "http://dd.eionet.europa.eu/vocabulary/wise/uom/kg.a-1"^^xsd:anyURI ;
-  qudt:plainTextDescription "kilogram divided by the unit year with 365 days" ;
+  qudt:plainTextDescription "kilogram divided by the unit year (Julian year of 365.25 days)" ;
   qudt:symbol "kg/a" ;
   qudt:ucumCode "kg.a-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MassFlowRate ;
@@ -42546,7 +42710,7 @@ unit:KiloTONNE-PER-YR
   ] ;
   qudt:hasQuantityKind quantitykind:MassFlowRate ;
   qudt:informativeReference "http://dd.eionet.europa.eu/vocabulary/wise/uom/1000t.a-1"^^xsd:anyURI ;
-  qudt:plainTextDescription "1000 metric tonne divided by the unit year with 365 days" ;
+  qudt:plainTextDescription "1000 metric tonne divided by the unit year (Julian year of 365.25 days)" ;
   qudt:symbol "kt/a" ;
   qudt:ucumCode "kt.a-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MassFlowRate ;
@@ -52489,11 +52653,14 @@ unit:M3-PER-KiloGM
 
 unit:M3-PER-KiloGM-SEC2
   a qudt:DerivedUnit, qudt:Unit ;
+  dcterms:description """The coherent SI derived unit of the gravitational constant, expressed in SI base units: the cubic metre
+    divided by the product of the kilogram and the second squared. It is the same unit as the newton square metre per kilogram
+    squared.
+  """ ;
   qudt:applicableSystem sou:CGS ;
   qudt:applicableSystem sou:CGS-EMU ;
   qudt:applicableSystem sou:CGS-GAUSS ;
   qudt:applicableSystem sou:SI ;
-  qudt:categorizedByQuantityKind quantitykind:Unknown ;
   qudt:conversionMultiplier 1.0 ;
   qudt:conversionMultiplierSN 1.0E0 ;
   qudt:definedUnitOfSystem sou:SI ;
@@ -52515,9 +52682,10 @@ unit:M3-PER-KiloGM-SEC2
     qudt:exponent 3 ;
     qudt:hasUnit unit:M ;
   ] ;
-  qudt:hasQuantityKind quantitykind:Unknown ;
+  qudt:hasQuantityKind quantitykind:GravitationalConstant ;
   qudt:symbol "m³/(kg·s²)" ;
   qudt:ucumCode "m3.kg-1.s-2"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:GravitationalConstant ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q78336909> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Cubic Meter per Kilogram Square Second"@en-US ;
@@ -53216,7 +53384,7 @@ unit:M3-PER-YR
   ] ;
   qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
   qudt:hasQuantityKind quantitykind:VolumePerTime ;
-  qudt:plainTextDescription "cubic meter divided by the unit year with 365 days" ;
+  qudt:plainTextDescription "cubic meter divided by the unit year (Julian year of 365.25 days)" ;
   qudt:symbol "m³/a" ;
   qudt:ucumCode "m3.a-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:VolumeFlowRate ;
@@ -53498,6 +53666,7 @@ unit:MI-PER-HR
     qudt:hasUnit unit:MI ;
   ] ;
   qudt:hasQuantityKind quantitykind:LinearVelocity ;
+  qudt:hasQuantityKind quantitykind:Speed ;
   qudt:hasQuantityKind quantitykind:Velocity ;
   qudt:iec61360Code "0112/2///62720#UAB111" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAB111"^^xsd:anyURI ;
@@ -53506,6 +53675,7 @@ unit:MI-PER-HR
   qudt:ucumCode "[mi_i].h-1"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "HM" ;
   qudt:unitForQuantityKind quantitykind:LinearVelocity ;
+  qudt:unitForQuantityKind quantitykind:Speed ;
   qudt:unitForQuantityKind quantitykind:Velocity ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q211256> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
@@ -58317,7 +58487,7 @@ unit:MegaTONNE-PER-YR
     qudt:hasUnit unit:MegaTONNE ;
   ] ;
   qudt:hasQuantityKind quantitykind:MassFlowRate ;
-  qudt:plainTextDescription "1,000,000 metric tonne divided by the unit year with 365 days" ;
+  qudt:plainTextDescription "1,000,000 metric tonne divided by the unit year (Julian year of 365.25 days)" ;
   qudt:symbol "Mt/a" ;
   qudt:ucumCode "Mt.a-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MassFlowRate ;
@@ -59266,7 +59436,7 @@ unit:MicroEQ
   qudt:prefix prefix:Micro ;
   qudt:scalingOf unit:EQ ;
   qudt:symbol "μEq" ;
-  qudt:ucumCode "uEQ"^^qudt:UCUMcs ;
+  qudt:ucumCode "ueq"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MolarEquivalent ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Microequivalent"@en ;
@@ -59291,7 +59461,7 @@ unit:MicroEQ-PER-L
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Microequivalent per litre is one millionth of an equivalent per litre." ;
   qudt:symbol "μEq/L" ;
-  qudt:ucumCode "uEQ.L-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "ueq.L-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Microequivalent per Liter"@en-US ;
@@ -59317,7 +59487,7 @@ unit:MicroEQ-PER-MilliL
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Microequivalent per millilitre; one microequivalent per millilitre equals one milliequivalent per litre." ;
   qudt:symbol "μEq/mL" ;
-  qudt:ucumCode "uEQ.mL-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "ueq.mL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Microequivalent per Milliliter"@en-US ;
@@ -59554,6 +59724,7 @@ unit:MicroGM
   qudt:conversionMultiplierSN 1.0E-9 ;
   qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T0D0 ;
   qudt:hasQuantityKind quantitykind:Mass ;
+  qudt:hasQuantityKind quantitykind:ToxicEquivalent ;
   qudt:iec61360Code "0112/2///62720#UAA082" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA082"^^xsd:anyURI ;
   qudt:plainTextDescription "0.000000001-fold of the SI base unit kilogram" ;
@@ -59563,6 +59734,7 @@ unit:MicroGM
   qudt:ucumCode "ug"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "MC" ;
   qudt:unitForQuantityKind quantitykind:Mass ;
+  qudt:unitForQuantityKind quantitykind:ToxicEquivalent ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q1645498> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Microgram"@cs ;
@@ -64214,7 +64386,7 @@ unit:MilliEQ
   qudt:prefix prefix:Milli ;
   qudt:scalingOf unit:EQ ;
   qudt:symbol "mEq" ;
-  qudt:ucumCode "mEQ"^^qudt:UCUMcs ;
+  qudt:ucumCode "meq"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MolarEquivalent ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliequivalent"@en ;
@@ -64239,7 +64411,7 @@ unit:MilliEQ-PER-DeciL
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Milliequivalent per decilitre; one milliequivalent per decilitre equals ten milliequivalents per litre." ;
   qudt:symbol "mEq/dL" ;
-  qudt:ucumCode "mEQ.dL-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "meq.dL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliequivalent per Deciliter"@en-US ;
@@ -64265,11 +64437,36 @@ unit:MilliEQ-PER-HectoGM
   qudt:hasQuantityKind quantitykind:ReactiveChargePerMass ;
   qudt:plainTextDescription "Milliequivalents of stoichiometric charge capacity per 100 grams of material."@en ;
   qudt:symbol "mEq/hg" ;
-  qudt:ucumCode "mEQ.hg-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "meq.hg-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:ReactiveChargePerMass ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliequivalent per Hectogram"@en ;
   rdfs:label "Milliequivalent per Hectogram" .
+
+unit:MilliEQ-PER-KiloGM
+  a qudt:Unit ;
+  dcterms:description "Milliequivalents of stoichiometric charge capacity per kilogram of material."@en ;
+  qudt:conversionMultiplier 0.001 ;
+  qudt:conversionMultiplierSN 1.0E-3 ;
+  qudt:hasDimensionVector qkdv:A1E0L0I0M-1H0T0D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:KiloGM ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:MilliEQ ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:ReactiveChargePerMass ;
+  qudt:plainTextDescription "Milliequivalents of stoichiometric charge capacity per kilogram of material."@en ;
+  qudt:symbol "mEq/kg" ;
+  qudt:ucumCode "meq.kg-1"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:ReactiveChargePerMass ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Milliequivalent per Kilogram"@en ;
+  rdfs:label "Milliequivalent per Kilogram" .
 
 unit:MilliEQ-PER-L
   a qudt:Unit ;
@@ -64290,7 +64487,7 @@ unit:MilliEQ-PER-L
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Milliequivalent per litre is the dominant unit used in clinical chemistry for reporting electrolyte concentrations in serum, plasma, and urine." ;
   qudt:symbol "mEq/L" ;
-  qudt:ucumCode "mEQ.L-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "meq.L-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliequivalent per Liter"@en-US ;
@@ -64316,7 +64513,7 @@ unit:MilliEQ-PER-MilliL
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Milliequivalent per millilitre; the unit commonly used to label intravenous electrolyte concentrate preparations." ;
   qudt:symbol "mEq/mL" ;
-  qudt:ucumCode "mEQ.mL-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "meq.mL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliequivalent per Milliliter"@en-US ;
@@ -64489,6 +64686,8 @@ unit:MilliGM
   qudt:conversionMultiplierSN 1.0E-6 ;
   qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T0D0 ;
   qudt:hasQuantityKind quantitykind:Mass ;
+  qudt:hasQuantityKind quantitykind:MassEquivalent ;
+  qudt:hasQuantityKind quantitykind:ToxicEquivalent ;
   qudt:iec61360Code "0112/2///62720#UAA815" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAA815"^^xsd:anyURI ;
   qudt:plainTextDescription "0.000001-fold of the SI base unit kilogram" ;
@@ -64498,6 +64697,8 @@ unit:MilliGM
   qudt:ucumCode "mg"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "MGM" ;
   qudt:unitForQuantityKind quantitykind:Mass ;
+  qudt:unitForQuantityKind quantitykind:MassEquivalent ;
+  qudt:unitForQuantityKind quantitykind:ToxicEquivalent ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q3241121> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milligram"@cs ;
@@ -65137,7 +65338,7 @@ unit:MilliGM-PER-DAY-K
 
 unit:MilliGM-PER-DeciL
   a qudt:DerivedUnit, qudt:Unit ;
-  dcterms:description "A derived unit for amount-of-substance concentration measured in mg/dL."^^rdf:HTML ;
+  dcterms:description "A derived unit for mass concentration measured in mg/dL."^^rdf:HTML ;
   qudt:applicableSystem sou:CGS ;
   qudt:applicableSystem sou:CGS-EMU ;
   qudt:applicableSystem sou:CGS-GAUSS ;
@@ -65158,11 +65359,13 @@ unit:MilliGM-PER-DeciL
   ] ;
   qudt:hasQuantityKind quantitykind:Density ;
   qudt:hasQuantityKind quantitykind:MassBasedBloodGlucoseLevel ;
+  qudt:hasQuantityKind quantitykind:MassConcentration ;
   qudt:hasQuantityKind quantitykind:MassDensity ;
   qudt:symbol "mg/dL" ;
   qudt:ucumCode "mg.dL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:Density ;
   qudt:unitForQuantityKind quantitykind:MassBasedBloodGlucoseLevel ;
+  qudt:unitForQuantityKind quantitykind:MassConcentration ;
   qudt:unitForQuantityKind quantitykind:MassDensity ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q55435156> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
@@ -69827,24 +70030,25 @@ unit:MilliOHM-PER-M
 
 unit:MilliOSM
   a qudt:Unit ;
-  qudt:conversionMultiplier 0.0 ;
-  qudt:conversionMultiplierSN 0.0E0 ;
+  dcterms:description "One-thousandth of an osmole."@en ;
+  qudt:conversionMultiplier 0.001 ;
+  qudt:conversionMultiplierSN 1.0E-3 ;
   qudt:hasDimensionVector qkdv:A1E0L0I0M0H0T0D0 ;
-  qudt:hasQuantityKind quantitykind:AmountOfSubstance ;
+  qudt:hasQuantityKind quantitykind:AmountOfOsmoticallyActiveEntities ;
   qudt:prefix prefix:Milli ;
   qudt:scalingOf unit:OSM ;
   qudt:symbol "mOsmol" ;
-  qudt:ucumCode "mOsmol"^^qudt:UCUMcs ;
-  qudt:unitForQuantityKind quantitykind:AmountOfSubstance ;
+  qudt:ucumCode "mosm"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:AmountOfOsmoticallyActiveEntities ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliosmole"@en ;
   rdfs:label "Milliosmole" .
 
 unit:MilliOSM-PER-KiloGM
   a qudt:Unit ;
-  dcterms:description "0.001-fold of the unit Osmol divided by the SI base unit kilogram" ;
-  qudt:conversionMultiplier 0.0 ;
-  qudt:conversionMultiplierSN 0.0E0 ;
+  dcterms:description "One-thousandth of an osmole per kilogram of solvent, the usual unit of osmolality." ;
+  qudt:conversionMultiplier 0.001 ;
+  qudt:conversionMultiplierSN 1.0E-3 ;
   qudt:hasDimensionVector qkdv:A1E0L0I0M-1H0T0D0 ;
   qudt:hasFactorUnit [
     a qudt:FactorUnit ;
@@ -69856,13 +70060,38 @@ unit:MilliOSM-PER-KiloGM
     qudt:exponent 1 ;
     qudt:hasUnit unit:MilliOSM ;
   ] ;
-  qudt:hasQuantityKind quantitykind:AmountOfSubstancePerMass ;
+  qudt:hasQuantityKind quantitykind:Osmolality ;
   qudt:symbol "mOsmol/kg" ;
-  qudt:ucumCode "mOsmol.kg-1"^^qudt:UCUMcs ;
-  qudt:unitForQuantityKind quantitykind:AmountOfSubstancePerMass ;
+  qudt:ucumCode "mosm.kg-1"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:Osmolality ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Milliosmole per Kilogram"@en ;
   rdfs:label "Milliosmole per Kilogram" .
+
+unit:MilliOSM-PER-L
+  a qudt:Unit ;
+  dcterms:description "One-thousandth of an osmole per litre of solution, the usual unit of osmolarity (osmotic concentration). Compare milliosmole per kilogram, the unit of osmolality, which is per mass of solvent." ;
+  qudt:conversionMultiplier 1.0 ;
+  qudt:conversionMultiplierSN 1.0E0 ;
+  qudt:hasDimensionVector qkdv:A1E0L-3I0M0H0T0D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:L ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:MilliOSM ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:OsmoticConcentration ;
+  qudt:symbol "mOsmol/L" ;
+  qudt:ucumCode "mosm.L-1"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:OsmoticConcentration ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Milliosmole per Liter"@en-US ;
+  rdfs:label "Milliosmole per Litre"@en ;
+  rdfs:label "Milliosmole per Litre" .
 
 unit:MilliPA
   a qudt:Unit ;
@@ -72255,12 +72484,11 @@ unit:N-M2-PER-KiloGM2
   a qudt:Unit ;
   dcterms:description """unit of gravitational constant as product of the derived SI unit newton, the power of the SI base unit
     metre with the exponent 2 divided by the power of the SI base unit kilogram with the exponent 2
-  """^^rdf:HTML ;
+  """ ;
   qudt:applicableSystem sou:CGS ;
   qudt:applicableSystem sou:CGS-EMU ;
   qudt:applicableSystem sou:CGS-GAUSS ;
   qudt:applicableSystem sou:SI ;
-  qudt:categorizedByQuantityKind quantitykind:Unknown ;
   qudt:conversionMultiplier 1.0 ;
   qudt:conversionMultiplierSN 1.0E0 ;
   qudt:hasDimensionVector qkdv:A0E0L3I0M-1H0T-2D0 ;
@@ -72279,7 +72507,7 @@ unit:N-M2-PER-KiloGM2
     qudt:exponent 2 ;
     qudt:hasUnit unit:M ;
   ] ;
-  qudt:hasQuantityKind quantitykind:Unknown ;
+  qudt:hasQuantityKind quantitykind:GravitationalConstant ;
   qudt:iec61360Code "0112/2///62720#UAB491" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAB491"^^xsd:anyURI ;
   qudt:plainTextDescription """unit of gravitational constant as product of the derived SI unit newton, the power of the SI base
@@ -72288,6 +72516,7 @@ unit:N-M2-PER-KiloGM2
   qudt:symbol "N·m²/kg²" ;
   qudt:ucumCode "N.m2.kg-2"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "C54" ;
+  qudt:unitForQuantityKind quantitykind:GravitationalConstant ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q21395031> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Newton Kvadratni Meter na Kvadratni Kilogram"@sl ;
@@ -73887,6 +74116,31 @@ unit:NUM-PER-SEC
   rdfs:label "Number per Second"@en ;
   rdfs:label "Number per Second" .
 
+unit:NUM-PER-TONNE
+  a qudt:DerivedUnit, qudt:Unit ;
+  dcterms:description "Count of an entity or phenomenon's occurrence divided by 1000 times the SI base unit kilogram"@en ;
+  qudt:categorizedByQuantityKind quantitykind:Unknown ;
+  qudt:conversionMultiplier 0.001 ;
+  qudt:conversionMultiplierSN 1.0E-3 ;
+  qudt:hasDimensionVector qkdv:A0E0L0I0M-1H0T0D0 ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent -1 ;
+    qudt:hasUnit unit:TONNE ;
+  ] ;
+  qudt:hasFactorUnit [
+    a qudt:FactorUnit ;
+    qudt:exponent 1 ;
+    qudt:hasUnit unit:NUM ;
+  ] ;
+  qudt:hasQuantityKind quantitykind:Unknown ;
+  qudt:plainTextDescription "Count of an entity or phenomenon's occurrence divided by 1000 times the SI base unit kilogram" ;
+  qudt:symbol "#/t" ;
+  qudt:ucumCode "{#}.t-1"^^qudt:UCUMcs ;
+  rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
+  rdfs:label "Number per Tonne"@en ;
+  rdfs:label "Number per Tonne" .
+
 unit:NUM-PER-YR
   a qudt:DerivedUnit, qudt:Unit ;
   dcterms:description "\"Number per Year\" is a unit for  'Frequency' expressed as $\\#/yr$."^^qudt:LatexString ;
@@ -74098,7 +74352,7 @@ unit:NanoEQ
   qudt:prefix prefix:Nano ;
   qudt:scalingOf unit:EQ ;
   qudt:symbol "nEq" ;
-  qudt:ucumCode "nEQ"^^qudt:UCUMcs ;
+  qudt:ucumCode "neq"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:MolarEquivalent ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Nanoequivalent"@en ;
@@ -74123,7 +74377,7 @@ unit:NanoEQ-PER-L
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Nanoequivalent per litre is one billionth of an equivalent per litre." ;
   qudt:symbol "nEq/L" ;
-  qudt:ucumCode "nEQ.L-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "neq.L-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Nanoequivalent per Liter"@en-US ;
@@ -74149,7 +74403,7 @@ unit:NanoEQ-PER-MilliL
   qudt:hasQuantityKind quantitykind:EquivalentConcentration ;
   qudt:plainTextDescription "Nanoequivalent per millilitre; one nanoequivalent per millilitre equals one microequivalent per litre." ;
   qudt:symbol "nEq/mL" ;
-  qudt:ucumCode "nEQ.mL-1"^^qudt:UCUMcs ;
+  qudt:ucumCode "neq.mL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:EquivalentConcentration ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Nanoequivalent per Milliliter"@en-US ;
@@ -74250,6 +74504,7 @@ unit:NanoGM
   qudt:conversionMultiplierSN 1.0E-12 ;
   qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T0D0 ;
   qudt:hasQuantityKind quantitykind:Mass ;
+  qudt:hasQuantityKind quantitykind:ToxicEquivalent ;
   qudt:iec61360Code "0112/2///62720#UAB836" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAB836"^^xsd:anyURI ;
   qudt:prefix prefix:Nano ;
@@ -74257,6 +74512,7 @@ unit:NanoGM
   qudt:symbol "ng" ;
   qudt:ucumCode "ng"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:Mass ;
+  qudt:unitForQuantityKind quantitykind:ToxicEquivalent ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q2282906> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Nanogram"@cs ;
@@ -74382,7 +74638,7 @@ unit:NanoGM-PER-DAY
 
 unit:NanoGM-PER-DeciL
   a qudt:DerivedUnit, qudt:Unit ;
-  dcterms:description "A derived unit for amount-of-substance concentration measured in ng/dL."^^rdf:HTML ;
+  dcterms:description "A derived unit for mass concentration measured in ng/dL."^^rdf:HTML ;
   qudt:applicableSystem sou:CGS ;
   qudt:applicableSystem sou:CGS-EMU ;
   qudt:applicableSystem sou:CGS-GAUSS ;
@@ -74402,10 +74658,12 @@ unit:NanoGM-PER-DeciL
     qudt:hasUnit unit:NanoGM ;
   ] ;
   qudt:hasQuantityKind quantitykind:Density ;
+  qudt:hasQuantityKind quantitykind:MassConcentration ;
   qudt:hasQuantityKind quantitykind:MassDensity ;
   qudt:symbol "ng/dL" ;
   qudt:ucumCode "ng.dL-1"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:Density ;
+  qudt:unitForQuantityKind quantitykind:MassConcentration ;
   qudt:unitForQuantityKind quantitykind:MassDensity ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Nanogram per Deciliter"@en-US ;
@@ -77213,16 +77471,19 @@ unit:ONE-PER-ONE
 
 unit:OSM
   a qudt:Unit ;
-  dcterms:description """One osmole is the amount of osmotically active material that when dissolved in 22.4L of solvent at 0
-    degrees celsius exerts an osmotic pressure of 1 atmosphere.
+  dcterms:description """One osmole is one mole of osmotically active entities: the dissolved particles that act on osmotic
+    pressure. UCUM defines 1 osm as 1 mol. Converting an amount in osmoles to the amount of a particular solute requires
+    the number of particles it dissociates into (1 mol of glucose gives 1 osmol, 1 mol of sodium chloride about 2) and
+    its osmotic coefficient. Those factors belong to the solute being measured, so they are resolved at the level of a
+    concrete quantity, not stated by this unit.
   """ ;
-  qudt:conversionMultiplier 0.0 ;
-  qudt:conversionMultiplierSN 0.0E0 ;
+  qudt:conversionMultiplier 1.0 ;
+  qudt:conversionMultiplierSN 1.0E0 ;
   qudt:hasDimensionVector qkdv:A1E0L0I0M0H0T0D0 ;
-  qudt:hasQuantityKind quantitykind:AmountOfSubstance ;
+  qudt:hasQuantityKind quantitykind:AmountOfOsmoticallyActiveEntities ;
   qudt:symbol "Osmol" ;
-  qudt:ucumCode "Osmol"^^qudt:UCUMcs ;
-  qudt:unitForQuantityKind quantitykind:AmountOfSubstance ;
+  qudt:ucumCode "osm"^^qudt:UCUMcs ;
+  qudt:unitForQuantityKind quantitykind:AmountOfOsmoticallyActiveEntities ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Osmole"@en ;
   rdfs:label "Osmole" .
@@ -81666,6 +81927,7 @@ unit:PER-M3
     qudt:hasUnit unit:M ;
   ] ;
   qudt:hasQuantityKind quantitykind:InverseVolume ;
+  qudt:hasQuantityKind quantitykind:NumberDensity ;
   qudt:hasQuantityKind quantitykind:VolumetricEntityDensity ;
   qudt:hasReciprocalUnit unit:M3 ;
   qudt:iec61360Code "0112/2///62720#UAA740" ;
@@ -81674,6 +81936,7 @@ unit:PER-M3
   qudt:ucumCode "m-3"^^qudt:UCUMcs ;
   qudt:uneceCommonCode "C86" ;
   qudt:unitForQuantityKind quantitykind:InverseVolume ;
+  qudt:unitForQuantityKind quantitykind:NumberDensity ;
   qudt:unitForQuantityKind quantitykind:VolumetricEntityDensity ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q21401573> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
@@ -88115,6 +88378,7 @@ unit:PicoGM
   qudt:conversionMultiplierSN 1.0E-15 ;
   qudt:hasDimensionVector qkdv:A0E0L0I0M1H0T0D0 ;
   qudt:hasQuantityKind quantitykind:Mass ;
+  qudt:hasQuantityKind quantitykind:ToxicEquivalent ;
   qudt:iec61360Code "0112/2///62720#UAB835" ;
   qudt:informativeReference "https://cdd.iec.ch/cdd/iec62720/iec62720.nsf/Units/0112-2---62720%23UAB835"^^xsd:anyURI ;
   qudt:prefix prefix:Pico ;
@@ -88122,6 +88386,7 @@ unit:PicoGM
   qudt:symbol "pg" ;
   qudt:ucumCode "pg"^^qudt:UCUMcs ;
   qudt:unitForQuantityKind quantitykind:Mass ;
+  qudt:unitForQuantityKind quantitykind:ToxicEquivalent ;
   qudt:wikidataMatch <http://www.wikidata.org/entity/Q3239557> ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
   rdfs:label "Picogram"@cs ;
@@ -100780,7 +101045,7 @@ vaem:GMD_QUDT-UNITS-ALL
   dcterms:contributor "Steve Ray" ;
   dcterms:created "2019-07-30"^^xsd:date ;
   dcterms:creator "Steve Ray" ;
-  dcterms:modified "2026-09-22T13:10:01Z"^^xsd:dateTime ;
+  dcterms:modified "2026-10-20T17:35:34Z"^^xsd:dateTime ;
   dcterms:rights """
   This product includes all or a portion of the UCUM table, UCUM codes, and UCUM definitions
    or is derived from it, subject to a license from Regenstrief Institute, Inc. and The UCUM Organization.
@@ -100796,21 +101061,21 @@ vaem:GMD_QUDT-UNITS-ALL
   dcterms:subject "Units-All" ;
   dcterms:title "QUDT Units Version 3.5 Vocabulary" ;
   rdfs:isDefinedBy <http://qudt.org/vocab/unit> ;
-  rdfs:label "QUDT Unit of Measure Vocabulary Metadata Version 3.5.2" ;
+  rdfs:label "QUDT Unit of Measure Vocabulary Metadata Version 3.5.3" ;
   vaem:description "Standard units of measure for all units." ;
   vaem:graphName "qudt" ;
-  vaem:graphTitle "QUDT Units Version 3.5.2" ;
+  vaem:graphTitle "QUDT Units Version 3.5.3" ;
   vaem:hasGraphRole vaem:VocabularyGraph ;
   vaem:hasOwner vaem:QUDT.org ;
   vaem:hasSteward vaem:QUDT.org ;
   vaem:intent "To provide a vocabulary of all units." ;
   vaem:isMetadataFor <http://qudt.org/vocab/unit> ;
-  vaem:latestPublishedVersion "https://qudt.org/doc/2026/09/DOC_VOCAB-UNITS-ALL.html"^^xsd:anyURI ;
+  vaem:latestPublishedVersion "https://qudt.org/doc/2026/10/DOC_VOCAB-UNITS-ALL.html"^^xsd:anyURI ;
   vaem:logo "https://qudt.org/linkedmodels.org/assets/lib/lm/images/logos/qudt_logo-300x110.png"^^xsd:anyURI ;
   vaem:namespace "http://qudt.org/vocab/unit/"^^xsd:anyURI ;
   vaem:namespacePrefix "unit" ;
   vaem:owner "QUDT.org" ;
-  vaem:previousPublishedVersion "https://qudt.org/doc/2026/08/DOC_VOCAB-UNITS-ALL.html"^^xsd:anyURI ;
+  vaem:previousPublishedVersion "https://qudt.org/doc/2026/09/DOC_VOCAB-UNITS-ALL.html"^^xsd:anyURI ;
   vaem:turtleFileURL "http://qudt.org/vocab/unit"^^xsd:anyURI ;
   vaem:usesNonImportedResource dcterms:abstract ;
   vaem:usesNonImportedResource dcterms:created ;
