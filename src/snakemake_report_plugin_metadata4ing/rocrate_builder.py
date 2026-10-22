@@ -434,7 +434,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_id_map = self._add_data_files(provenance.file_nodes)
         tool_id_map = self._add_tools(provenance.tools)
         fallback_tool_id = self._ensure_default_software_application()
-        workflow_id = self._add_workflow(fallback_tool_id)
+        workflow_id = self._add_workflow(provenance, fallback_tool_id)
         self._add_processing_steps_as_actions(
             provenance=provenance,
             file_id_map=file_id_map,
@@ -567,7 +567,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
                 output_parameters=output_parameters,
                 methods_by_id=methods_by_id,
                 tool_id_map=tool_id_map,
-                fallback_tool_id= "Snakefile",
+                fallback_tool_id=fallback_tool_id,
             )
             self._add_context_entity(action)
             action_refs.append({"@id": action_id})
@@ -748,6 +748,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             "@type": "CreateAction",
             "name": step_node.get("label", action_id),
             "instrument": self._instrument_ids_for_step(
+                action_id=action_id,
                 step_node=step_node,
                 methods_by_id=methods_by_id,
                 tool_id_map=tool_id_map,
@@ -766,6 +767,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
 
     def _instrument_ids_for_step(
         self,
+        action_id: str,
         step_node: dict[str, Any],
         methods_by_id: dict[str, dict[str, Any]],
         tool_id_map: dict[str, str],
@@ -774,6 +776,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         """Resolve the software instruments associated with a workflow step.
 
         Args:
+            action_id: The ID of the action for which to resolve instruments.
             step_node: Provenance processing-step node.
             methods_by_id: Method-node lookup keyed by provenance ``@id``.
             tool_id_map: Mapping from provenance tool IDs to crate tool IDs.
@@ -783,6 +786,8 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
             A list of JSON-LD references to software entities. Falls back to
             the Snakemake software entity when no explicit tools are found.
         """
+        if action_id == "#processing_step_benchmark":
+            return [{"@id": "Snakefile"}]
         method_id = reference_id(step_node.get("realizes method"))
         method_node = methods_by_id.get(method_id, {}) if method_id else {}
         instrument_ids = []
@@ -794,11 +799,12 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         return instrument_ids or [{"@id": fallback_tool_id}]
 
     def _add_workflow(
-        self, fallback_tool_id: str
+        self, provenance: ProvenanceResult, fallback_tool_id: str
     ) -> str | None:
         """Add the Snakefile as the main workflow entity when available.
 
         Args:
+            provenance: Provenance payload containing supplemental files.
             fallback_tool_id: Crate ID of the fallback software entity to link
                 via ``hasPart``.
 
