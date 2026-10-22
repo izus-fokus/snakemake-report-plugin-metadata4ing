@@ -434,7 +434,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         file_id_map = self._add_data_files(provenance.file_nodes)
         tool_id_map = self._add_tools(provenance.tools)
         fallback_tool_id = self._ensure_default_software_application()
-        workflow_id = self._add_workflow(provenance, fallback_tool_id)
+        workflow_id = self._add_workflow(fallback_tool_id)
         self._add_processing_steps_as_actions(
             provenance=provenance,
             file_id_map=file_id_map,
@@ -567,7 +567,7 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
                 output_parameters=output_parameters,
                 methods_by_id=methods_by_id,
                 tool_id_map=tool_id_map,
-                fallback_tool_id=fallback_tool_id,
+                fallback_tool_id= "Snakefile",
             )
             self._add_context_entity(action)
             action_refs.append({"@id": action_id})
@@ -794,12 +794,11 @@ class ProvenanceRunROCrateBuilder(ROCrateBuilder):
         return instrument_ids or [{"@id": fallback_tool_id}]
 
     def _add_workflow(
-        self, provenance: ProvenanceResult, fallback_tool_id: str
+        self, fallback_tool_id: str
     ) -> str | None:
         """Add the Snakefile as the main workflow entity when available.
 
         Args:
-            provenance: Provenance payload containing supplemental files.
             fallback_tool_id: Crate ID of the fallback software entity to link
                 via ``hasPart``.
 
