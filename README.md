@@ -1,3 +1,9 @@
+> [!WARNING]
+> **This repository is no longer maintained.**
+>
+> This project has been superseded by the official [Snakemake Report Plugin for RO-Crate](https://github.com/snakemake/snakemake-report-plugin-rocrate).
+> Please use the new repository for ongoing development, bug fixes, and future updates.
+
 # Metadata4Ing Reporter For Snakemake
 
 This project provides a Snakemake reporter plugin that exports workflow runs as
